@@ -8,11 +8,11 @@
 
 #include "Definitions.h"
 
-#include "GameObjectDelegate.h"
+#include "Interfaces/GameObjectDelegate.h"
 #include "ArcanoidGameEngine.h"
-#include "ArcanoidGameEngineDelegate.h"
+#include "Interfaces/ArcanoidGameEngineDelegate.h"
 #include "ArcanoidGameDrawer.h"
-#include "ArcanoidGameDrawerDelegate.h"
+#include "Interfaces/ArcanoidGameDrawerDelegate.h"
 
 class ArcanoidGameManager : public ArcanoidGameEngineDelegate, public ArcanoidGameDrawerDelegate, public GameObjectDelegate {
 public: // static funcitons
