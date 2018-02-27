@@ -2,7 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
-#include "../H/ArcanoidGameEngine.h"
+#include "ArcanoidGameEngine.h"
 
 #include <iostream>
 using namespace std;

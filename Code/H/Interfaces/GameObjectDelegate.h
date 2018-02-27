@@ -5,7 +5,7 @@
 #ifndef ARCANOID_GAMEOBJECTDELEGATE_H
 #define ARCANOID_GAMEOBJECTDELEGATE_H
 
-#include "../Geometry/Geometry.h"
+#include "Geometry/Geometry.h"
 
 class GameObject;
 

@@ -2,7 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
-#include "../H/Geometry/Vector.h"
+#include "Geometry/Vector.h"
 #include <cmath>
 
 void Vector::rotate(int angle) {

@@ -5,9 +5,9 @@
 #ifndef ARCANOID_PADDLE_H
 #define ARCANOID_PADDLE_H
 
-#include "Interfaces/GameObject.h"
-#include "Interfaces/Movable.h"
-#include "Interfaces/Mortal.h"
+#include "Models/Interfaces/GameObject.h"
+#include "Models/Interfaces/Movable.h"
+#include "Models/Interfaces/Mortal.h"
 
 class Paddle : public GameObject, public Movable, public Mortal {
 public:

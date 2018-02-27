@@ -5,7 +5,7 @@
 #ifndef ARCANOID_VECTOR_H
 #define ARCANOID_VECTOR_H
 
-#include "../Definitions.h"
+#include "Definitions.h"
 
 class Vector {
 public:

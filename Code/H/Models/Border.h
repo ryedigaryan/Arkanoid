@@ -5,7 +5,7 @@
 #ifndef ARCANOID_BORDER_H
 #define ARCANOID_BORDER_H
 
-#include "Interfaces/GameObject.h"
+#include "Models/Interfaces/GameObject.h"
 
 class Border : public GameObject, public Mortal {
 public:

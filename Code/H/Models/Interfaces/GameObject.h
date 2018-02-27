@@ -5,8 +5,8 @@
 #ifndef ARCANOID_GAMEOBJECT_H
 #define ARCANOID_GAMEOBJECT_H
 
-#include "../../Geometry/Geometry.h"
-#include "../../Interfaces/GameObjectDelegate.h"
+#include "Geometry/Geometry.h"
+#include "Interfaces/GameObjectDelegate.h"
 
 class GameObject {
 public:

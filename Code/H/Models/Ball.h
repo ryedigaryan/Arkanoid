@@ -5,9 +5,9 @@
 #ifndef ARCANOID_BALL_H
 #define ARCANOID_BALL_H
 
-#include "Interfaces/GameObject.h"
-#include "Interfaces/Movable.h"
-#include "Interfaces/Attacker.h"
+#include "Models/Interfaces/GameObject.h"
+#include "Models/Interfaces/Movable.h"
+#include "Models/Interfaces/Attacker.h"
 
 class Ball : public GameObject, public Movable, public Attacker {
 public:

@@ -5,8 +5,8 @@
 #ifndef ARCANOID_BRICK_H
 #define ARCANOID_BRICK_H
 
-#include "Interfaces/GameObject.h"
-#include "Interfaces/Mortal.h"
+#include "Models/Interfaces/GameObject.h"
+#include "Models/Interfaces/Mortal.h"
 
 class Brick : public GameObject, public Mortal {
 public:

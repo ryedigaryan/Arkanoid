@@ -2,7 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
-#include "../H/Models/Interfaces/GameObject.h"
+#include "Models/Interfaces/GameObject.h"
 
 GameObject::~GameObject()
 {

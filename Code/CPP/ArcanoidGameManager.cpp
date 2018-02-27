@@ -2,7 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
-#include "../H/ArcanoidGameManager.h"
+#include "ArcanoidGameManager.h"
 #include <iostream>
 using std::cin;
 using std::cout;

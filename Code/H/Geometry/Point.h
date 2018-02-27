@@ -5,7 +5,7 @@
 #ifndef ARCANOID_POINT_H
 #define ARCANOID_POINT_H
 
-#include "../Definitions.h"
+#include "Definitions.h"
 
 class Point {
 public:

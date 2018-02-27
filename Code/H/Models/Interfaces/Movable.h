@@ -5,7 +5,7 @@
 #ifndef ARCANOID_MOVABLE_H
 #define ARCANOID_MOVABLE_H
 
-#include "../../Geometry/Vector.h"
+#include "Geometry/Vector.h"
 
 class Movable {
 public:

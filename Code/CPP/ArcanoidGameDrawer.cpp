@@ -2,7 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
-#include "../H/ArcanoidGameDrawer.h"
+#include "ArcanoidGameDrawer.h"
 
 ArcanoidGameDrawer::ArcanoidGameDrawer(const Size& windowSize)
 {

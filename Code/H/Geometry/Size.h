@@ -5,7 +5,7 @@
 #ifndef ARCANOID_SIZE_H
 #define ARCANOID_SIZE_H
 
-#include "../Definitions.h"
+#include "Definitions.h"
 
 class Size {
 public:
