@@ -20,7 +20,7 @@ public: // static functions
 
 public: // instance functions
     void setGameObjectDelegate(GameObjectDelegate* go_delegate);
-    bool prepareLevel(string levelSpecFilePath); // loads level from spec and prepares game scene
+    bool prepareLevel(const string& levelSpecFilePath); // loads level from spec and prepares game scene
     bool startLevel();	// starts timer and the fun begins :D
     bool pause();		// pauses game
     bool unpause();		// resumes game

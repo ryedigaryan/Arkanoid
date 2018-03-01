@@ -23,27 +23,27 @@ public: // static funcitons
 
 public: // overrides
     // ArcanoidGameEngineDelegate overriden functions
-    virtual void engine_willLoadLevel();
-    virtual void engine_levelLoaded();
-    virtual void engine_willStartLevel();
-    virtual void engine_levelStarted() { /* OK */ }
-    virtual void engine_paused();
-    virtual void engine_unpaused();
-    virtual void engine_levelEnded(bool hasWon);
+    void engine_willLoadLevel() override;
+    void engine_levelLoaded() override;
+    void engine_willStartLevel() override;
+    void engine_levelStarted() override { /* OK */ }
+    void engine_paused() override;
+    void engine_unpaused() override;
+    void engine_levelEnded(bool hasWon) override;
 
     // GameObjectDelegate overriden functions
-    virtual void go_delegateSetted(const GameObject* go);
-    virtual void go_moved(unsigned go_id, const Point& go_position);
-    virtual void go_sizeChanged(unsigned go_id, const Size& go_size);
-    virtual void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) {/* not yet implemented */}
-    virtual void go_isAtPeaceNow(unsigned go_id);
+    void go_delegateSetted(const GameObject* go) override;
+    void go_moved(unsigned go_id, const Point& go_position) override;
+    void go_sizeChanged(unsigned go_id, const Size& go_size) override;
+    void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override {/* not yet implemented */}
+    void go_isAtPeaceNow(unsigned go_id) override;
 
     // ArcanoidGameDrawerDelegate overriden functions
-    virtual void drawer_startPressed();
-    virtual void drawer_donePressed();
-    virtual void drawer_mainMenuPressed();
-    virtual void drawer_pausePressed();
-    virtual void drawer_unpausePressed();
+    void drawer_startPressed() override;
+    void drawer_donePressed() override;
+    void drawer_mainMenuPressed() override;
+    void drawer_pausePressed() override;
+    void drawer_unpausePressed() override;
 
 public: // instance funcitons
     // Step 1 - add levels

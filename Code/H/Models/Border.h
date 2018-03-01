@@ -9,10 +9,10 @@
 
 class Border : public GameObject, public Mortal {
 public:
-    Border(Point position = Point(), Size size = Size(), int texture = 0)
-            : GameObject(position, size, texture) {}
+    Border(string texturePath = "", Point position = Point(), Size size = Size())
+            : GameObject(texturePath, position, size) {}
 
-    void harm(int damage) {
+    void harm(int damage) override {
         // nothing must be done ... as the border is immortal
     }
 };

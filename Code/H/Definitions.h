@@ -2,6 +2,7 @@
 // Created by ryedigaryan on 2/26/2018.
 //
 
+#include <iostream> // just for debugging
 #include <string>
 #include <list>
 #include <fstream>
@@ -10,6 +11,9 @@ using std::string;
 using std::ifstream;
 using std::list;
 using std::vector;
+using std::cout;
+using std::cin;
+using std::endl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////DEFINITIONS////////////////////////////////////////////
@@ -62,6 +66,8 @@ using std::vector;
 #define Hide false
 
 #define LevelSpecsPath "Resources/LevelSpecs"
+#define LevelSpecExtension "lvl"
+#define LevelCount 6
 #define BallsPath "Resources/Pictures/Balls"
 #define BordersPath "Resources/Pictures/Borders"
 #define BricksPath "Resources/Pictures/Bricks"

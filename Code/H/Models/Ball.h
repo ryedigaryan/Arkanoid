@@ -11,10 +11,10 @@
 
 class Ball : public GameObject, public Movable, public Attacker {
 public:
-    Ball(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
-            : GameObject(position, size), Movable(initialVelocity), Attacker(damage) {}
+    Ball(string texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
+            : GameObject(texturePath, position, size), Movable(initialVelocity), Attacker(damage) {}
 
-    virtual void move(int dx, int dy) {
+    void move(int dx, int dy) override {
         m_position.x += dx;
         m_position.y += dy;
         m_delegate->go_moved(m_identifier, m_position);

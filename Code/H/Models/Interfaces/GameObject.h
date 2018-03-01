@@ -10,12 +10,12 @@
 
 class GameObject {
 public:
-    GameObject(Point position = Point(), Size size = Size(), int texture = 1)
-            : m_position(position), m_size(size), m_texture(texture) {}
+    explicit GameObject(string texturePath = "", Point position = Point(), Size size = Size())
+            : m_position(position), m_size(size), m_texturePath(texturePath) {}
 
     ~GameObject();
 
-    int getIdentifier() const;
+    unsigned getIdentifier() const;
 
     void setDelegate(GameObjectDelegate* dlgate);
 
@@ -29,13 +29,13 @@ public:
     int get(const Axis axis) const;
     int get(const Dimension dimension) const;
 
-    int m_texture;
+    string m_texturePath;
 
 protected:
     Point m_position;
     Size m_size;
 
-    GameObjectDelegate* m_delegate = NULL;
+    GameObjectDelegate* m_delegate = nullptr;
 
 protected:
     const unsigned m_identifier = GameObject::generateIdentifier();

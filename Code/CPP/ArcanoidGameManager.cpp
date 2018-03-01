@@ -40,8 +40,8 @@ void ArcanoidGameManager::setDrawer(ArcanoidGameDrawer* drawer)
 
 void ArcanoidGameManager::startGame()
 {
-    m_currentLevelSpecPath = m_levelSpecPaths.begin();
-    cout << *m_currentLevelSpecPath << endl;
+    cout << "Starting Game" << endl;
+    m_currentLevelSpecPath = m_levelSpecPaths.begin(); // get the first level spec
     m_currentLevelNumber++; // setting level number to 1
     m_drawer->setCurrentDrawingLayer(LayerMenu);
     m_drawer->menu(Show);
@@ -54,7 +54,7 @@ bool ArcanoidGameManager::hasReachedLastLevel()
 
 void ArcanoidGameManager::drawer_startPressed()
 {
-    cout << *m_currentLevelSpecPath << endl;
+    cout << "starting level: " << *m_currentLevelSpecPath << endl;
     m_engine->prepareLevel(*m_currentLevelSpecPath);
 }
 
@@ -131,7 +131,7 @@ void ArcanoidGameManager::engine_levelEnded(bool hasWon)
 void ArcanoidGameManager::go_delegateSetted(const GameObject* go)
 {
     // already in correct drawing layer
-    m_drawer->drawObject(go->getIdentifier(), go->getPosition(), go->getSize(), go->m_texture);
+    m_drawer->drawObject(go->getIdentifier(), go->getPosition(), go->getSize(), go->m_texturePath, Hide);
 }
 
 void ArcanoidGameManager::go_moved(unsigned go_id, const Point& go_position)

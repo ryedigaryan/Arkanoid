@@ -12,7 +12,7 @@ void ArcanoidGameEngine::setGameObjectDelegate(GameObjectDelegate* go_delegate)
     m_go_delegate = go_delegate;
 }
 
-bool ArcanoidGameEngine::prepareLevel(string levelSpecFilePath)
+bool ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
 {
     ifstream levelSpecReader;
     try {
@@ -22,7 +22,6 @@ bool ArcanoidGameEngine::prepareLevel(string levelSpecFilePath)
         prepareLevelSize();
         preparePlayer();
         prepareBall();
-        m_delegate->engine_levelLoaded();
         m_isLevelPrepared = true;
     }
     catch (...) {
@@ -30,6 +29,7 @@ bool ArcanoidGameEngine::prepareLevel(string levelSpecFilePath)
         m_isLevelPrepared = false;
     }
     levelSpecReader.close();
+    m_delegate->engine_levelLoaded();
     return m_isLevelPrepared;
 }
 
@@ -182,7 +182,7 @@ Brick ArcanoidGameEngine::createBrick(short id, short number) {
     position.y = m_brickSize.height * rowNumber;
 
     // now id indicates Brick's helath and texture
-    Brick brick(position, m_brickSize, id, id);
+    Brick brick(BricksPath + std::to_string(id), position, m_brickSize, id);
     brick.setDelegate(m_go_delegate);
     return brick;
 }

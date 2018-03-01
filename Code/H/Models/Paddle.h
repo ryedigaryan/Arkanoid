@@ -11,16 +11,16 @@
 
 class Paddle : public GameObject, public Movable, public Mortal {
 public:
-    Paddle(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int texture = 0, int initialHealth = 0)
-            : GameObject(position, size, texture), Movable(initialVelocity), Mortal(initialHealth) {}
+    Paddle(string texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = 0)
+            : GameObject(texturePath, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
-    virtual void move(int dx, int dy) {
+    void move(int dx, int dy) override {
         m_position.x += dx;
         m_position.y += dy;
         m_delegate->go_moved(m_identifier, m_position);
     }
 
-    virtual void harm(int damage) {
+    void harm(int damage) override {
         m_health -= damage;
         m_delegate->go_healthChanged(m_identifier, m_health, damage);
     };

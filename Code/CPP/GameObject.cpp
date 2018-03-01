@@ -11,7 +11,7 @@ GameObject::~GameObject()
     }
 }
 
-int GameObject::getIdentifier() const
+unsigned GameObject::getIdentifier() const
 {
     return m_identifier;
 }

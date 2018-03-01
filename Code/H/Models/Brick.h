@@ -10,10 +10,10 @@
 
 class Brick : public GameObject, public Mortal {
 public:
-    Brick(Point position = Point(), Size size = Size(), int texture = 0, int initialHealth = 0)
-            : GameObject(position, size, texture), Mortal(initialHealth) {}
+    Brick(string texturePath = "", Point position = Point(), Size size = Size(), int initialHealth = 0)
+            : GameObject(texturePath, position, size), Mortal(initialHealth) {}
 
-    virtual void harm(int damage) {
+    void harm(int damage) override {
         m_health -= damage;
         m_delegate->go_healthChanged(m_identifier, m_health, damage);
     };

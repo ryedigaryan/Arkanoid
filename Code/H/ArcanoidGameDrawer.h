@@ -14,7 +14,6 @@ class ArcanoidGameDrawer {
 public: // members
     ArcanoidGameDrawer(const Size& windowSize);
 
-
     void setDelegate(ArcanoidGameDrawerDelegate* dlgate) {
         m_delegate = dlgate;
     }
@@ -23,14 +22,14 @@ public: // members
         m_currentDrawingLayer = layer;
     }
 
-    void menu(bool mustShow) {} ;
-    void loading(bool mustShow) {} ;
-    void levelStart(bool mustShow, int level = 0, int progress = 0) {} ;
+    void menu(bool mustShow);
+    void loading(bool mustShow);
+    void levelStart(bool mustShow, int level = 0, int progress = 0);
     void levelEnd(bool mustShow, bool hasWon = true) {} ;
     void gameWon(bool mustShow) {} ;
 
     //DO NOT FORGET PUT DRAWED OBJECT TO m_drawnObjects LIST
-    void drawObject(unsigned objectID, const Point& position, const Size& size, int texture);
+    void drawObject(unsigned objectID, const Point& position, const Size& size, const string& texturePath, bool mustShow);
     void redrawObject(unsigned objectID, const Size& size);
     void redrawObject(unsigned objectID, const Point& position);
     void moveObject(unsigned objectID, const Point& position) {} ;
