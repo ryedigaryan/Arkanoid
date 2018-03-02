@@ -180,3 +180,105 @@ void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress)
         m_gameMainWindow->display();
     }
 }
+
+void ArcanoidGameDrawer::levelEnd(bool mustShow, bool hasWon) {
+    cout << "drawer: levelEnd(" << (mustShow ? "show" : "hide") << ")" << endl;
+    m_gameMainWindow->clear(Gray);
+    // draw all game objects in background
+    for (auto& m_drawnObject : m_drawnObjects) {
+        m_gameMainWindow->draw(m_drawnObject);
+    }
+    if(mustShow) {
+        // create a "dialog box"
+        sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
+        background.setFillColor(sf::Color::Red);
+        background.setPosition(10, m_gameMainWindow->getSize().y / 2 - 15);
+        background.setSize(sf::Vector2f(m_gameMainWindow->getSize().x - 20, 33));
+        sf::Text levelInfo;
+        sf::Font textFont;
+        if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
+            cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
+            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
+        }
+        levelInfo.setFont(textFont);
+        levelInfo.setString(string("Lvl ") + (hasWon ? "WON" : "LOST"));
+        levelInfo.setFillColor(sf::Color::White);
+        levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
+                              (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
+
+        // draw "dialog box" in front
+        m_gameMainWindow->draw(background);
+        m_gameMainWindow->draw(levelInfo);
+        m_gameMainWindow->display();
+        // wait for Enter key to be pressed
+        while (m_gameMainWindow->isOpen()) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
+                break;
+            }
+        }
+        m_delegate->drawer_donePressed();
+    }
+    else {
+        m_gameMainWindow->display();
+    }
+}
+
+void ArcanoidGameDrawer::gameWon(bool mustShow) {
+    cout << "drawer: gameWon(" << (mustShow ? "show" : "hide") << ")" << endl;
+    m_gameMainWindow->clear(Gray);
+    // draw all game objects in background
+    for (auto& m_drawnObject : m_drawnObjects) {
+        m_gameMainWindow->draw(m_drawnObject);
+    }
+    if(mustShow) {
+        // create a "dialog box"
+        sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
+        background.setFillColor(sf::Color::Red);
+        background.setPosition(10, m_gameMainWindow->getSize().y / 2 - 15);
+        background.setSize(sf::Vector2f(m_gameMainWindow->getSize().x - 20, 33));
+        sf::Text levelInfo;
+        sf::Font textFont;
+        if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
+            cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
+            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
+        }
+        levelInfo.setFont(textFont);
+        levelInfo.setString("congrats");
+        levelInfo.setFillColor(sf::Color::White);
+        levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
+                              (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
+
+        // draw "dialog box" in front
+        m_gameMainWindow->draw(background);
+        m_gameMainWindow->draw(levelInfo);
+        m_gameMainWindow->display();
+        // wait for Enter key to be pressed
+        while (m_gameMainWindow->isOpen()) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
+                break;
+            }
+        }
+        m_delegate->drawer_donePressed();
+    }
+    else {
+        m_gameMainWindow->display();
+    }
+}
+
+void ArcanoidGameDrawer::moveObject(unsigned objectID, const Point &position) {
+    m_gameMainWindow->clear(Gray);
+    m_drawnObjects[objectID].setPosition(position.x, position.y);
+    for(auto& m_drawnObj : m_drawnObjects) {
+        m_gameMainWindow->draw(m_drawnObj);
+    }
+    m_gameMainWindow->display();
+}
+
+void ArcanoidGameDrawer::deleteObject(unsigned objectID) {
+    m_drawnObjects[objectID].setFillColor(sf::Color(0, 0, 0, 0));
+    for(auto& m_drawnObj : m_drawnObjects) {
+        m_gameMainWindow->draw(m_drawnObj);
+    }
+    m_gameMainWindow->display();
+
+}

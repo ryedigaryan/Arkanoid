@@ -116,6 +116,10 @@ bool ArcanoidGameEngine::startLevel()
     m_delegate->engine_willStartLevel();
 
     //TODO: start timer
+    for(int i = 0; i < 10; i++) {
+        m_ball.move(10, 10);
+        Sleep(100);
+    }
 
     m_isLevelStarted = true;
 
