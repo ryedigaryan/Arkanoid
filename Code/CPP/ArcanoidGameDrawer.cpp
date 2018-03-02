@@ -6,13 +6,15 @@
 
 ArcanoidGameDrawer::ArcanoidGameDrawer(const Size& windowSize)
 {
+    cout << "drawer: Constructor" << endl;
     m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(windowSize.width, windowSize.height), "Arcanoid");
-    m_gameMainWindow->clear(sf::Color(192, 192, 192));
+    m_gameMainWindow->clear(Gray);
     m_gameMainWindow->display();
 }
 
 void ArcanoidGameDrawer::drawObject(unsigned objectID, const Point& position, const Size& size, const string &texturePath, bool mustShow)
 {
+    cout << "drawer: drawObject" << endl;
     // load texture
     auto* go_texture = new sf::Texture();
     if(!go_texture->loadFromFile(texturePath)) {
@@ -27,10 +29,8 @@ void ArcanoidGameDrawer::drawObject(unsigned objectID, const Point& position, co
     obj.setTexture(go_texture);
     // add created object to all objects
     m_drawnObjects.push_back(obj);
-    // draw all game objects
-    for (auto& gameObject : m_drawnObjects) {
-        m_gameMainWindow->draw(gameObject);
-    }
+    // draw game object
+    m_gameMainWindow->draw(obj);
     // display, if must show changes
     if(mustShow) {
         m_gameMainWindow->display();
@@ -39,6 +39,7 @@ void ArcanoidGameDrawer::drawObject(unsigned objectID, const Point& position, co
 
 void ArcanoidGameDrawer::redrawObject(unsigned objectID, const Size& size)
 {
+    cout << "drawer: redrawObject(Size)" << endl;
     // get the object by ID
     auto it = std::next(m_drawnObjects.begin(), objectID);
     // resize found object
@@ -53,6 +54,7 @@ void ArcanoidGameDrawer::redrawObject(unsigned objectID, const Size& size)
 
 void ArcanoidGameDrawer::redrawObject(unsigned objectID, const Point& position)
 {
+    cout << "drawer: redrawObject(Point)" << endl;
     // get the object by ID
     auto it = std::next(m_drawnObjects.begin(), objectID);
     // change position of found object
@@ -65,7 +67,10 @@ void ArcanoidGameDrawer::redrawObject(unsigned objectID, const Point& position)
     m_gameMainWindow->display();
 }
 
-void ArcanoidGameDrawer::menu(bool mustShow) {
+void ArcanoidGameDrawer::menu(bool mustShow)
+{
+    cout << "drawer: menu(" << (mustShow ? "show" : "hide") << ")" << endl;
+    m_gameMainWindow->clear(Gray);
     if(mustShow) {
         // create background
         sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
@@ -78,6 +83,7 @@ void ArcanoidGameDrawer::menu(bool mustShow) {
         sf::Font buttonFont;
         if(!buttonFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
             cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: menu(bool)" << endl;
+            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
         }
         playButton.setFont(buttonFont);
         playButton.setString("PLAY");
@@ -102,7 +108,10 @@ void ArcanoidGameDrawer::menu(bool mustShow) {
     }
 }
 
-void ArcanoidGameDrawer::loading(bool mustShow) {
+void ArcanoidGameDrawer::loading(bool mustShow)
+{
+    cout << "drawer: loading(" << (mustShow ? "show" : "hide") << ")" << endl;
+    m_gameMainWindow->clear(Gray);
     if(mustShow) {
         // create background
         sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
@@ -115,6 +124,7 @@ void ArcanoidGameDrawer::loading(bool mustShow) {
         sf::Font textFont;
         if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
             cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: menu(bool)" << endl;
+            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
         }
         loadingText.setFont(textFont);
         loadingText.setString("Loading...");
@@ -128,7 +138,14 @@ void ArcanoidGameDrawer::loading(bool mustShow) {
     m_gameMainWindow->display();
 }
 
-void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress) {
+void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress)
+{
+    cout << "drawer: levelStart(" << (mustShow ? "show" : "hide") << ")" << endl;
+    m_gameMainWindow->clear(Gray);
+    // draw all game objects in background
+    for (auto& m_drawnObject : m_drawnObjects) {
+        m_gameMainWindow->draw(m_drawnObject);
+    }
     if(mustShow) {
         // create a "dialog box"
         sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
@@ -139,6 +156,7 @@ void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress) {
         sf::Font textFont;
         if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
             cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
+            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
         }
         levelInfo.setFont(textFont);
         levelInfo.setString("Lvl: " + std::to_string(level) + ", pr: " + std::to_string(progress));
@@ -146,11 +164,6 @@ void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress) {
         levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
                                 (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
 
-        m_gameMainWindow->display();
-        // draw all game objects in background
-        for (auto& m_drawnObject : m_drawnObjects) {
-            m_gameMainWindow->draw(m_drawnObject);
-        }
         // draw "dialog box" in front
         m_gameMainWindow->draw(background);
         m_gameMainWindow->draw(levelInfo);
@@ -161,13 +174,9 @@ void ArcanoidGameDrawer::levelStart(bool mustShow, int level, int progress) {
                 break;
             }
         }
-    }
-    // redraw all game objects, without dialog box
-    for (auto& m_drawnObject : m_drawnObjects) {
-        m_gameMainWindow->draw(m_drawnObject);
-    }
-    m_gameMainWindow->display();
-    if(mustShow) {
         m_delegate->drawer_donePressed();
+    }
+    else {
+        m_gameMainWindow->display();
     }
 }

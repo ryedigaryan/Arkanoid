@@ -5,15 +5,19 @@
 #include "ArcanoidGameEngine.h"
 
 #include <iostream>
+#include <afxres.h>
+
 using namespace std;
 
 void ArcanoidGameEngine::setGameObjectDelegate(GameObjectDelegate* go_delegate)
 {
+    cout << "engine: setGameObjectDelegate" << endl;
     m_go_delegate = go_delegate;
 }
 
 bool ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
 {
+    cout << "engine: prepareLevel" << endl;
     ifstream levelSpecReader;
     try {
         levelSpecReader.open(levelSpecFilePath);
@@ -29,12 +33,14 @@ bool ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
         m_isLevelPrepared = false;
     }
     levelSpecReader.close();
+    Sleep(5000);
     m_delegate->engine_levelLoaded();
     return m_isLevelPrepared;
 }
 
 void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
 {
+    cout << "engine: loadLevel" << endl;
     // get count of rows and columns of Bricks for current level
     levelSpecReader >> m_rowCount;
     levelSpecReader >> m_columnCount;
@@ -59,12 +65,14 @@ void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
 }
 
 void ArcanoidGameEngine::prepareLevelSize() {
+    cout << "engine: prepareLevelSize" << endl;
     m_levelSize.width = m_columnCount * m_brickSize.width + 2 * BorderDefaultWidth;
     m_levelSize.height = m_rowCount * m_brickSize.height + BorderDefaultWidth + m_blocksCountOnPlayer * m_brickSize.height;
 }
 
 void ArcanoidGameEngine::prepareBorders()
 {
+    cout << "engine: prepareBorders" << endl;
     m_borders[Left].setPosition(Point());
     m_borders[Left].setSize(Size(BorderDefaultWidth, m_levelSize.height));
     m_borders[Right].setPosition(Point(m_levelSize.width - BorderDefaultWidth, 0));
@@ -75,6 +83,7 @@ void ArcanoidGameEngine::prepareBorders()
 
 void ArcanoidGameEngine::preparePlayer()
 {
+    cout << "engine: preparePlayer" << endl;
     // set Height and Width to default values
     m_player.set(Width, PlayerDefaultSizeWidth);
     m_player.set(Height, PlayerDefaultSizeHeight);
@@ -86,6 +95,7 @@ void ArcanoidGameEngine::preparePlayer()
 
 void ArcanoidGameEngine::prepareBall()
 {
+    cout << "engine: prepareBall" << endl;
     // set Height and Width to default values
     m_ball.set(Width, BallDefaultSizeWidth);
     m_ball.set(Height, BallDefaultSizeHeight);
@@ -98,6 +108,7 @@ void ArcanoidGameEngine::prepareBall()
 
 bool ArcanoidGameEngine::startLevel()
 {
+    cout << "engine: startLevel" << endl;
     if (!m_isLevelPrepared) {
         return false;
     }
@@ -116,6 +127,7 @@ bool ArcanoidGameEngine::startLevel()
 
 bool ArcanoidGameEngine::pause()
 {
+    cout << "engine: pause" << endl;
     if (!m_isLevelStarted) {
         return false;
     }
@@ -133,6 +145,7 @@ bool ArcanoidGameEngine::pause()
 
 bool ArcanoidGameEngine::unpause()
 {
+    cout << "engine: unpause" << endl;
     if (!m_isGamePaused) {
         return true;
     }
@@ -156,12 +169,14 @@ int ArcanoidGameEngine::getCountOfColumns() {
 
 void ArcanoidGameEngine::setDelegate(ArcanoidGameEngineDelegate* engineDelegate)
 {
+    cout << "engine: setDelegate" << endl;
     m_delegate = engineDelegate;
 }
 
 
 void ArcanoidGameEngine::process()
 {
+    cout << "engine: process" << endl;
     if (m_isGamePaused) {
         return;
     }
@@ -171,8 +186,9 @@ void ArcanoidGameEngine::process()
 }
 
 
-Brick ArcanoidGameEngine::createBrick(short id, short number) {
-
+Brick ArcanoidGameEngine::createBrick(short id, short number)
+{
+    cout << "engine: createBrick" << endl;
     // get the row and column number of cell, where the brick must be putted
     int rowNumber = number / m_columnCount;
     int columnNumber = number - rowNumber * m_columnCount;
@@ -187,7 +203,8 @@ Brick ArcanoidGameEngine::createBrick(short id, short number) {
     return brick;
 }
 
-bool ArcanoidGameEngine::isBrickID(char brickID) {
+bool ArcanoidGameEngine::isBrickID(char brickID)
+{
     return brickID >= '0' && brickID <= '9';
 }
 
