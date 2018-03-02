@@ -75,24 +75,24 @@ void ArcanoidGameEngine::prepareBorders()
 
 void ArcanoidGameEngine::preparePlayer()
 {
-    m_player.setDelegate(m_go_delegate);
     // set Height and Width to default values
     m_player.set(Width, PlayerDefaultSizeWidth);
     m_player.set(Height, PlayerDefaultSizeHeight);
     // put player(paddle) in the bottom center of the screen
     m_player.set(X, (m_levelSize.width - m_player.get(Width)) / 2);
     m_player.set(Y, m_levelSize.height - m_player.get(Height) - PlayerBottomOffset);
+    m_player.setDelegate(m_go_delegate);
 }
 
 void ArcanoidGameEngine::prepareBall()
 {
-    m_ball.setDelegate(m_go_delegate);
     // set Height and Width to default values
     m_ball.set(Width, BallDefaultSizeWidth);
     m_ball.set(Height, BallDefaultSizeHeight);
     // put ball on paddle(player), at the middle
     m_ball.set(X, m_player.get(X) + m_player.get(Width) / 2 - m_ball.get(Width) / 2);
     m_ball.set(Y, m_player.get(Y) - m_player.get(Height) - m_ball.get(Height));
+    m_ball.setDelegate(m_go_delegate);
 }
 
 
@@ -182,7 +182,7 @@ Brick ArcanoidGameEngine::createBrick(short id, short number) {
     position.y = m_brickSize.height * rowNumber;
 
     // now id indicates Brick's helath and texture
-    Brick brick(BricksPath + std::to_string(id), position, m_brickSize, id);
+    Brick brick(BricksPath + std::to_string(id) + "." + TextrueExtension, position, m_brickSize, id);
     brick.setDelegate(m_go_delegate);
     return brick;
 }

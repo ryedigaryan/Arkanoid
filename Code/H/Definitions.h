@@ -33,15 +33,14 @@ using std::endl;
 #define PI 3.14159265358979323846
 
 // Ball
-#define BallDefaultTexture 0
+#define BallDefaultTexture "Resources/Pictures/Balls/1.png"
 
 // Brick
 #define BrickDefaultInitialHealth 1
-#define BrickDefaultTexture 0
 
 // Paddle
-#define PaddleDefaultInitialHealth 1
-#define PaddleDefaultTexture 0
+#define PaddleDefaultInitialHealth 3
+#define PaddleDefaultTexture "Resources/Pictures/Paddles/1.png"
 
 // ArcanoidGameEngine
 #define LevelDefaultCornerX 10
@@ -68,10 +67,11 @@ using std::endl;
 #define LevelSpecsPath "Resources/LevelSpecs"
 #define LevelSpecExtension "lvl"
 #define LevelCount 6
-#define BallsPath "Resources/Pictures/Balls"
-#define BordersPath "Resources/Pictures/Borders"
-#define BricksPath "Resources/Pictures/Bricks"
-#define PaddlesPath "Resources/Pictures/Paddles"
+#define BallsPath "Resources/Pictures/Balls/"
+#define BordersPath "Resources/Pictures/Borders/"
+#define BricksPath "Resources/Pictures/Bricks/"
+#define PaddlesPath "Resources/Pictures/Paddles/"
+#define TextrueExtension "png"
 
 
 // ArcanoidGameManager ... when draws something

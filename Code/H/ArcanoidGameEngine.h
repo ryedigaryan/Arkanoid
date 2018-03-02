@@ -46,8 +46,8 @@ private: // members
     int m_columnCount = 0; // count of columns of Bricks in current level
 
     Border m_borders[3];  // game scene rounded by 3 borders(Up, Down, Left, Right)
-    Paddle m_player;
-    Ball m_ball;
+    Paddle m_player = Paddle(PaddleDefaultTexture);
+    Ball m_ball = Ball(BallDefaultTexture);
 
     Point m_brickCorner // the left upper corner of first brick
             = Point(LevelDefaultCornerX, LevelDefaultCornerY);
