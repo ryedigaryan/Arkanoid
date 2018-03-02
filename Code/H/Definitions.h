@@ -46,15 +46,15 @@ using std::endl;
 #define LevelDefaultCornerX 10
 #define LevelDefaultCornerY 10
 
-#define BrcikDefaultSizeWidth 10
-#define BrcikDefaultSizeHeight 5
+#define BrickDefaultSizeWidth 30
+#define BrickDefaultSizeHeight 15
 
-#define PlayerDefaultSizeWidth 25
-#define PlayerDefaultSizeHeight 5
+#define PlayerDefaultSizeWidth 75
+#define PlayerDefaultSizeHeight 15
 #define PlayerBottomOffset 5
 
-#define BallDefaultSizeWidth 5
-#define BallDefaultSizeHeight 5
+#define BallDefaultSizeWidth 15
+#define BallDefaultSizeHeight 15
 
 #define BorderDefaultWidth 5
 

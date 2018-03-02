@@ -7,7 +7,7 @@
 ArcanoidGameDrawer::ArcanoidGameDrawer(const Size& windowSize)
 {
     m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(windowSize.width, windowSize.height), "Arcanoid");
-    m_gameMainWindow->clear(sf::Color::White);
+    m_gameMainWindow->clear(sf::Color(192, 192, 192));
     m_gameMainWindow->display();
 }
 

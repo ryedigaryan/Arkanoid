@@ -91,7 +91,7 @@ void ArcanoidGameEngine::prepareBall()
     m_ball.set(Height, BallDefaultSizeHeight);
     // put ball on paddle(player), at the middle
     m_ball.set(X, m_player.get(X) + m_player.get(Width) / 2 - m_ball.get(Width) / 2);
-    m_ball.set(Y, m_player.get(Y) - m_player.get(Height) - m_ball.get(Height));
+    m_ball.set(Y, m_player.get(Y) - m_ball.get(Height));
     m_ball.setDelegate(m_go_delegate);
 }
 

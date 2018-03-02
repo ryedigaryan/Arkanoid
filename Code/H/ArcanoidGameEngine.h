@@ -52,7 +52,7 @@ private: // members
     Point m_brickCorner // the left upper corner of first brick
             = Point(LevelDefaultCornerX, LevelDefaultCornerY);
     Size m_brickSize	// size of one Brick
-            = Size(BrcikDefaultSizeWidth, BrcikDefaultSizeHeight);
+            = Size(BrickDefaultSizeWidth, BrickDefaultSizeHeight);
     Size m_levelSize;	// size of all game scene
     //TODO: remove
     int m_borderWidth	// width of left/right border and height of up/down border

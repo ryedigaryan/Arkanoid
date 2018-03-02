@@ -7,7 +7,7 @@
 int main() {
 
     ArcanoidGameManager& manager = ArcanoidGameManager::getManager();
-    ArcanoidGameDrawer drawer(Size(300, 330));
+    ArcanoidGameDrawer drawer(Size(400, 440));
     ArcanoidGameEngine& engine = ArcanoidGameEngine::getEngine();
     manager.addAllLevelSpecsInPath(LevelSpecsPath, LevelSpecExtension, LevelCount);
     manager.setDrawer(&drawer);
