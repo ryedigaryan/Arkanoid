@@ -73,7 +73,9 @@ void ArcanoidGameManager::drawer_donePressed()
                         case sf::Keyboard::Left:
                             m_engine->movePlayer(Side::Left);
                         case sf::Keyboard::Right:
-                            m_engine->movePlayer(Side::Right)
+                            m_engine->movePlayer(Side::Right);
+                        default:
+                            break;
                     }
                 case sf::Event::KeyReleased:
                     switch(event.key.code) {
