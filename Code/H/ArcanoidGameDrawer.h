@@ -11,7 +11,7 @@
 #include <SFML/Graphics.hpp>
 
 class ArcanoidGameDrawer {
-public: // members
+public:
     ArcanoidGameDrawer(const Size& windowSize);
 
     void setDelegate(ArcanoidGameDrawerDelegate* dlgate) {
@@ -21,6 +21,8 @@ public: // members
     void setCurrentDrawingLayer(int layer) {
         m_currentDrawingLayer = layer;
     }
+
+    sf::RenderWindow& getMainWindow();
 
     void menu(bool mustShow);
     void loading(bool mustShow);

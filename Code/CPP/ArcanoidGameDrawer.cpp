@@ -282,3 +282,7 @@ void ArcanoidGameDrawer::deleteObject(unsigned objectID) {
     m_gameMainWindow->display();
 
 }
+
+sf::RenderWindow& ArcanoidGameDrawer::getMainWindow() {
+    return *m_gameMainWindow;
+}

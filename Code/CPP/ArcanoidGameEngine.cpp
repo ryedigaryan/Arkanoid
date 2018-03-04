@@ -15,7 +15,7 @@ void ArcanoidGameEngine::setGameObjectDelegate(GameObjectDelegate* go_delegate)
     m_go_delegate = go_delegate;
 }
 
-bool ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
+Size ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
 {
     cout << "engine: prepareLevel" << endl;
     ifstream levelSpecReader;
@@ -29,13 +29,14 @@ bool ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
         m_isLevelPrepared = true;
     }
     catch (...) {
-        cout << "FAILED WHILE PREPARING GAME!!!!" << endl;
+        cout << "FAIL. class = ArcanoidGameEngine, function = prepareLevel" << endl;
         m_isLevelPrepared = false;
+        m_levelSize = LevelIncorrectSize;
     }
     levelSpecReader.close();
-    Sleep(5000);
+    Sleep(1000);
     m_delegate->engine_levelLoaded();
-    return m_isLevelPrepared;
+    return m_levelSize;
 }
 
 void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
@@ -54,9 +55,9 @@ void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
         levelSpecReader >> brickID;
         if (isBrickID(brickID)) {
             // create Brick if it is a acceptable ID
-            Brick brick = createBrick(brickID - '0', brickNumber);
+            Brick* brick = createBrick(brickID - '0', brickNumber);
             // put the created Brick into all bricks list
-            m_bricks.push_back(&brick);
+            m_bricks.push_back(brick);
         }
         brickNumber++;
     }
@@ -75,10 +76,13 @@ void ArcanoidGameEngine::prepareBorders()
     cout << "engine: prepareBorders" << endl;
     m_borders[Left].setPosition(Point());
     m_borders[Left].setSize(Size(BorderDefaultWidth, m_levelSize.height));
+    m_borders[Left].setDelegate(m_go_delegate);
     m_borders[Right].setPosition(Point(m_levelSize.width - BorderDefaultWidth, 0));
     m_borders[Right].setSize(Size(BorderDefaultWidth, m_levelSize.height));
+    m_borders[Right].setDelegate(m_go_delegate);
     m_borders[Up].setPosition(Point(m_borders[Left].get(Width), 0));
     m_borders[Up].setSize(Size(m_levelSize.width - m_borders[Left].get(Width) - m_borders[Right].get(Width), BorderDefaultWidth));
+    m_borders[Up].setDelegate(m_go_delegate);
 }
 
 void ArcanoidGameEngine::preparePlayer()
@@ -106,60 +110,48 @@ void ArcanoidGameEngine::prepareBall()
 }
 
 
-bool ArcanoidGameEngine::startLevel()
+void ArcanoidGameEngine::startLevel()
 {
     cout << "engine: startLevel" << endl;
     if (!m_isLevelPrepared) {
-        return false;
+        cout << "WARNING! Attempting to start level while level is not yet prepared" << endl;
+        return;
     }
 
     m_delegate->engine_willStartLevel();
 
-    //TODO: start timer
-    for(int i = 0; i < 10; i++) {
-        m_ball.move(10, 10);
-        Sleep(100);
-    }
-
     m_isLevelStarted = true;
-
-    m_delegate->engine_levelStarted();
-
-    return m_isLevelStarted;
 }
 
 
-bool ArcanoidGameEngine::pause()
+void ArcanoidGameEngine::pause()
 {
     cout << "engine: pause" << endl;
     if (!m_isLevelStarted) {
-        return false;
+        cout << "WARNING: Attempting to pause game while it is not yet started" << endl;
+        return;
     }
     if (m_isGamePaused) {
-        return true;
+        cout << "WARNING: Attempting to pause already paused game" << endl;
+        return;
     }
 
-    // the pause action ... now only setting a boolean :D
     m_isGamePaused = true;
 
     m_delegate->engine_paused();
-
-    return m_isGamePaused;
 }
 
-bool ArcanoidGameEngine::unpause()
+void ArcanoidGameEngine::unpause()
 {
     cout << "engine: unpause" << endl;
     if (!m_isGamePaused) {
-        return true;
+        cout << "WARNING: Attempting to unpasue already unpaused game" << endl;
+        return;
     }
 
-    // the unpause action .. now only setting a boolean :D
     m_isGamePaused = false;
 
     m_delegate->engine_unpaused();
-
-    return !m_isGamePaused;
 }
 
 
@@ -190,7 +182,11 @@ void ArcanoidGameEngine::process()
 }
 
 
-Brick ArcanoidGameEngine::createBrick(short id, short number)
+void ArcanoidGameEngine::movePlayer(Side direction) {
+
+}
+
+Brick* ArcanoidGameEngine::createBrick(short id, short number)
 {
     cout << "engine: createBrick" << endl;
     // get the row and column number of cell, where the brick must be putted
@@ -202,8 +198,10 @@ Brick ArcanoidGameEngine::createBrick(short id, short number)
     position.y = m_brickSize.height * rowNumber;
 
     // now id indicates Brick's helath and texture
-    Brick brick(BricksPath + std::to_string(id) + "." + TextrueExtension, position, m_brickSize, id);
-    brick.setDelegate(m_go_delegate);
+    Brick* brick = new Brick(BricksPath + std::to_string(id) + "." + TextrueExtension, position, m_brickSize, id);
+    if(m_go_delegate != nullptr) {
+        brick->setDelegate(m_go_delegate);
+    }
     return brick;
 }
 
@@ -212,8 +210,6 @@ bool ArcanoidGameEngine::isBrickID(char brickID)
     return brickID >= '0' && brickID <= '9';
 }
 
-/*
-0 1 2  3
-4 5 6  7
-8 9 10 11
-*/
+void ArcanoidGameEngine::stopPlayerMoving() {
+
+}

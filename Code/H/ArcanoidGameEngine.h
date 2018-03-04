@@ -20,10 +20,10 @@ public: // static functions
 
 public: // instance functions
     void setGameObjectDelegate(GameObjectDelegate* go_delegate);
-    bool prepareLevel(const string& levelSpecFilePath); // loads level from spec and prepares game scene
-    bool startLevel();	// starts timer and the fun begins :D
-    bool pause();		// pauses game
-    bool unpause();		// resumes game
+    Size prepareLevel(const string& levelSpecFilePath); // loads level from spec and prepares game scene
+    void startLevel();	// starts timer and the fun begins :D
+    void pause();		// pauses game
+    void unpause();		// resumes game
 
     int getProgress() { return 0; }; // returns progress in percents
 
@@ -31,6 +31,10 @@ public: // instance functions
     int getCountOfColumns();
 
     void setDelegate(ArcanoidGameEngineDelegate* engineDelegate);
+
+    void process(); // game logic... the function which calls timer
+    void movePlayer(Side direction);
+    void stopPlayerMoving();
 
 private: // members
     GameObjectDelegate* m_go_delegate;
@@ -45,7 +49,7 @@ private: // members
     int m_rowCount = 0;    // count of rows of Bricks in current level
     int m_columnCount = 0; // count of columns of Bricks in current level
 
-    Border m_borders[3];  // game scene rounded by 3 borders(Up, Down, Left, Right)
+    Border m_borders[BordersCount];  // game scene rounded by 3 borders(Up, Down, Left, Right)
     Paddle m_player = Paddle(PaddleDefaultTexture);
     Ball m_ball = Ball(BallDefaultTexture);
 
@@ -67,10 +71,8 @@ private: // functions
     void prepareBorders();   // sets sizes of 3 borders
     void preparePlayer();	 // sets player's position and size
     void prepareBall();		 // sets ball's position and size
-    // main functions
-    void process(); // game logic... the function which calls timer
     // utility functions
-    Brick createBrick(short id, short number); // creates a Brick in right place
+    Brick* createBrick(short id, short number); // creates a Brick in right place
     bool isBrickID(char brickID);			   // checks whether given ID is a valid Brcik ID or not
 
 private: // making singleton

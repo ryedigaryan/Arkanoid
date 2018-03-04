@@ -45,6 +45,12 @@ using std::endl;
 #define PaddleDefaultTexture "Resources/Pictures/Paddles/1.png"
 
 // ArcanoidGameEngine
+#define BordersCount 3
+
+#define LevelIncorrectWidth (-1)
+#define LevelIncorrectHeight (-1)
+#define LevelIncorrectSize Size(LevelIncorrectWidth, LevelIncorrectHeight)
+
 #define LevelDefaultCornerX 10
 #define LevelDefaultCornerY 10
 
@@ -76,7 +82,7 @@ using std::endl;
 #define TextrueExtension "png"
 
 
-// ArcanoidGameManager ... when draws something
+// ArcanoidGameManager
 #define PathSeparator "/"
 #define ExtensionSeparator "."
 #define LayerLoading 4
@@ -84,6 +90,8 @@ using std::endl;
 #define LayerGameObject 1
 #define LayerLevelInfo 2
 
+#define FPS 30
+#define FrameDuration (1f / FPS)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////ENUMS////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

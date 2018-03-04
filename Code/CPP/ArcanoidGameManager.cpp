@@ -61,6 +61,37 @@ void ArcanoidGameManager::drawer_startPressed()
 void ArcanoidGameManager::drawer_donePressed()
 {
     m_engine->startLevel();
+    sf::Clock clock;
+    while(m_drawer->getMainWindow().isOpen()) {
+        sf::Event event;
+        while(m_drawer->getMainWindow().pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    m_drawer->getMainWindow().close();
+                case sf::Event::KeyPressed:
+                    switch(event.key.code) {
+                        case sf::Keyboard::Left:
+                            m_engine->movePlayer(Side::Left);
+                        case sf::Keyboard::Right:
+                            m_engine->movePlayer(Side::Right)
+                    }
+                case sf::Event::KeyReleased:
+                    switch(event.key.code) {
+                        case sf::Keyboard::Left:
+                        case sf::Keyboard::Right:
+                            m_engine->stopPlayerMoving();
+                        default:
+                            break;
+                    }
+                case sf::Event::Resized:break;
+                default:
+                    break;
+            }
+        }
+        if (clock.getElapsedTime().asSeconds() > FrameDuration) {
+            m_engine->process();
+        }
+    }
 }
 
 void ArcanoidGameManager::drawer_mainMenuPressed()
