@@ -48,6 +48,7 @@ protected:
 private:
     sf::RectangleShape m_helperRect;
     sf::Text m_helperText;
+    sf::Font m_helperFont;
 };
 
 #endif //ARCANOID_ARCANOIDGAMEDRAWER_H

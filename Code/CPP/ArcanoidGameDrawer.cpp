@@ -7,14 +7,14 @@
 ArcanoidGameDrawer::ArcanoidGameDrawer(sf::Color backgroundColor)
 {
     cout << "drawer: Constructor" << endl;
-    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(600, 800), "Arcanoid"/*, sf::Style::Fullscreen*/);
+//    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(600, 800), "Arcanoid");
+    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(), "Arcanoid", sf::Style::Fullscreen);
     this->setBackgroundColor(backgroundColor);
-    sf::Font defaultFont;
-    if(!defaultFont.loadFromFile(DefaultFontpath)) {
+    if(!m_helperFont.loadFromFile(DefaultFontpath)) {
         cout << "FATAL ERROR in ArcanoidGameDrawer constructor" << endl;
         cout << "cant load from file: " << DefaultFontpath << endl;
     }
-    m_helperText.setFont(defaultFont);
+    m_helperText.setFont(m_helperFont);
     m_helperText.setCharacterSize(m_gameMainWindow->getSize().y / 10);
 //TODO:    m_helperRect.setFillColor(m_backgroundColor); ----> understand sf::Color::Transparent's behaviour
 }
@@ -26,24 +26,17 @@ void ArcanoidGameDrawer::drawMenu(bool mustShow /*= Show*/)
     // set menu background to Magenta
     m_gameMainWindow->clear(sf::Color::Magenta); // TODO: magic color
 
-    m_gameMainWindow->display();
-    m_gameMainWindow->display();
-    m_gameMainWindow->display();
-    m_gameMainWindow->display();
     m_gameMainWindow->pollEvent(*(new sf::Event()));
-    this->drawTextAtMiddle("PLAY", mustShow);
 
-    m_gameMainWindow->display();
-    m_gameMainWindow->display();
+    this->drawTextAtMiddle("PLAY", mustShow);
 
     // wait for Enter key to be pressed
     while (m_gameMainWindow->isOpen()) {
         sf::Event e;
         m_gameMainWindow->pollEvent(e);
-        while (m_gameMainWindow->isOpen()) {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
-                break;
-            }
+        cout << "OPEN" << endl;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
+            break;
         }
     }
     m_delegate->drawer_startPressed();
@@ -57,8 +50,6 @@ void ArcanoidGameDrawer::drawLoading(bool mustShow /*= true*/)
     m_gameMainWindow->clear(sf::Color::Cyan);
 
     this->drawTextAtMiddle("Loading...");
-    m_gameMainWindow->display();
-    m_gameMainWindow->display();
 }
 
 void ArcanoidGameDrawer::drawLevelStart(int level, int progress, bool mustShow /*= Show*/)
