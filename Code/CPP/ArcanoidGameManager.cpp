@@ -43,8 +43,7 @@ void ArcanoidGameManager::startGame()
     cout << "Starting Game" << endl;
     m_currentLevelSpecPath = m_levelSpecPaths.begin(); // get the first level spec
     m_currentLevelNumber++; // setting level number to 1
-    m_drawer->setCurrentDrawingLayer(LayerMenu);
-    m_drawer->menu(Show);
+    m_drawer->drawMenu();
 }
 
 bool ArcanoidGameManager::hasReachedLastLevel()
@@ -62,12 +61,13 @@ void ArcanoidGameManager::drawer_donePressed()
 {
     m_engine->startLevel();
     sf::Clock clock;
-    while(m_drawer->getMainWindow().isOpen()) {
+    sf::RenderWindow* gameWindow = m_drawer->getMainWindow();
+    while(gameWindow->isOpen()) {
         sf::Event event;
-        while(m_drawer->getMainWindow().pollEvent(event)) {
+        while(gameWindow->pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed:
-                    m_drawer->getMainWindow().close();
+                    gameWindow->close();
                 case sf::Event::KeyPressed:
                     switch(event.key.code) {
                         case sf::Keyboard::Left:
@@ -98,8 +98,7 @@ void ArcanoidGameManager::drawer_donePressed()
 
 void ArcanoidGameManager::drawer_mainMenuPressed()
 {
-    m_drawer->setCurrentDrawingLayer(LayerMenu);
-    m_drawer->menu(Show);
+    m_drawer->drawMenu(Show);
 }
 
 void ArcanoidGameManager::drawer_pausePressed()
@@ -114,68 +113,58 @@ void ArcanoidGameManager::drawer_unpausePressed()
 
 void ArcanoidGameManager::engine_willLoadLevel()
 {
-    if (m_currentLevelNumber == 1) {
-        m_drawer->menu(Hide);
-    }
-    else {
-        m_drawer->levelEnd(Hide);
-    }
-    m_drawer->setCurrentDrawingLayer(LayerLoading);
-    m_drawer->loading(Show);
-    // set drawing layer to game objects because now game objects will be created
-    m_drawer->setCurrentDrawingLayer(LayerGameObject);
+    m_drawer->clearScreen();
+    m_drawer->drawLoading();
 }
 
 void ArcanoidGameManager::engine_levelLoaded()
 {
-    m_drawer->setCurrentDrawingLayer(LayerLoading);
-    m_drawer->loading(Hide);
-    m_drawer->setCurrentDrawingLayer(LayerLevelInfo);
-    m_drawer->levelStart(Show, m_currentLevelNumber);
+    m_drawer->clearScreen();
+    m_drawer->drawLevelStart(m_currentLevelNumber);
 }
 
 void ArcanoidGameManager::engine_willStartLevel()
 {
-    m_drawer->levelStart(Hide);
-    // now game objects will move
-    m_drawer->setCurrentDrawingLayer(LayerGameObject);
+    m_drawer->clearScreen();
 }
 
 void ArcanoidGameManager::engine_paused()
 {
-    m_drawer->setCurrentDrawingLayer(LayerLevelInfo);
-    m_drawer->levelStart(Show, m_currentLevelNumber, m_engine->getProgress());
+    m_drawer->drawLevelStart(m_currentLevelNumber, m_engine->getProgress());
 }
 
 void ArcanoidGameManager::engine_unpaused()
 {
-    m_drawer->levelStart(Hide, m_currentLevelNumber);
+    //TODO hide popup
+    //m_drawer->levelStart(Hide, m_currentLevelNumber);
 }
 
 void ArcanoidGameManager::engine_levelEnded(bool hasWon)
 {
     if (hasWon && hasReachedLastLevel()) {
-        m_drawer->gameWon(Show);
+        m_drawer->drawGameWon();
         return;
     }
-    m_drawer->levelEnd(Show, hasWon);
+    m_drawer->drawLevelEnd(hasWon);
 }
 
 void ArcanoidGameManager::go_delegateSetted(const GameObject* go)
 {
     // already in correct drawing layer
-    m_drawer->drawObject(go->getIdentifier(), go->getPosition(), go->getSize(), go->m_texturePath, Hide);
+    sf::Vector2f go_position = sf::Vector2f(go->get(X), go->get(Y));
+    sf::Vector2f go_size = sf::Vector2f(go->get(Width), go->get(Height));
+    m_drawer->drawObject(go->getIdentifier(), go_position, go_size, go->m_texturePath, NotShow);
 }
 
 void ArcanoidGameManager::go_moved(unsigned go_id, const Point& go_position)
 {
-    m_drawer->redrawObject(go_id, go_position);
+    m_drawer->moveObject(go_id, sf::Vector2f(go_position.x, go_position.y));
     //m_drawer->moveObject(go_id, go_position);
 }
 
 void ArcanoidGameManager::go_sizeChanged(unsigned go_id, const Size & go_size)
 {
-    m_drawer->redrawObject(go_id, go_size);
+    m_drawer->resizeObject(go_id, sf::Vector2f(go_size.width, go_size.height));
 }
 
 void ArcanoidGameManager::go_isAtPeaceNow(unsigned go_id)

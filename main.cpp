@@ -16,22 +16,23 @@ void draw(float x, float y) {
     window.display();
 }
 
+void draw(sf::RenderWindow& window, sf::Shape& shape) {
+    window.draw(shape);
+}
+
+void display(sf::RenderWindow& window) {
+    window.display();
+}
+
+void test();
+
 int main() {
 
-//    obj.setSize(sf::Vector2f(50, 50));
-//    obj.setFillColor(sf::Color::Green);
-//    int x = 0, y = 0;
-//    while(window.isOpen()) {
-//        sf::Event e;
-//        while(window.pollEvent(e)) {}
-//        draw(x = (x + 10) % window.getSize().x, y = (y + 10) % window.getSize().y);
-//        Sleep(5);
-//        cout << obj.getPosition().x << " " << obj.getPosition().y << endl;
-//    }
-
+//    test();
+//    END;
 
     ArcanoidGameManager& manager = ArcanoidGameManager::getManager();
-    ArcanoidGameDrawer drawer(Size(400, 440));
+    ArcanoidGameDrawer drawer(Gray);
     ArcanoidGameEngine& engine = ArcanoidGameEngine::getEngine();
     manager.addAllLevelSpecsInPath(LevelSpecsPath, LevelSpecExtension, LevelCount);
     manager.setDrawer(&drawer);
@@ -41,4 +42,47 @@ int main() {
 
     std::cout << "Hello, World!" << std::endl;
     END
+}
+
+void test() {
+    sf::RenderWindow window(sf::VideoMode(0, 0), "SFML works!", sf::Style::Fullscreen);
+    sf::RectangleShape shape(sf::Vector2f(50, 50));
+    shape.setPosition(50, 50);
+    shape.setFillColor(sf::Color::Green);
+    sf::RectangleShape hideShape(sf::Vector2f(50, 50));
+    hideShape.setFillColor(sf::Color::Black);
+    bool show = true;
+    int val = 10;
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == sf::Event::KeyPressed) {
+                cout << shape.getPosition().x << " " << shape.getPosition().y << endl;
+                hideShape.setPosition(shape.getPosition());
+                shape.setPosition(shape.getPosition().x + val, shape.getPosition().y + (val > 0 ? val : 2 * val));
+                window.draw(shape); // draw in new place
+                window.display();
+                window.draw(hideShape);
+                if (shape.getPosition().x + shape.getSize().x >= window.getSize().x ||
+                        shape.getPosition().y + shape.getSize().y >= window.getSize().y) {
+                    val = -abs(val);
+                }
+                else if (shape.getPosition().x <= 0 ||
+                         shape.getPosition().y  <= 0) {
+                    val = abs(val);
+                }
+            }
+        }
+
+        if(show) {
+            window.clear();
+            window.draw(shape);
+            window.display();
+            show = false;
+        }
+    }
 }

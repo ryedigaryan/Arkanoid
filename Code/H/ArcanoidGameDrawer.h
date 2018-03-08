@@ -5,44 +5,49 @@
 #ifndef ARCANOID_ARCANOIDGAMEDRAWER_H
 #define ARCANOID_ARCANOIDGAMEDRAWER_H
 
+#include <SFML/Graphics.hpp>
+
 #include "Definitions.h"
 #include "Geometry/Geometry.h"
 #include "Interfaces/ArcanoidGameDrawerDelegate.h"
-#include <SFML/Graphics.hpp>
 
 class ArcanoidGameDrawer {
 public:
-    ArcanoidGameDrawer(const Size& windowSize);
+    explicit ArcanoidGameDrawer(sf::Color backgroundColor);
 
-    void setDelegate(ArcanoidGameDrawerDelegate* dlgate) {
-        m_delegate = dlgate;
-    }
+    void setDelegate(ArcanoidGameDrawerDelegate* dlgate);
 
-    void setCurrentDrawingLayer(int layer) {
-        m_currentDrawingLayer = layer;
-    }
+    sf::RenderWindow* getMainWindow();
 
-    sf::RenderWindow& getMainWindow();
+    // non-game specific drawing functions, like menu, loading, level info e.t.c.
+    // these functions do not show the drawn stuff if mustShow parameter setted to false
+    void drawMenu(bool mustShow = true);
+    void drawLoading(bool mustShow = true);
+    void drawLevelStart(int level = 0, int progress = 0, bool mustShow = true);
+    void drawLevelEnd(bool hasWon, bool mustShow = true);
+    void drawGameWon(bool mustShow = true);
+    void drawTextAtMiddle(const string& text, bool mustShow = true);
+    void clearScreen(bool mustShow = true);
+    // shows(displays) all the drawn stuff
+    void showDrawnStuff();
+    void setBackgroundColor(sf::Color bgColor);
 
-    void menu(bool mustShow);
-    void loading(bool mustShow);
-    void levelStart(bool mustShow, int level = 0, int progress = 0);
-    void levelEnd(bool mustShow, bool hasWon = true);
-    void gameWon(bool mustShow) ;
-
-    //DO NOT FORGET PUT DRAWED OBJECT TO m_drawnObjects LIST
-    void drawObject(unsigned objectID, const Point& position, const Size& size, const string& texturePath, bool mustShow);
-    void redrawObject(unsigned objectID, const Size& size);
-    void redrawObject(unsigned objectID, const Point& position);
-    void moveObject(unsigned objectID, const Point& position);
-    void hideObject(unsigned objectID) {};
-    void deleteObject(unsigned objectID);
+    // game specific drawing functions, like Brick, Paddle, Ball e.t.c. and their movement
+    void drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string& texturePath, bool mustShow);
+    void resizeObject(unsigned objectID, const sf::Vector2f& size);
+    void moveObject(unsigned objectID, const sf::Vector2f& position);
+    void deleteObject(unsigned objectID, bool mustShow = true);
+    void hideObject(unsigned objectID, bool mustShow = true);
 
     ArcanoidGameDrawerDelegate* m_delegate;
 protected:
     sf::RenderWindow* m_gameMainWindow;
-    int m_currentDrawingLayer = 0;
-    vector<sf::RectangleShape> m_drawnObjects;
+    vector<sf::RectangleShape*> m_drawnObjects;
+    sf::Color m_backgroundColor;
+
+private:
+    sf::RectangleShape m_helperRect;
+    sf::Text m_helperText;
 };
 
 #endif //ARCANOID_ARCANOIDGAMEDRAWER_H

@@ -70,8 +70,9 @@ using std::endl;
 
 // ArcanoidGameDrawer
 #define Show true
-#define Hide false
+#define NotShow false
 
+#define DefaultFontpath "Resources/Fonts/RAVIE.TTF"
 #define LevelSpecsPath "Resources/LevelSpecs"
 #define LevelSpecExtension "lvl"
 #define LevelCount 6
@@ -91,7 +92,7 @@ using std::endl;
 #define LayerLevelInfo 2
 
 #define FPS 30
-#define FrameDuration (1f / FPS)
+#define FrameDuration (1.f / FPS)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////ENUMS////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
