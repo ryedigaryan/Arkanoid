@@ -10,7 +10,7 @@
 
 class Brick : public GameObject, public Mortal {
 public:
-    Brick(string texturePath = "", Point position = Point(), Size size = Size(), int initialHealth = 0)
+    Brick(string texturePath = "", Point position = Point(), Size size = Size(), int initialHealth = BrickDefaultInitialHealth)
             : GameObject(texturePath, position, size), Mortal(initialHealth) {}
 
     void harm(int damage) override {

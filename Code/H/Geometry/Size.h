@@ -10,7 +10,7 @@
 class Size {
 public:
     Size()
-            : Size(SizeDefaultValueWidht, SizeDefaultValueHeight) {}
+            : Size(SizeDefaultValueWidth, SizeDefaultValueHeight) {}
 
     Size(int width, int height)
             : width(width), height(height) {}

@@ -26,7 +26,7 @@ using std::endl;
 #define PointDefaultValueY 0
 
 // Size
-#define SizeDefaultValueWidht 0
+#define SizeDefaultValueWidth 0
 #define SizeDefaultValueHeight 0
 
 // Vector
@@ -44,7 +44,29 @@ using std::endl;
 #define PaddleDefaultInitialHealth 3
 #define PaddleDefaultTexture "Resources/Pictures/Paddles/1.png"
 
+// ArcanoidGameDrawer
+#define Show true
+#define NotShow false
+
+#define PopUpColor sf::Color::Yellow
+#define PupUpSize sf::Vector2f(1500, 500)
+
+#define DefaultFontPath "Resources/Fonts/RAVIE.TTF"
+#define LevelSpecsPath "Resources/LevelSpecs"
+#define LevelSpecExtension "lvl"
+#define LevelCount 6
+#define BallsPath "Resources/Pictures/Balls"
+#define BordersPath "Resources/Pictures/Borders"
+#define BricksPath "Resources/Pictures/Bricks"
+#define PaddlesPath "Resources/Pictures/Paddles"
+#define TextureExtension "png"
+
 // ArcanoidGameEngine
+#define PathSeparator "/"
+#define ExtensionSeparator "."
+
+#define PathToTexture(dir, name) (string(dir) + PathSeparator + std::to_string(name) + ExtensionSeparator + TextureExtension)
+
 #define BordersCount 3
 
 #define LevelIncorrectWidth (-1)
@@ -54,45 +76,27 @@ using std::endl;
 #define LevelDefaultCornerX 10
 #define LevelDefaultCornerY 10
 
-#define BrickDefaultSizeWidth 30
-#define BrickDefaultSizeHeight 15
+#define BrickDefaultSizeWidth 100
+#define BrickDefaultSizeHeight 50
 
-#define PlayerDefaultSizeWidth 75
-#define PlayerDefaultSizeHeight 15
-#define PlayerBottomOffset 5
+#define PlayerDefaultSizeWidth 250
+#define PlayerDefaultSizeHeight 40
+#define PlayerBottomOffset 25
 
-#define BallDefaultSizeWidth 15
-#define BallDefaultSizeHeight 15
+#define BallDefaultSizeWidth 40
+#define BallDefaultSizeHeight 40
 
-#define BorderDefaultWidth 5
+#define BorderDefaultWidth 25
 
-#define DefaultBlockCountOnPaddle 4
-
-// ArcanoidGameDrawer
-#define Show true
-#define NotShow false
-
-#define DefaultFontpath "Resources/Fonts/RAVIE.TTF"
-#define LevelSpecsPath "Resources/LevelSpecs"
-#define LevelSpecExtension "lvl"
-#define LevelCount 6
-#define BallsPath "Resources/Pictures/Balls/"
-#define BordersPath "Resources/Pictures/Borders/"
-#define BricksPath "Resources/Pictures/Bricks/"
-#define PaddlesPath "Resources/Pictures/Paddles/"
-#define TextrueExtension "png"
-
+#define DefaultBlockCountOnPaddle 15
 
 // ArcanoidGameManager
-#define PathSeparator "/"
-#define ExtensionSeparator "."
-#define LayerLoading 4
-#define LayerMenu 3
-#define LayerGameObject 1
-#define LayerLevelInfo 2
+//#define PathSeparator "/"
+//#define ExtensionSeparator "."
 
 #define FPS 30
 #define FrameDuration (1.f / FPS)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////ENUMS////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

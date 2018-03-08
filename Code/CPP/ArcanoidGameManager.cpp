@@ -4,6 +4,8 @@
 
 #include "ArcanoidGameManager.h"
 #include <iostream>
+#include <afxres.h>
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -59,6 +61,10 @@ void ArcanoidGameManager::drawer_startPressed()
 
 void ArcanoidGameManager::drawer_donePressed()
 {
+    m_drawer->drawAllGameObjects(Show);
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects(Show);
+    Sleep(10000);
     m_engine->startLevel();
     sf::Clock clock;
     sf::RenderWindow* gameWindow = m_drawer->getMainWindow();
@@ -119,8 +125,7 @@ void ArcanoidGameManager::engine_willLoadLevel()
 
 void ArcanoidGameManager::engine_levelLoaded()
 {
-    m_drawer->clearScreen();
-    m_drawer->drawLevelStart(m_currentLevelNumber);
+    m_drawer->drawLevelStartInfo(m_currentLevelNumber);
 }
 
 void ArcanoidGameManager::engine_willStartLevel()
@@ -130,7 +135,7 @@ void ArcanoidGameManager::engine_willStartLevel()
 
 void ArcanoidGameManager::engine_paused()
 {
-    m_drawer->drawLevelStart(m_currentLevelNumber, m_engine->getProgress());
+    m_drawer->drawLevelStartInfo(m_currentLevelNumber, m_engine->getProgress());
 }
 
 void ArcanoidGameManager::engine_unpaused()
@@ -145,7 +150,7 @@ void ArcanoidGameManager::engine_levelEnded(bool hasWon)
         m_drawer->drawGameWon();
         return;
     }
-    m_drawer->drawLevelEnd(hasWon);
+    m_drawer->drawLevelEndInfo(hasWon);
 }
 
 void ArcanoidGameManager::go_delegateSetted(const GameObject* go)

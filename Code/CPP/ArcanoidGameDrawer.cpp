@@ -10,16 +10,17 @@ ArcanoidGameDrawer::ArcanoidGameDrawer(sf::Color backgroundColor)
 //    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(600, 800), "Arcanoid");
     m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(), "Arcanoid", sf::Style::Fullscreen);
     this->setBackgroundColor(backgroundColor);
-    if(!m_helperFont.loadFromFile(DefaultFontpath)) {
+    // setting up helper font and text
+    if(!m_helperFont.loadFromFile(DefaultFontPath)) {
         cout << "FATAL ERROR in ArcanoidGameDrawer constructor" << endl;
-        cout << "cant load from file: " << DefaultFontpath << endl;
+        cout << "cant load from file: " << DefaultFontPath << endl;
     }
     m_helperText.setFont(m_helperFont);
     m_helperText.setCharacterSize(m_gameMainWindow->getSize().y / 10);
 //TODO:    m_helperRect.setFillColor(m_backgroundColor); ----> understand sf::Color::Transparent's behaviour
 }
 
-void ArcanoidGameDrawer::drawMenu(bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::drawMenu(bool mustShow /*= true*/)
 {
     cout << "drawer: menu(" << (mustShow ? "show" : "hide") << ")" << endl;
 
@@ -30,16 +31,15 @@ void ArcanoidGameDrawer::drawMenu(bool mustShow /*= Show*/)
 
     this->drawTextAtMiddle("PLAY", mustShow);
 
-    // wait for Enter key to be pressed
-    while (m_gameMainWindow->isOpen()) {
-        sf::Event e;
-        m_gameMainWindow->pollEvent(e);
-        cout << "OPEN" << endl;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
-            break;
+    if (mustShow) { // user can interact with menu if he/she sees menu
+        // wait for Enter key to be pressed
+        while (m_gameMainWindow->isOpen()) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
+                break;
+            }
         }
+        m_delegate->drawer_startPressed();
     }
-    m_delegate->drawer_startPressed();
 }
 
 void ArcanoidGameDrawer::drawLoading(bool mustShow /*= true*/)
@@ -52,36 +52,34 @@ void ArcanoidGameDrawer::drawLoading(bool mustShow /*= true*/)
     this->drawTextAtMiddle("Loading...");
 }
 
-void ArcanoidGameDrawer::drawLevelStart(int level, int progress, bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::drawAllGameObjects(bool mustShow) {
+    for(auto gameObject : m_drawnObjects) {
+        m_gameMainWindow->draw(*gameObject);
+    }
+
+    if(mustShow) {
+        m_gameMainWindow->display();
+    }
+}
+
+void ArcanoidGameDrawer::drawLevelStartInfo(int level, int progress, bool mustShow /*= true*/)
 {
     cout << "drawer: levelStart(" << (mustShow ? "show" : "hide") << ")" << endl;
-    m_gameMainWindow->clear(Gray);
-    // draw all game objects in background
-    for (auto& m_drawnObject : m_drawnObjects) {
-        m_gameMainWindow->draw(*m_drawnObject);
-    }
-    if(mustShow) {
-        // create a "dialog box"
-        sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
-        background.setFillColor(sf::Color::Red);
-        background.setPosition(10, m_gameMainWindow->getSize().y / 2 - 15);
-        background.setSize(sf::Vector2f(m_gameMainWindow->getSize().x - 20, 33));
-        sf::Text levelInfo;
-        sf::Font textFont;
-        if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
-            cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
-            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
-        }
-        levelInfo.setFont(textFont);
-        levelInfo.setString("Lvl: " + std::to_string(level) + ", pr: " + std::to_string(progress));
-        levelInfo.setFillColor(sf::Color::White);
-        levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
-                                (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
+    // clear and draw all object on back display
+    this->clearScreen(NotShow);
+    this->drawAllGameObjects(NotShow);
+    // clear and draw all objects on front display
+//    this->clearScreen(NotShow);
+//    this->drawAllGameObjects(NotShow);
+    // draw level info rect
+    m_helperRect.setFillColor(PopUpColor);
+    m_helperRect.setSize(PupUpSize);
+    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
+    m_gameMainWindow->draw(m_helperRect);
+    // draw level info text
+    this->drawTextAtMiddle("Lvl: " + std::to_string(level) + ", pr: " + std::to_string(progress), mustShow);
 
-        // draw "dialog box" in front
-        m_gameMainWindow->draw(background);
-        m_gameMainWindow->draw(levelInfo);
-        m_gameMainWindow->display();
+    if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
         while (m_gameMainWindow->isOpen()) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
@@ -90,41 +88,20 @@ void ArcanoidGameDrawer::drawLevelStart(int level, int progress, bool mustShow /
         }
         m_delegate->drawer_donePressed();
     }
-    else {
-        m_gameMainWindow->display();
-    }
 }
 
-void ArcanoidGameDrawer::drawLevelEnd(bool hasWon, bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::drawLevelEndInfo(bool hasWon, bool mustShow /*= true*/)
 {
     cout << "drawer: levelEnd(" << (mustShow ? "show" : "hide") << ")" << endl;
-    m_gameMainWindow->clear(Gray);
-    // draw all game objects in background
-    for (auto& m_drawnObject : m_drawnObjects) {
-        m_gameMainWindow->draw(*m_drawnObject);
-    }
-    if(mustShow) {
-        // create a "dialog box"
-        sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
-        background.setFillColor(sf::Color::Red);
-        background.setPosition(10, m_gameMainWindow->getSize().y / 2 - 15);
-        background.setSize(sf::Vector2f(m_gameMainWindow->getSize().x - 20, 33));
-        sf::Text levelInfo;
-        sf::Font textFont;
-        if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
-            cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
-            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
-        }
-        levelInfo.setFont(textFont);
-        levelInfo.setString(string("Lvl ") + (hasWon ? "WON" : "LOST"));
-        levelInfo.setFillColor(sf::Color::White);
-        levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
-                              (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
+    // draw level info rect
+    m_helperRect.setFillColor(PopUpColor);
+    m_helperRect.setSize(PupUpSize);
+    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
+    m_gameMainWindow->draw(m_helperRect);
+    // draw level info text
+    this->drawTextAtMiddle(string("Level ") + (hasWon ? "WON" : "LOST"));
 
-        // draw "dialog box" in front
-        m_gameMainWindow->draw(background);
-        m_gameMainWindow->draw(levelInfo);
-        m_gameMainWindow->display();
+    if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
         while (m_gameMainWindow->isOpen()) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
@@ -133,41 +110,20 @@ void ArcanoidGameDrawer::drawLevelEnd(bool hasWon, bool mustShow /*= Show*/)
         }
         m_delegate->drawer_donePressed();
     }
-    else {
-        m_gameMainWindow->display();
-    }
 }
 
-void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= true*/)
 {
     cout << "drawer: gameWon(" << (mustShow ? "show" : "hide") << ")" << endl;
-    m_gameMainWindow->clear(Gray);
-    // draw all game objects in background
-    for (auto& m_drawnObject : m_drawnObjects) {
-        m_gameMainWindow->draw(*m_drawnObject);
-    }
-    if(mustShow) {
-        // create a "dialog box"
-        sf::RectangleShape background(sf::Vector2f(m_gameMainWindow->getSize()));
-        background.setFillColor(sf::Color::Red);
-        background.setPosition(10, m_gameMainWindow->getSize().y / 2 - 15);
-        background.setSize(sf::Vector2f(m_gameMainWindow->getSize().x - 20, 33));
-        sf::Text levelInfo;
-        sf::Font textFont;
-        if(!textFont.loadFromFile("Resources/Fonts/RAVIE.TTF")) {
-            cout << "FATAL ERROR Class: ArcanoidGameDrawer, function: levelStart(bool, int, int)" << endl;
-            cout << "cant load from file: " << "Resources/Fonts/RAVIE.TTF" << endl;
-        }
-        levelInfo.setFont(textFont);
-        levelInfo.setString("congrats");
-        levelInfo.setFillColor(sf::Color::White);
-        levelInfo.setPosition((m_gameMainWindow->getSize().x - levelInfo.getCharacterSize() * 8) / 2,
-                              (m_gameMainWindow->getSize().y - levelInfo.getCharacterSize()) / 2);
+    // draw level info rect
+    m_helperRect.setFillColor(PopUpColor);
+    m_helperRect.setSize(PupUpSize);
+    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
+    m_gameMainWindow->draw(m_helperRect);
+    // draw level info text
+    this->drawTextAtMiddle("CONGRATULATIONS");
 
-        // draw "dialog box" in front
-        m_gameMainWindow->draw(background);
-        m_gameMainWindow->draw(levelInfo);
-        m_gameMainWindow->display();
+    if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
         while (m_gameMainWindow->isOpen()) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
@@ -176,17 +132,15 @@ void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= Show*/)
         }
         m_delegate->drawer_donePressed();
     }
-    else {
-        m_gameMainWindow->display();
-    }
 }
 
 
-void ArcanoidGameDrawer::drawTextAtMiddle(const string &text, bool mustShow /*= true*/) {
+void ArcanoidGameDrawer::drawTextAtMiddle(const string& text, bool mustShow /*= true*/) {
     m_helperText.setString(text);
     m_helperText.setFillColor(sf::Color::White);
-    m_helperText.setPosition((m_gameMainWindow->getSize().x - m_helperText.getCharacterSize() * text.size()) / 2,
-                             (m_gameMainWindow->getSize().y - m_helperText.getCharacterSize()) / 2);
+    sf::FloatRect textRect = m_helperText.getLocalBounds();
+    m_helperText.setPosition((m_gameMainWindow->getSize().x - textRect.width) / 2,
+                             (m_gameMainWindow->getSize().y - textRect.height) / 2);
 
     m_gameMainWindow->draw(m_helperText);
     if(mustShow) {
@@ -194,7 +148,7 @@ void ArcanoidGameDrawer::drawTextAtMiddle(const string &text, bool mustShow /*= 
     }
 }
 
-void ArcanoidGameDrawer::clearScreen(bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::clearScreen(bool mustShow /*= true*/)
 {
     m_gameMainWindow->clear(m_backgroundColor);
 
@@ -281,7 +235,7 @@ void ArcanoidGameDrawer::moveObject(unsigned objectID, const sf::Vector2f &posit
     m_gameMainWindow->draw(m_helperRect); // no need to display
 }
 
-void ArcanoidGameDrawer::deleteObject(unsigned objectID, bool mustShow /*= Show*/)
+void ArcanoidGameDrawer::deleteObject(unsigned objectID, bool mustShow /*= true*/)
 {
     auto deletableObject = m_drawnObjects[objectID];
 

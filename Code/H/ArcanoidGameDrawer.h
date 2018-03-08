@@ -23,8 +23,9 @@ public:
     // these functions do not show the drawn stuff if mustShow parameter setted to false
     void drawMenu(bool mustShow = true);
     void drawLoading(bool mustShow = true);
-    void drawLevelStart(int level = 0, int progress = 0, bool mustShow = true);
-    void drawLevelEnd(bool hasWon, bool mustShow = true);
+    void drawAllGameObjects(bool mustShow);
+    void drawLevelStartInfo(int level = 0, int progress = 0, bool mustShow = true);
+    void drawLevelEndInfo(bool hasWon, bool mustShow = true);
     void drawGameWon(bool mustShow = true);
     void drawTextAtMiddle(const string& text, bool mustShow = true);
     void clearScreen(bool mustShow = true);
