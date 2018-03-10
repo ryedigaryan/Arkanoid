@@ -5,30 +5,14 @@
 
 #define END system("pause"); return 0;
 
-sf::RenderWindow window;//(sf::VideoMode(500, 800), "Testing SFML");
-
-sf::RectangleShape obj;
-
-void draw(float x, float y) {
-    obj.setPosition(x, y);
-    window.clear(sf::Color::Yellow);
-    window.draw(obj);
-    window.display();
-}
-
-void draw(sf::RenderWindow& window, sf::Shape& shape) {
-    window.draw(shape);
-}
-
-void display(sf::RenderWindow& window) {
-    window.display();
-}
-
 void test();
 
+//sf::RenderWindow window(sf::VideoMode(0, 0), "SFML works!", sf::Style::Fullscreen);
 int main() {
 
-//    test();
+
+
+//    test(window);
 //    END;
 
     ArcanoidGameManager& manager = ArcanoidGameManager::getManager();
@@ -44,8 +28,7 @@ int main() {
     END
 }
 
-void test() {
-    sf::RenderWindow window(sf::VideoMode(0, 0), "SFML works!", sf::Style::Fullscreen);
+void test(sf::RenderWindow &window) {
     sf::RectangleShape shape(sf::Vector2f(50, 50));
     shape.setPosition(50, 50);
     shape.setFillColor(sf::Color::Green);

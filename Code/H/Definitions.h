@@ -1,7 +1,8 @@
 //
 // Created by ryedigaryan on 2/26/2018.
 //
-
+#ifndef Definitions
+#define Definitions
 #include <iostream> // just for debugging
 #include <string>
 #include <list>
@@ -48,8 +49,14 @@ using std::endl;
 #define Show true
 #define NotShow false
 
-#define PopUpColor sf::Color::Yellow
-#define PupUpSize sf::Vector2f(1500, 500)
+#define PopUpSizeRatio 0.5
+#define PopUpColor sf::Color::Magenta
+#define PopUpSize sf::Vector2f(1500, 500)
+
+#define TextOffset 20
+#define TextColor sf::Color::White
+#define NonMiddleCharacterSizeDelta (-50)
+#define NonMiddleCharacterSizeRatio 0.5
 
 #define DefaultFontPath "Resources/Fonts/RAVIE.TTF"
 #define LevelSpecsPath "Resources/LevelSpecs"
@@ -101,28 +108,37 @@ using std::endl;
 //////////////////////////////////////////////ENUMS////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef Axis_enum
-#define Axis_enum
 enum Axis {
     X,
     Y
 };
-#endif // !Axis_enum
 
-#ifndef Dimension_enum
-#define Dimension_enum
 enum Dimension {
     Height,
     Width
 };
-#endif // !Dimension_enum
 
-#ifndef Side_enum
-#define Side_enum
 enum Side {
     Left,
     Up,
     Right,
     Down
 };
-#endif // !Side_enum
+
+enum TextPosition {
+    Top = -1,
+    Middle,
+    Bottom
+};
+
+enum GameObjectType {
+    GOType_Brick,
+    GOType_Paddle,
+    GOType_Ball,
+    GOType_Border,
+    GOType_Level
+};
+
+void fail(const string& method);
+
+#endif // !Definitions

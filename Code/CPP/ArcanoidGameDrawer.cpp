@@ -7,17 +7,19 @@
 ArcanoidGameDrawer::ArcanoidGameDrawer(sf::Color backgroundColor)
 {
     cout << "drawer: Constructor" << endl;
-//    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(600, 800), "Arcanoid");
+//    m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcanoid");
     m_gameMainWindow = new sf::RenderWindow(sf::VideoMode(), "Arcanoid", sf::Style::Fullscreen);
+    // setup helpers
     this->setBackgroundColor(backgroundColor);
-    // setting up helper font and text
-    if(!m_helperFont.loadFromFile(DefaultFontPath)) {
-        cout << "FATAL ERROR in ArcanoidGameDrawer constructor" << endl;
-        cout << "cant load from file: " << DefaultFontPath << endl;
-    }
+    if(!m_helperFont.loadFromFile(DefaultFontPath)) fail("ArcanoidGameDrawer::ArcanoidGameDrawer(sf::Color backgroundColor)");
     m_helperText.setFont(m_helperFont);
     m_helperText.setCharacterSize(m_gameMainWindow->getSize().y / 10);
-//TODO:    m_helperRect.setFillColor(m_backgroundColor); ----> understand sf::Color::Transparent's behaviour
+    m_helperText.setFillColor(TextColor);
+    // setup popups' rect
+    m_popUpRect.width = (unsigned)(m_gameMainWindow->getSize().x * PopUpSizeRatio);
+    m_popUpRect.height = (unsigned)(m_gameMainWindow->getSize().y * PopUpSizeRatio);
+    m_popUpRect.left = (m_gameMainWindow->getSize().x - m_popUpRect.width) / 2;
+    m_popUpRect.top = (m_gameMainWindow->getSize().y - m_popUpRect.height) / 2;
 }
 
 void ArcanoidGameDrawer::drawMenu(bool mustShow /*= true*/)
@@ -27,9 +29,8 @@ void ArcanoidGameDrawer::drawMenu(bool mustShow /*= true*/)
     // set menu background to Magenta
     m_gameMainWindow->clear(sf::Color::Magenta); // TODO: magic color
 
-    m_gameMainWindow->pollEvent(*(new sf::Event()));
-
-    this->drawTextAtMiddle("PLAY", mustShow);
+    this->drawText("PLAY", TextPosition::Middle, NotShow);
+    this->drawText("Press enter to continue", TextPosition::Bottom, mustShow);
 
     if (mustShow) { // user can interact with menu if he/she sees menu
         // wait for Enter key to be pressed
@@ -49,7 +50,7 @@ void ArcanoidGameDrawer::drawLoading(bool mustShow /*= true*/)
     // set loading background to Cyan
     m_gameMainWindow->clear(sf::Color::Cyan);
 
-    this->drawTextAtMiddle("Loading...");
+    this->drawText("Loading...", TextPosition::Middle);
 }
 
 void ArcanoidGameDrawer::drawAllGameObjects(bool mustShow) {
@@ -68,16 +69,15 @@ void ArcanoidGameDrawer::drawLevelStartInfo(int level, int progress, bool mustSh
     // clear and draw all object on back display
     this->clearScreen(NotShow);
     this->drawAllGameObjects(NotShow);
-    // clear and draw all objects on front display
-//    this->clearScreen(NotShow);
-//    this->drawAllGameObjects(NotShow);
     // draw level info rect
-    m_helperRect.setFillColor(PopUpColor);
-    m_helperRect.setSize(PupUpSize);
-    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
-    m_gameMainWindow->draw(m_helperRect);
+    m_helperRectShape.setFillColor(PopUpColor);
+    m_helperRectShape.setSize(sf::Vector2f(m_popUpRect.width, m_popUpRect.height));
+    m_helperRectShape.setPosition(m_popUpRect.left, m_popUpRect.top);
+    m_gameMainWindow->draw(m_helperRectShape);
     // draw level info text
-    this->drawTextAtMiddle("Lvl: " + std::to_string(level) + ", pr: " + std::to_string(progress), mustShow);
+    this->drawText("Progress: " + std::to_string(progress), TextPosition::Top, NotShow);
+    this->drawText("Level: " + std::to_string(level), TextPosition::Middle, NotShow);
+    this->drawText("Space = pause/resume", TextPosition::Bottom, mustShow);
 
     if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
@@ -90,16 +90,16 @@ void ArcanoidGameDrawer::drawLevelStartInfo(int level, int progress, bool mustSh
     }
 }
 
-void ArcanoidGameDrawer::drawLevelEndInfo(bool hasWon, bool mustShow /*= true*/)
+void ArcanoidGameDrawer::drawLevelEndInfo(int level, bool hasWon, bool mustShow /*= true*/)
 {
     cout << "drawer: levelEnd(" << (mustShow ? "show" : "hide") << ")" << endl;
     // draw level info rect
-    m_helperRect.setFillColor(PopUpColor);
-    m_helperRect.setSize(PupUpSize);
-    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
-    m_gameMainWindow->draw(m_helperRect);
+    m_helperRectShape.setFillColor(PopUpColor);
+    m_helperRectShape.setSize(PopUpSize);
+    m_helperRectShape.setPosition((m_gameMainWindow->getSize().x - m_helperRectShape.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRectShape.getSize().y) / 2);
+    m_gameMainWindow->draw(m_helperRectShape);
     // draw level info text
-    this->drawTextAtMiddle(string("Level ") + (hasWon ? "WON" : "LOST"));
+    this->drawText(string("Level ") + std::to_string(level) + (hasWon ? " WON" : " LOST"), TextPosition::Middle);
 
     if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
@@ -116,12 +116,12 @@ void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= true*/)
 {
     cout << "drawer: gameWon(" << (mustShow ? "show" : "hide") << ")" << endl;
     // draw level info rect
-    m_helperRect.setFillColor(PopUpColor);
-    m_helperRect.setSize(PupUpSize);
-    m_helperRect.setPosition((m_gameMainWindow->getSize().x - m_helperRect.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRect.getSize().y) / 2);
-    m_gameMainWindow->draw(m_helperRect);
+    m_helperRectShape.setFillColor(PopUpColor);
+    m_helperRectShape.setSize(PopUpSize);
+    m_helperRectShape.setPosition((m_gameMainWindow->getSize().x - m_helperRectShape.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRectShape.getSize().y) / 2);
+    m_gameMainWindow->draw(m_helperRectShape);
     // draw level info text
-    this->drawTextAtMiddle("CONGRATULATIONS");
+    this->drawText("CONGRATULATIONS", TextPosition::Middle);
 
     if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
@@ -135,17 +135,28 @@ void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= true*/)
 }
 
 
-void ArcanoidGameDrawer::drawTextAtMiddle(const string& text, bool mustShow /*= true*/) {
-    m_helperText.setString(text);
-    m_helperText.setFillColor(sf::Color::White);
-    sf::FloatRect textRect = m_helperText.getLocalBounds();
-    m_helperText.setPosition((m_gameMainWindow->getSize().x - textRect.width) / 2,
-                             (m_gameMainWindow->getSize().y - textRect.height) / 2);
+void ArcanoidGameDrawer::drawText(const string &text, TextPosition position, bool mustShow /*= true*/) {
+    int charSizeDelta = (int)(abs(position) * (NonMiddleCharacterSizeRatio * m_helperText.getCharacterSize()));
 
+    // set string and change character size to calculate drawable text's bounds correctly
+    m_helperText.setString(text);
+    m_helperText.setCharacterSize(m_helperText.getCharacterSize() - charSizeDelta);
+
+    // calculate drawable text's position such that it appears in the middle of x axis
+    sf::FloatRect textRect = m_helperText.getLocalBounds();
+    textRect.left = (m_gameMainWindow->getSize().x - textRect.width) / 2;
+    textRect.top = (m_gameMainWindow->getSize().y - textRect.height) / 2 + (position * (textRect.height + charSizeDelta + TextOffset));
+    // set calculated values
+    m_helperText.setPosition(textRect.left, textRect.top);
+
+    // draw and display the text
     m_gameMainWindow->draw(m_helperText);
     if(mustShow) {
         m_gameMainWindow->display();
     }
+    // return helper text's initial character size
+    m_helperText.setCharacterSize(m_helperText.getCharacterSize() + charSizeDelta);
+
 }
 
 void ArcanoidGameDrawer::clearScreen(bool mustShow /*= true*/)
@@ -164,7 +175,7 @@ void ArcanoidGameDrawer::showDrawnStuff()
 
 void ArcanoidGameDrawer::setBackgroundColor(sf::Color bgColor) {
     m_backgroundColor = bgColor;
-    m_helperRect.setFillColor(m_backgroundColor);
+    m_helperRectShape.setFillColor(m_backgroundColor);
 }
 
 
@@ -202,8 +213,8 @@ void ArcanoidGameDrawer::resizeObject(unsigned objectID, const sf::Vector2f& siz
     auto resizableObject = m_drawnObjects[objectID];
 
     // place helper rect to the current place of movableObject, to clear the space it was placed
-    m_helperRect.setPosition(resizableObject->getPosition());
-    m_helperRect.setSize(resizableObject->getSize());
+    m_helperRectShape.setPosition(resizableObject->getPosition());
+    m_helperRectShape.setSize(resizableObject->getSize());
 
     // resizing the object and drawing in a new place
     resizableObject->setSize(size);
@@ -213,7 +224,7 @@ void ArcanoidGameDrawer::resizeObject(unsigned objectID, const sf::Vector2f& siz
     m_gameMainWindow->display();
 
     // clear the space movableObject was
-    m_gameMainWindow->draw(m_helperRect); // no need to display
+    m_gameMainWindow->draw(m_helperRectShape); // no need to display
 }
 
 void ArcanoidGameDrawer::moveObject(unsigned objectID, const sf::Vector2f &position)
@@ -221,8 +232,8 @@ void ArcanoidGameDrawer::moveObject(unsigned objectID, const sf::Vector2f &posit
     auto movableObject = m_drawnObjects[objectID];
 
     // place helper rect to the current place of movableObject, to clear the space it was placed
-    m_helperRect.setPosition(movableObject->getPosition());
-    m_helperRect.setSize(movableObject->getSize());
+    m_helperRectShape.setPosition(movableObject->getPosition());
+    m_helperRectShape.setSize(movableObject->getSize());
 
     // moving the object and drawing in a new place
     movableObject->setPosition(position);
@@ -232,7 +243,7 @@ void ArcanoidGameDrawer::moveObject(unsigned objectID, const sf::Vector2f &posit
     m_gameMainWindow->display();
 
     // clear the space movableObject was
-    m_gameMainWindow->draw(m_helperRect); // no need to display
+    m_gameMainWindow->draw(m_helperRectShape); // no need to display
 }
 
 void ArcanoidGameDrawer::deleteObject(unsigned objectID, bool mustShow /*= true*/)
@@ -240,8 +251,8 @@ void ArcanoidGameDrawer::deleteObject(unsigned objectID, bool mustShow /*= true*
     auto deletableObject = m_drawnObjects[objectID];
 
     // place helper rect to the current place of movableObject, to clear the space it was placed
-    m_helperRect.setPosition(deletableObject->getPosition());
-    m_helperRect.setSize(deletableObject->getSize());
+    m_helperRectShape.setPosition(deletableObject->getPosition());
+    m_helperRectShape.setSize(deletableObject->getSize());
 
     delete deletableObject;
     m_drawnObjects[objectID] = nullptr;
@@ -250,17 +261,17 @@ void ArcanoidGameDrawer::deleteObject(unsigned objectID, bool mustShow /*= true*
     m_gameMainWindow->display();
 
     // clear the space movableObject was
-    m_gameMainWindow->draw(m_helperRect); // no need to display
+    m_gameMainWindow->draw(m_helperRectShape); // no need to display
 }
 
 void ArcanoidGameDrawer::hideObject(unsigned objectID, bool mustShow)
 {
     auto hideableObject = m_drawnObjects[objectID];
 
-    // m_helperRect already has background's color
-    m_helperRect.setPosition(hideableObject->getPosition());
-    m_helperRect.setSize(hideableObject->getScale());
-    m_gameMainWindow->draw(m_helperRect);
+    // m_helperRectShape already has background's color
+    m_helperRectShape.setPosition(hideableObject->getPosition());
+    m_helperRectShape.setSize(hideableObject->getScale());
+    m_gameMainWindow->draw(m_helperRectShape);
 
     if(mustShow) {
         m_gameMainWindow->display();

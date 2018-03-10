@@ -32,7 +32,7 @@ public: // overrides
     void engine_levelEnded(bool hasWon) override;
 
     // GameObjectDelegate overriden functions
-    void go_delegateSetted(const GameObject* go) override;
+    void go_delegateSet(const GameObject *go) override;
     void go_moved(unsigned go_id, const Point& go_position) override;
     void go_sizeChanged(unsigned go_id, const Size& go_size) override;
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override {/* not yet implemented */}
@@ -61,16 +61,17 @@ private:
     list<string> m_levelSpecPaths;
     list<string>::iterator m_currentLevelSpecPath;
 
-    ArcanoidGameEngine* m_engine;
-    ArcanoidGameDrawer* m_drawer;
+    ArcanoidGameEngine* m_engine = nullptr;
+    ArcanoidGameDrawer* m_drawer = nullptr;
     int m_currentLevelNumber = 0;
     bool m_hasWonPreviousLevel = true;
 
 private:
     bool hasReachedLastLevel();
+    sf::Vector2f m_gameSceneOffset;
 
 private: // making singleton
-    ArcanoidGameManager() {}
+    ArcanoidGameManager() = default;
 public: // making singleton
     ArcanoidGameManager(ArcanoidGameManager const&) = delete;
     void operator=(ArcanoidGameManager const&) = delete;

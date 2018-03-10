@@ -38,6 +38,7 @@ void ArcanoidGameManager::setDrawer(ArcanoidGameDrawer* drawer)
 {
     m_drawer = drawer;
     m_drawer->setDelegate(this);
+    m_gameSceneOffset.x = m_drawer->getMainWindow()->getSize().x;//TODO: dfs
 }
 
 void ArcanoidGameManager::startGame()
@@ -136,6 +137,8 @@ void ArcanoidGameManager::engine_willStartLevel()
 void ArcanoidGameManager::engine_paused()
 {
     m_drawer->drawLevelStartInfo(m_currentLevelNumber, m_engine->getProgress());
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects(NotShow);
 }
 
 void ArcanoidGameManager::engine_unpaused()
@@ -150,10 +153,10 @@ void ArcanoidGameManager::engine_levelEnded(bool hasWon)
         m_drawer->drawGameWon();
         return;
     }
-    m_drawer->drawLevelEndInfo(hasWon);
+    m_drawer->drawLevelEndInfo(m_currentLevelNumber, hasWon);
 }
 
-void ArcanoidGameManager::go_delegateSetted(const GameObject* go)
+void ArcanoidGameManager::go_delegateSet(const GameObject *go)
 {
     // already in correct drawing layer
     sf::Vector2f go_position = sf::Vector2f(go->get(X), go->get(Y));

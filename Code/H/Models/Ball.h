@@ -11,7 +11,7 @@
 
 class Ball : public GameObject, public Movable, public Attacker {
 public:
-    Ball(string texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
+    Ball(const string& texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
             : GameObject(texturePath, position, size), Movable(initialVelocity), Attacker(damage) {}
 
     void move(int dx, int dy) override {

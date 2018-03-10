@@ -10,7 +10,7 @@
 
 class GameObject {
 public:
-    explicit GameObject(string texturePath = "", Point position = Point(), Size size = Size())
+    explicit GameObject(const string& texturePath = "", Point position = Point(), Size size = Size())
             : m_position(position), m_size(size), m_texturePath(texturePath) {}
 
     ~GameObject();

@@ -20,7 +20,7 @@ void GameObject::setDelegate(GameObjectDelegate* dlgate)
 {
     if(dlgate != nullptr || dlgate != NULL) {
         m_delegate = dlgate;
-        m_delegate->go_delegateSetted(this);
+        m_delegate->go_delegateSet(this);
     }
 }
 

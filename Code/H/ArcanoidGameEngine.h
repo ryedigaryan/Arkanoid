@@ -37,8 +37,8 @@ public: // instance functions
     void stopPlayerMoving();
 
 private: // members
-    GameObjectDelegate* m_go_delegate;
-    ArcanoidGameEngineDelegate* m_delegate;
+    GameObjectDelegate* m_go_delegate = nullptr;
+    ArcanoidGameEngineDelegate* m_delegate = nullptr;
 
     bool m_isLevelLoaded	= false;
     bool m_isLevelPrepared	= false;
@@ -76,7 +76,7 @@ private: // functions
     bool isBrickID(char brickID);			   // checks whether given ID is a valid Brcik ID or not
 
 private: // making singleton
-    ArcanoidGameEngine() {}
+    ArcanoidGameEngine() = default;
 public: // making singleton
     ArcanoidGameEngine(ArcanoidGameEngine const&) = delete;
     void operator=(ArcanoidGameEngine const&) = delete;
