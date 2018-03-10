@@ -66,9 +66,6 @@ void ArcanoidGameDrawer::drawAllGameObjects(bool mustShow) {
 void ArcanoidGameDrawer::drawLevelStartInfo(int level, int progress, bool mustShow /*= true*/)
 {
     cout << "drawer: levelStart(" << (mustShow ? "show" : "hide") << ")" << endl;
-    // clear and draw all object on back display
-    this->clearScreen(NotShow);
-    this->drawAllGameObjects(NotShow);
     // draw level info rect
     m_helperRectShape.setFillColor(PopUpColor);
     m_helperRectShape.setSize(sf::Vector2f(m_popUpRect.width, m_popUpRect.height));

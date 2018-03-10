@@ -38,7 +38,6 @@ void ArcanoidGameManager::setDrawer(ArcanoidGameDrawer* drawer)
 {
     m_drawer = drawer;
     m_drawer->setDelegate(this);
-    m_gameSceneOffset.x = m_drawer->getMainWindow()->getSize().x;//TODO: dfs
 }
 
 void ArcanoidGameManager::startGame()
@@ -57,7 +56,7 @@ bool ArcanoidGameManager::hasReachedLastLevel()
 void ArcanoidGameManager::drawer_startPressed()
 {
     cout << "starting level: " << *m_currentLevelSpecPath << endl;
-    m_engine->prepareLevel(*m_currentLevelSpecPath);
+    m_engine->prepareScene(*m_currentLevelSpecPath);
 }
 
 void ArcanoidGameManager::drawer_donePressed()
@@ -120,40 +119,59 @@ void ArcanoidGameManager::drawer_unpausePressed()
 
 void ArcanoidGameManager::engine_willLoadLevel()
 {
-    m_drawer->clearScreen();
+    m_drawer->clearScreen(NotShow);
     m_drawer->drawLoading();
+}
+
+void ArcanoidGameManager::engine_levelSizeSet(Size levelSize) {
+    m_gameSceneOffset.x = (m_drawer->getMainWindow()->getSize().x - levelSize.width) / 2;
+    m_gameSceneOffset.y = (m_drawer->getMainWindow()->getSize().y - levelSize.height) / 2;
 }
 
 void ArcanoidGameManager::engine_levelLoaded()
 {
+    // clear screen, then draw on it game scene, then on the game scene draw level info and display that all
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects(NotShow);
     m_drawer->drawLevelStartInfo(m_currentLevelNumber);
 }
 
 void ArcanoidGameManager::engine_willStartLevel()
 {
-    m_drawer->clearScreen();
+    // this function will be called after function - void ArcanoidGameManager::engine_levelLoaded()
+    // so we draw game scene on the back display and then bring it front
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects();
+    // also we must clear all back display and draw on it game scene
+    // because each game object movement drawing uses 2 displays for better performance
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects(NotShow);
 }
 
 void ArcanoidGameManager::engine_paused()
 {
     m_drawer->drawLevelStartInfo(m_currentLevelNumber, m_engine->getProgress());
-    m_drawer->clearScreen(NotShow);
-    m_drawer->drawAllGameObjects(NotShow);
 }
 
 void ArcanoidGameManager::engine_unpaused()
 {
-    //TODO hide popup
-    //m_drawer->levelStart(Hide, m_currentLevelNumber);
+    // show the back display
+    // at this point on back display game scene is drawn
+    m_drawer->showDrawnStuff();
+    // also we must clear all back display and draw on it game scene
+    // because each game object movement drawing uses 2 displays for better performance
+    m_drawer->clearScreen(NotShow);
+    m_drawer->drawAllGameObjects(NotShow);
 }
 
 void ArcanoidGameManager::engine_levelEnded(bool hasWon)
 {
     if (hasWon && hasReachedLastLevel()) {
         m_drawer->drawGameWon();
-        return;
     }
-    m_drawer->drawLevelEndInfo(m_currentLevelNumber, hasWon);
+    else {
+        m_drawer->drawLevelEndInfo(m_currentLevelNumber, hasWon);
+    }
 }
 
 void ArcanoidGameManager::go_delegateSet(const GameObject *go)
@@ -161,7 +179,7 @@ void ArcanoidGameManager::go_delegateSet(const GameObject *go)
     // already in correct drawing layer
     sf::Vector2f go_position = sf::Vector2f(go->get(X), go->get(Y));
     sf::Vector2f go_size = sf::Vector2f(go->get(Width), go->get(Height));
-    m_drawer->drawObject(go->getIdentifier(), go_position, go_size, go->m_texturePath, NotShow, go->m_type == GameObjectType::TBorder);
+    m_drawer->drawObject(go->getIdentifier(), go_position + m_gameSceneOffset, go_size, go->m_texturePath, NotShow, go->m_type == GameObjectType::TBorder);
 }
 
 void ArcanoidGameManager::go_moved(unsigned go_id, const Point& go_position)

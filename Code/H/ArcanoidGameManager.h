@@ -24,6 +24,7 @@ public: // static funcitons
 public: // overrides
     // ArcanoidGameEngineDelegate overriden functions
     void engine_willLoadLevel() override;
+    void engine_levelSizeSet(Size levelSize) override;
     void engine_levelLoaded() override;
     void engine_willStartLevel() override;
     void engine_levelStarted() override { /* OK */ }

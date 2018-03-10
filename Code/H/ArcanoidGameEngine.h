@@ -20,7 +20,7 @@ public: // static functions
 
 public: // instance functions
     void setGameObjectDelegate(GameObjectDelegate* go_delegate);
-    Size prepareLevel(const string& levelSpecFilePath); // loads level from spec and prepares game scene
+    void prepareScene(const string& levelSpecFilePath); // loads level from spec and prepares game scene
     void startLevel();	// starts timer and the fun begins :D
     void pause();		// pauses game
     void unpause();		// resumes game
@@ -29,6 +29,7 @@ public: // instance functions
 
     int getCountOfRows();
     int getCountOfColumns();
+    Size getSize(GameObjectType requestObjectType, Side requestObjectSide = Left);
 
     void setDelegate(ArcanoidGameEngineDelegate* engineDelegate);
 
@@ -57,7 +58,7 @@ private: // members
             = Point(LevelDefaultCornerX, LevelDefaultCornerY);
     Size m_brickSize	// size of one Brick
             = Size(BrickDefaultSizeWidth, BrickDefaultSizeHeight);
-    Size m_levelSize;	// size of all game scene
+    Size m_levelSize;	// size of game scene
     //TODO: remove
     int m_borderWidth	// width of left/right border and height of up/down border
             = BorderDefaultWidth;
@@ -66,8 +67,8 @@ private: // members
 
 private: // functions
     // prepare functions
-    void loadLevel(ifstream& levelSpecReader); // reads spec file and fills m_bricks list
-    void prepareLevelSize(); // calculates size of game scene considering Borders and Bricks
+    void prepareLevel(ifstream &levelSpecReader); // reads spec file and fills m_bricks list
+    void prepareBricks(ifstream &levelSpecReader); // calculates size of game scene considering Borders and Bricks
     void prepareBorders();   // sets sizes of 3 borders
     void preparePlayer();	 // sets player's position and size
     void prepareBall();		 // sets ball's position and size

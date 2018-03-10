@@ -15,15 +15,15 @@ void ArcanoidGameEngine::setGameObjectDelegate(GameObjectDelegate* go_delegate)
     m_go_delegate = go_delegate;
 }
 
-Size ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
+void ArcanoidGameEngine::prepareScene(const string& levelSpecFilePath)
 {
     cout << "engine: prepareLevel" << endl;
     ifstream levelSpecReader;
     try {
         levelSpecReader.open(levelSpecFilePath);
         m_delegate->engine_willLoadLevel();
-        loadLevel(levelSpecReader);
-        prepareLevelSize();
+        prepareLevel(levelSpecReader);
+        prepareBricks(levelSpecReader);
         preparePlayer();
         prepareBall();
         prepareBorders();
@@ -37,15 +37,23 @@ Size ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
     levelSpecReader.close();
     Sleep(1000);
     m_delegate->engine_levelLoaded();
-    return m_levelSize;
 }
 
-void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
+void ArcanoidGameEngine::prepareLevel(ifstream &levelSpecReader)
 {
-    cout << "engine: loadLevel" << endl;
+    cout << "engine: prepareLevel" << endl;
     // get count of rows and columns of Bricks for current level
     levelSpecReader >> m_rowCount;
     levelSpecReader >> m_columnCount;
+
+    // calculate level size
+    m_levelSize.width = m_columnCount * m_brickSize.width + 2 * BorderDefaultWidth;
+    m_levelSize.height = m_rowCount * m_brickSize.height + BorderDefaultWidth + m_blocksCountOnPlayer * m_brickSize.height;
+    m_delegate->engine_levelSizeSet(m_levelSize);
+}
+
+void ArcanoidGameEngine::prepareBricks(ifstream& levelSpecReader) {
+    cout << "engine: prepareBricks" << endl;
 
     // ID of current Brick
     char brickID;
@@ -63,13 +71,6 @@ void ArcanoidGameEngine::loadLevel(ifstream& levelSpecReader)
         brickNumber++;
     }
     levelSpecReader.close();
-    m_isLevelLoaded = true;
-}
-
-void ArcanoidGameEngine::prepareLevelSize() {
-    cout << "engine: prepareLevelSize" << endl;
-    m_levelSize.width = m_columnCount * m_brickSize.width + 2 * BorderDefaultWidth;
-    m_levelSize.height = m_rowCount * m_brickSize.height + BorderDefaultWidth + m_blocksCountOnPlayer * m_brickSize.height;
 }
 
 void ArcanoidGameEngine::prepareBorders()
@@ -215,5 +216,21 @@ bool ArcanoidGameEngine::isBrickID(char brickID)
 }
 
 void ArcanoidGameEngine::stopPlayerMoving() {
+
+}
+
+Size ArcanoidGameEngine::getSize(GameObjectType requestObjectType, Side requestObjectSide) {
+    switch (requestObjectType) {
+        case TBrick:
+            return m_brickSize;
+        case TPaddle:
+            return m_player.getSize();
+        case TBall:
+            return m_ball.getSize();
+        case TBorder:
+            return m_borders[requestObjectSide].getSize();
+        case TLevel:
+            return m_levelSize;
+    }
 
 }
