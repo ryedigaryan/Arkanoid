@@ -16,7 +16,7 @@ int main() {
 //    END;
 
     ArcanoidGameManager& manager = ArcanoidGameManager::getManager();
-    ArcanoidGameDrawer drawer(Gray);
+    ArcanoidGameDrawer drawer(GameSceneBackgroundColor);
     ArcanoidGameEngine& engine = ArcanoidGameEngine::getEngine();
     manager.addAllLevelSpecsInPath(LevelSpecsPath, LevelSpecExtension, LevelCount);
     manager.setDrawer(&drawer);

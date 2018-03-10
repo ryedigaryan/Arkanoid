@@ -34,7 +34,7 @@ public:
     void setBackgroundColor(sf::Color bgColor);
 
     // game specific drawing functions, like Brick, Paddle, Ball e.t.c. and their movement
-    void drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string& texturePath, bool mustShow = true);
+    void drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string& texturePath, bool mustShow = true, bool mustRepeatTexture = false);
     void resizeObject(unsigned objectID, const sf::Vector2f& size);
     void moveObject(unsigned objectID, const sf::Vector2f& position);
     void deleteObject(unsigned objectID, bool mustShow = true);

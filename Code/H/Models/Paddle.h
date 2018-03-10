@@ -11,8 +11,8 @@
 
 class Paddle : public GameObject, public Movable, public Mortal {
 public:
-    Paddle(string texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = PaddleDefaultInitialHealth)
-            : GameObject(texturePath, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
+    Paddle(const string& texturePath = "", GameObjectType type = TPaddle, Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = PaddleDefaultInitialHealth)
+            : GameObject(texturePath, type, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
     void move(int dx, int dy) override {
         m_position.x += dx;

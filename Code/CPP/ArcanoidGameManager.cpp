@@ -161,7 +161,7 @@ void ArcanoidGameManager::go_delegateSet(const GameObject *go)
     // already in correct drawing layer
     sf::Vector2f go_position = sf::Vector2f(go->get(X), go->get(Y));
     sf::Vector2f go_size = sf::Vector2f(go->get(Width), go->get(Height));
-    m_drawer->drawObject(go->getIdentifier(), go_position, go_size, go->m_texturePath, NotShow);
+    m_drawer->drawObject(go->getIdentifier(), go_position, go_size, go->m_texturePath, NotShow, go->m_type == GameObjectType::TBorder);
 }
 
 void ArcanoidGameManager::go_moved(unsigned go_id, const Point& go_position)

@@ -181,7 +181,7 @@ void ArcanoidGameDrawer::setBackgroundColor(sf::Color bgColor) {
 
 // object drawing/redrawing functions
 
-void ArcanoidGameDrawer::drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string &texturePath, bool mustShow)
+void ArcanoidGameDrawer::drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string &texturePath, bool mustShow /* = true*/, bool mustRepeatTexture /* = false*/)
 {
     cout << "drawer: drawObject" << endl;
     // load texture
@@ -191,10 +191,14 @@ void ArcanoidGameDrawer::drawObject(unsigned objectID, const sf::Vector2f& posit
         cout << "cant load from file: " << texturePath << endl;
     }
 
-    // create drawable object
+    // create drawable object and set texture
     auto createdObject = new sf::RectangleShape(size);
     createdObject->setPosition(position);
     createdObject->setTexture(texture);
+    if(mustRepeatTexture) {
+        texture->setRepeated(mustRepeatTexture);
+        createdObject->setTextureRect(sf::IntRect(createdObject->getPosition().x, createdObject->getPosition().y, createdObject->getSize().x, createdObject->getSize().y));
+    }
 
     // add created object to all already objects array
     m_drawnObjects.push_back(createdObject);

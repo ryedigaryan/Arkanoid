@@ -50,8 +50,8 @@ private: // members
     int m_columnCount = 0; // count of columns of Bricks in current level
 
     Border m_borders[BordersCount];  // game scene rounded by 3 borders(Up, Down, Left, Right)
-    Paddle m_player = Paddle(PaddleDefaultTexture);
-    Ball m_ball = Ball(BallDefaultTexture);
+    Paddle m_player = Paddle(PaddleDefaultTexturePath);
+    Ball m_ball = Ball(BallDefaultTexturePath);
 
     Point m_brickCorner // the left upper corner of first brick
             = Point(LevelDefaultCornerX, LevelDefaultCornerY);
@@ -76,7 +76,7 @@ private: // functions
     bool isBrickID(char brickID);			   // checks whether given ID is a valid Brcik ID or not
 
 private: // making singleton
-    ArcanoidGameEngine() = default;
+    ArcanoidGameEngine() {};
 public: // making singleton
     ArcanoidGameEngine(ArcanoidGameEngine const&) = delete;
     void operator=(ArcanoidGameEngine const&) = delete;

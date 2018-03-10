@@ -26,6 +26,7 @@ Size ArcanoidGameEngine::prepareLevel(const string& levelSpecFilePath)
         prepareLevelSize();
         preparePlayer();
         prepareBall();
+        prepareBorders();
         m_isLevelPrepared = true;
     }
     catch (...) {
@@ -201,7 +202,7 @@ Brick* ArcanoidGameEngine::createBrick(short id, short number)
     position.y = m_brickSize.height * rowNumber;
 
     // now id indicates Brick's health and texture
-    Brick* brick = new Brick(PathToTexture(BricksPath, id), position, m_brickSize, id);
+    Brick* brick = new Brick(PathToTexture(BricksPath, id), GameObjectType::TBrick, position, m_brickSize, id);
     if(m_go_delegate != nullptr) {
         brick->setDelegate(m_go_delegate);
     }

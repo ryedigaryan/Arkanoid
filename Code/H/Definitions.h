@@ -21,6 +21,7 @@ using std::endl;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define Gray sf::Color(190, 190, 190)
+#define GameSceneBackgroundColor sf::Color(229, 170, 88)
 
 // Point
 #define PointDefaultValueX 0
@@ -36,18 +37,20 @@ using std::endl;
 #define PI 3.14159265358979323846
 
 // Ball
-#define BallDefaultTexture "Resources/Pictures/Balls/1.png"
+#define BallDefaultTexturePath "Resources/Pictures/Balls/1.png"
 
 // Brick
 #define BrickDefaultInitialHealth 1
 
 // Paddle
 #define PaddleDefaultInitialHealth 3
-#define PaddleDefaultTexture "Resources/Pictures/Paddles/1.png"
+#define PaddleDefaultTexturePath "Resources/Pictures/Paddles/1.png"
 
 // ArcanoidGameDrawer
 #define Show true
 #define NotShow false
+#define RepeatTexture true
+#define NotRepeatTexture false
 
 #define PopUpSizeRatio 0.5
 #define PopUpColor sf::Color::Magenta
@@ -55,7 +58,6 @@ using std::endl;
 
 #define TextOffset 20
 #define TextColor sf::Color::White
-#define NonMiddleCharacterSizeDelta (-50)
 #define NonMiddleCharacterSizeRatio 0.5
 
 #define DefaultFontPath "Resources/Fonts/RAVIE.TTF"
@@ -132,11 +134,11 @@ enum TextPosition {
 };
 
 enum GameObjectType {
-    GOType_Brick,
-    GOType_Paddle,
-    GOType_Ball,
-    GOType_Border,
-    GOType_Level
+    TBrick,
+    TPaddle,
+    TBall,
+    TBorder,
+    TLevel
 };
 
 void fail(const string& method);

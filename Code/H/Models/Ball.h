@@ -11,8 +11,8 @@
 
 class Ball : public GameObject, public Movable, public Attacker {
 public:
-    Ball(const string& texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
-            : GameObject(texturePath, position, size), Movable(initialVelocity), Attacker(damage) {}
+    Ball(const string& texturePath = "", GameObjectType type = TBall, Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
+            : GameObject(texturePath, type, position, size), Movable(initialVelocity), Attacker(damage) {}
 
     void move(int dx, int dy) override {
         m_position.x += dx;
