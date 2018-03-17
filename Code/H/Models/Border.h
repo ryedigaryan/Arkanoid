@@ -9,7 +9,7 @@
 
 class Border : public GameObject, public Mortal {
 public:
-    Border(const string& texturePath = "", GameObjectType type = TBorder, Point position = Point(), Size size = Size())
+    Border(const std::string& texturePath = "", GameObjectType type = TBorder, Point position = Point(), Size size = Size())
             : GameObject(texturePath, type, position, size) {}
 
     void harm(int damage) override {

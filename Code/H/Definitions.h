@@ -8,10 +8,12 @@
 #include <list>
 #include <fstream>
 #include <vector>
-using std::string;
-using std::ifstream;
-using std::list;
-using std::vector;
+#include <map>
+//using std::string;
+//using std::ifstream;
+//using std::list;
+//using std::vector;
+//using std::map;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -70,11 +72,13 @@ using std::endl;
 #define PaddlesPath "Resources/Pictures/Paddles"
 #define TextureExtension "png"
 
+#define DefaultPicturePath "Resources/Pictures/Default.png"
+
 // ArcanoidGameEngine
 #define PathSeparator "/"
 #define ExtensionSeparator "."
 
-#define PathToTexture(dir, name) (string(dir) + PathSeparator + std::to_string(name) + ExtensionSeparator + TextureExtension)
+#define PathToTexture(dir, name) (std::string(dir) + PathSeparator + std::to_string(name) + ExtensionSeparator + TextureExtension)
 
 #define BordersCount 3
 
@@ -141,6 +145,6 @@ enum GameObjectType {
     TLevel
 };
 
-void fail(const string& method);
+void fail(const std::string& method);
 
 #endif // !Definitions

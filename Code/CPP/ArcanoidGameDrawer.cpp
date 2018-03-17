@@ -96,7 +96,7 @@ void ArcanoidGameDrawer::drawLevelEndInfo(int level, bool hasWon, bool mustShow 
     m_helperRectShape.setPosition((m_gameMainWindow->getSize().x - m_helperRectShape.getSize().x) / 2,  (m_gameMainWindow->getSize().y - m_helperRectShape.getSize().y) / 2);
     m_gameMainWindow->draw(m_helperRectShape);
     // draw level info text
-    this->drawText(string("Level ") + std::to_string(level) + (hasWon ? " WON" : " LOST"), TextPosition::Middle);
+    this->drawText(std::string("Level ") + std::to_string(level) + (hasWon ? " WON" : " LOST"), TextPosition::Middle);
 
     if(mustShow) { // user will press any key if he/she sees level info
         // wait for Enter key to be pressed
@@ -132,7 +132,7 @@ void ArcanoidGameDrawer::drawGameWon(bool mustShow /*= true*/)
 }
 
 
-void ArcanoidGameDrawer::drawText(const string &text, TextPosition position, bool mustShow /*= true*/) {
+void ArcanoidGameDrawer::drawText(const std::string &text, TextPosition position, bool mustShow /*= true*/) {
     int charSizeDelta = (int)(abs(position) * (NonMiddleCharacterSizeRatio * m_helperText.getCharacterSize()));
 
     // set string and change character size to calculate drawable text's bounds correctly
@@ -178,7 +178,7 @@ void ArcanoidGameDrawer::setBackgroundColor(sf::Color bgColor) {
 
 // object drawing/redrawing functions
 
-void ArcanoidGameDrawer::drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string &texturePath, bool mustShow /* = true*/, bool mustRepeatTexture /* = false*/)
+void ArcanoidGameDrawer::drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const std::string &texturePath, bool mustShow /* = true*/, bool mustRepeatTexture /* = false*/)
 {
     cout << "drawer: drawObject" << endl;
     // load texture

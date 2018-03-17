@@ -20,7 +20,7 @@ public: // static functions
 
 public: // instance functions
     void setGameObjectDelegate(GameObjectDelegate* go_delegate);
-    void prepareScene(const string& levelSpecFilePath); // loads level from spec and prepares game scene
+    void prepareScene(const std::string& levelSpecFilePath); // loads level from spec and prepares game scene
     void startLevel();	// starts timer and the fun begins :D
     void pause();		// pauses game
     void unpause();		// resumes game
@@ -46,7 +46,7 @@ private: // members
     bool m_isLevelStarted	= false;
     bool m_isGamePaused		= false;
 
-    list<Brick*> m_bricks;  // the list of Bricks in current level
+    std::list<Brick*> m_bricks;  // the list of Bricks in current level
     int m_rowCount = 0;    // count of rows of Bricks in current level
     int m_columnCount = 0; // count of columns of Bricks in current level
 
@@ -67,8 +67,8 @@ private: // members
 
 private: // functions
     // prepare functions
-    void prepareLevel(ifstream &levelSpecReader); // reads spec file and fills m_bricks list
-    void prepareBricks(ifstream &levelSpecReader); // calculates size of game scene considering Borders and Bricks
+    void prepareLevel(std::ifstream &levelSpecReader); // reads spec file and fills m_bricks list
+    void prepareBricks(std::ifstream &levelSpecReader); // calculates size of game scene considering Borders and Bricks
     void prepareBorders();   // sets sizes of 3 borders
     void preparePlayer();	 // sets player's position and size
     void prepareBall();		 // sets ball's position and size

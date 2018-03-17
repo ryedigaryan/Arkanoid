@@ -10,7 +10,7 @@
 
 class Brick : public GameObject, public Mortal {
 public:
-    Brick(const string& texturePath = "", GameObjectType type = TBrick, Point position = Point(), Size size = Size(), int initialHealth = BrickDefaultInitialHealth)
+    Brick(const std::string& texturePath = "", GameObjectType type = TBrick, Point position = Point(), Size size = Size(), int initialHealth = BrickDefaultInitialHealth)
             : GameObject(texturePath, type, position, size), Mortal(initialHealth) {}
 
     void harm(int damage) override {

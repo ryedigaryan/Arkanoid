@@ -10,14 +10,14 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void ArcanoidGameManager::addLevelSpecPath(string path)
+void ArcanoidGameManager::addLevelSpecPath(std::string path)
 {
     m_levelSpecPaths.push_back(path);
 }
 
-void ArcanoidGameManager::addAllLevelSpecsInPath(string path, string extension, int count) {
+void ArcanoidGameManager::addAllLevelSpecsInPath(std::string path, std::string extension, int count) {
     for (int i = 1; i <= count; i++) {
-        string levelPath(path);
+        std::string levelPath(path);
         levelPath.append(PathSeparator);		// append slash (/)
         levelPath.append(std::to_string(i));	// append name of level to path
         levelPath.append(ExtensionSeparator);	// append dot (.)

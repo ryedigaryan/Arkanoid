@@ -15,10 +15,10 @@ void ArcanoidGameEngine::setGameObjectDelegate(GameObjectDelegate* go_delegate)
     m_go_delegate = go_delegate;
 }
 
-void ArcanoidGameEngine::prepareScene(const string& levelSpecFilePath)
+void ArcanoidGameEngine::prepareScene(const std::string& levelSpecFilePath)
 {
     cout << "engine: prepareLevel" << endl;
-    ifstream levelSpecReader;
+    std::ifstream levelSpecReader;
     try {
         levelSpecReader.open(levelSpecFilePath);
         m_delegate->engine_willLoadLevel();
@@ -39,7 +39,7 @@ void ArcanoidGameEngine::prepareScene(const string& levelSpecFilePath)
     m_delegate->engine_levelLoaded();
 }
 
-void ArcanoidGameEngine::prepareLevel(ifstream &levelSpecReader)
+void ArcanoidGameEngine::prepareLevel(std::ifstream &levelSpecReader)
 {
     cout << "engine: prepareLevel" << endl;
     // get count of rows and columns of Bricks for current level
@@ -52,7 +52,7 @@ void ArcanoidGameEngine::prepareLevel(ifstream &levelSpecReader)
     m_delegate->engine_levelSizeSet(m_levelSize);
 }
 
-void ArcanoidGameEngine::prepareBricks(ifstream& levelSpecReader) {
+void ArcanoidGameEngine::prepareBricks(std::ifstream& levelSpecReader) {
     cout << "engine: prepareBricks" << endl;
 
     // ID of current Brick

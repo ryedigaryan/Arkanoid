@@ -27,14 +27,14 @@ public:
     void drawLevelStartInfo(int level = 0, int progress = 0, bool mustShow = true);
     void drawLevelEndInfo(int level, bool hasWon, bool mustShow = true);
     void drawGameWon(bool mustShow = true);
-    void drawText(const string &text, TextPosition position, bool mustShow = true);
+    void drawText(const std::string &text, TextPosition position, bool mustShow = true);
     void clearScreen(bool mustShow = true);
     // shows(displays) all the drawn stuff
     void showDrawnStuff();
     void setBackgroundColor(sf::Color bgColor);
 
     // game specific drawing functions, like Brick, Paddle, Ball e.t.c. and their movement
-    void drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const string& texturePath, bool mustShow = true, bool mustRepeatTexture = false);
+    void drawObject(unsigned objectID, const sf::Vector2f& position, const sf::Vector2f& size, const std::string& texturePath, bool mustShow = true, bool mustRepeatTexture = false);
     void resizeObject(unsigned objectID, const sf::Vector2f& size);
     void moveObject(unsigned objectID, const sf::Vector2f& position);
     void deleteObject(unsigned objectID, bool mustShow = true);
@@ -43,7 +43,7 @@ public:
     ArcanoidGameDrawerDelegate* m_delegate;
 protected:
     sf::RenderWindow* m_gameMainWindow;
-    vector<sf::RectangleShape*> m_drawnObjects;
+    std::vector<sf::RectangleShape*> m_drawnObjects;
     sf::Color m_backgroundColor;
 
 private:

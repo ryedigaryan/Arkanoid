@@ -48,8 +48,8 @@ public: // overrides
 
 public: // instance funcitons
     // Step 1 - add levels
-    void addLevelSpecPath(string path);
-    void addAllLevelSpecsInPath(string path, string extension, int count);
+    void addLevelSpecPath(std::string path);
+    void addAllLevelSpecsInPath(std::string path, std::string extension, int count);
 
     // Step 2 - add Engine and Drawer
     void setEngine(ArcanoidGameEngine* engine);
@@ -59,8 +59,8 @@ public: // instance funcitons
     void startGame();
 
 private:
-    list<string> m_levelSpecPaths;
-    list<string>::iterator m_currentLevelSpecPath;
+    std::list<std::string> m_levelSpecPaths;
+    std::list<std::string>::iterator m_currentLevelSpecPath;
 
     ArcanoidGameEngine* m_engine = nullptr;
     ArcanoidGameDrawer* m_drawer = nullptr;
