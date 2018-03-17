@@ -77,7 +77,7 @@ void ArcanoidGameEngine::prepareBorders()
 {
     cout << "engine: prepareBorders" << endl;
     for(int i = 0; i < 3; i++ ) {
-        m_borders[i].m_texturePath = PathToTexture(BordersPath, 1);
+        m_borders[i].m_texturePath = ConstructPathToTexture(BordersPath, 1);
     }
     m_borders[Left].setPosition(Point());
     m_borders[Left].setSize(Size(BorderDefaultWidth, m_levelSize.height));
@@ -203,7 +203,7 @@ Brick* ArcanoidGameEngine::createBrick(short id, short number)
     position.y = m_brickSize.height * rowNumber;
 
     // now id indicates Brick's health and texture
-    Brick* brick = new Brick(PathToTexture(BricksPath, id), GameObjectType::TBrick, position, m_brickSize, id);
+    Brick* brick = new Brick(ConstructPathToTexture(BricksPath, id), GameObjectType::TBrick, position, m_brickSize, id);
     if(m_go_delegate != nullptr) {
         brick->setDelegate(m_go_delegate);
     }

@@ -22,6 +22,8 @@ using std::endl;
 ////////////////////////////////////////////DEFINITIONS////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define SATANAYI_INT 6666666
+
 #define Gray sf::Color(190, 190, 190)
 #define GameSceneBackgroundColor sf::Color(229, 170, 88)
 
@@ -48,7 +50,7 @@ using std::endl;
 #define PaddleDefaultInitialHealth 3
 #define PaddleDefaultTexturePath "Resources/Pictures/Paddles/1.png"
 
-// ArcanoidGameDrawer
+// the rest :D
 #define Show true
 #define NotShow false
 #define RepeatTexture true
@@ -67,18 +69,21 @@ using std::endl;
 #define LevelSpecExtension "lvl"
 #define LevelCount 6
 #define BallsPath "Resources/Pictures/Balls"
+#define BallTexturesCount 1
 #define BordersPath "Resources/Pictures/Borders"
+#define BorderTexturesCount 1
 #define BricksPath "Resources/Pictures/Bricks"
+#define BrickTexturesCount 5
 #define PaddlesPath "Resources/Pictures/Paddles"
+#define PaddleTexturesCount 3
 #define TextureExtension "png"
 
-#define DefaultPicturePath "Resources/Pictures/Default.png"
+#define DefaultTexturePath "Resources/Pictures/Default.png"
 
-// ArcanoidGameEngine
 #define PathSeparator "/"
 #define ExtensionSeparator "."
 
-#define PathToTexture(dir, name) (std::string(dir) + PathSeparator + std::to_string(name) + ExtensionSeparator + TextureExtension)
+#define ConstructPathToTexture(dir, name) ((dir) + PathSeparator + (name) + ExtensionSeparator + TextureExtension)
 
 #define BordersCount 3
 
@@ -102,10 +107,6 @@ using std::endl;
 #define BorderDefaultWidth 25
 
 #define DefaultBlockCountOnPaddle 15
-
-// ArcanoidGameManager
-//#define PathSeparator "/"
-//#define ExtensionSeparator "."
 
 #define FPS 30
 #define FrameDuration (1.f / FPS)
