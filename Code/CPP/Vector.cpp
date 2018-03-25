@@ -9,10 +9,26 @@ void Vector::rotate(int angle) {
     m_angle = (m_angle + angle) % FullAngle;
 }
 
-int Vector::getProjection(Axis axis)
+int Vector::getProjection(const Axis& axis)
 {
     return (int)(axis == Axis::X ?
-           m_module * cos(m_angle * PI / StraightAngle)
-                           : m_module * sin(m_angle * PI / StraightAngle));
+           m_module * cos(m_angle * M_PI / StraightAngle)
+                           : m_module * sin(m_angle * M_PI / StraightAngle));
 
+}
+
+Vector Vector::getProjectionVector(const Axis &axis) {
+    int module = getProjection(axis);
+    int angle = module > 0 ? 0 : StraightAngle;
+    return Vector(module, angle);
+}
+
+Point Vector::end(const Point& start) {
+    return Point((int)(start.x + m_module * cos(m_angle)),
+                 (int)(start.y + m_module * sin(m_angle)));
+}
+
+Point Vector::start(const Point &end) {
+    return Point((int)(end.x - m_module * cos(m_angle)),
+                 (int)(end.y - m_module * sin(m_angle)));
 }

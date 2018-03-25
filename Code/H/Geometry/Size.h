@@ -5,14 +5,14 @@
 #ifndef ARCANOID_SIZE_H
 #define ARCANOID_SIZE_H
 
-#include "Definitions.h"
+enum Dimension {
+    Width,
+    Height
+};
 
 class Size {
 public:
-    Size()
-            : Size(SizeDefaultValueWidth, SizeDefaultValueHeight) {}
-
-    Size(int width, int height)
+    Size(int width = 0, int height = 0)
             : width(width), height(height) {}
 
 public:

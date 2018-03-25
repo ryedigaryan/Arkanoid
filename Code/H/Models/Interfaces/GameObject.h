@@ -5,13 +5,14 @@
 #ifndef ARCANOID_GAMEOBJECT_H
 #define ARCANOID_GAMEOBJECT_H
 
+#include "Definitions/CommonDefinitions.h"
 #include "Geometry/Geometry.h"
 #include "Interfaces/GameObjectDelegate.h"
 
 class GameObject {
 public:
-    explicit GameObject(const string& texturePath, GameObjectType type, Point position = Point(), Size size = Size())
-            : m_position(position), m_type(type), m_size(size), m_texturePath(texturePath) {}
+    explicit GameObject(const std::string& texturePath, Point position = Point(), Size size = Size())
+            : m_position(position), m_size(size), m_texturePath(texturePath) {}
 
     ~GameObject();
 
@@ -24,13 +25,12 @@ public:
     Point getPosition() const;
     Size getSize() const;
 
-    void set(const Axis axis, const int value);
-    void set(const Dimension dimension, const int value);
-    int get(const Axis axis) const;
-    int get(const Dimension dimension) const;
+    void set(const Axis& axis, const int& value);
+    void set(const Dimension& dimension, const int& value);
+    int get(const Axis& axis) const;
+    int get(const Dimension& dimension) const;
 
-    string m_texturePath;
-    GameObjectType m_type;
+    std::string m_texturePath;
 protected:
     Point m_position;
     Size m_size;

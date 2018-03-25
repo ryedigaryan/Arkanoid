@@ -1,5 +1,5 @@
 //
-// Created by ryedigaryan on 2/26/2018.
+// Created by ruben on 3/25/2018.
 //
 
 #include "Models/Interfaces/GameObject.h"
@@ -18,7 +18,7 @@ unsigned GameObject::getIdentifier() const
 
 void GameObject::setDelegate(GameObjectDelegate* dlgate)
 {
-    if(dlgate != nullptr || dlgate != NULL) {
+    if(dlgate != nullptr) {
         m_delegate = dlgate;
         m_delegate->go_delegateSet(this);
     }
@@ -52,7 +52,7 @@ Size GameObject::getSize() const
     return m_size;
 }
 
-void GameObject::set(const Axis axis, const int value)
+void GameObject::set(const Axis& axis, const int& value)
 {
     axis == Axis::X ? m_position.x = value : m_position.y = value;
     if(m_delegate != nullptr) {
@@ -60,12 +60,12 @@ void GameObject::set(const Axis axis, const int value)
     }
 }
 
-int GameObject::get(const Axis axis) const
+int GameObject::get(const Axis& axis) const
 {
     return (axis == Axis::X ? m_position.x : m_position.y);
 }
 
-void GameObject::set(const Dimension dimension, const int value)
+void GameObject::set(const Dimension& dimension, const int& value)
 {
     dimension == Dimension::Width ? m_size.width = value : m_size.height = value;
     if(m_delegate != nullptr) {
@@ -73,7 +73,7 @@ void GameObject::set(const Dimension dimension, const int value)
     }
 }
 
-int GameObject::get(const Dimension dimension) const
+int GameObject::get(const Dimension& dimension) const
 {
     return (dimension == Dimension::Width ? m_size.width : m_size.height);
 }

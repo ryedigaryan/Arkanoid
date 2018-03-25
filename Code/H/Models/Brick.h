@@ -8,10 +8,12 @@
 #include "Models/Interfaces/GameObject.h"
 #include "Models/Interfaces/Mortal.h"
 
+#include "Definitions/ModelDefinitions.h"
+
 class Brick : public GameObject, public Mortal {
 public:
-    Brick(const string& texturePath = "", GameObjectType type = TBrick, Point position = Point(), Size size = Size(), int initialHealth = BrickDefaultInitialHealth)
-            : GameObject(texturePath, type, position, size), Mortal(initialHealth) {}
+    Brick(const std::string& texturePath = "", Point position = Point(), Size size = Size(), int initialHealth = DefaultBrickInitialHealth)
+            : GameObject(texturePath, position, size), Mortal(initialHealth) {}
 
     void harm(int damage) override {
         m_health -= damage;

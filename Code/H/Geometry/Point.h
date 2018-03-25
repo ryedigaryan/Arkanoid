@@ -5,11 +5,14 @@
 #ifndef ARCANOID_POINT_H
 #define ARCANOID_POINT_H
 
-#include "Definitions.h"
+enum Axis {
+    X,
+    Y
+};
 
 class Point {
 public:
-    Point(int x = PointDefaultValueX, int y = PointDefaultValueY)
+    Point(int x = 0, int y = 0)
             : x(x), y(y) {}
 
 public:

@@ -1,31 +1,43 @@
 #include <iostream>
 #include <afxres.h>
+#include <SFML/Graphics.hpp>
+#include <Models/Brick.h>
+#include <Models/Interfaces/Attacker.h>
+#include <Models/Ball.h>
+#include <GameData.h>
+#include <ArkanoidGameController.h>
 
-#include "ArcanoidGameManager.h"
+using namespace std;
 
 #define END system("pause"); return 0;
 
 void test();
+void handleInput(sf::RenderWindow* wnd);
 
 //sf::RenderWindow window(sf::VideoMode(0, 0), "SFML works!", sf::Style::Fullscreen);
 int main() {
 
+//    sf::RenderWindow* wnd = new sf::RenderWindow(sf::VideoMode(500, 500), "testing sfml");
+//    while(wnd->isOpen()) {
+//        handleInput(wnd);
+//    }
 
+    ArkanoidGameController mainController;
+    mainController.start();
 
-//    test(window);
-//    END;
+//    Brick b;
+//    Mortal& m = b;
+//    Ball ball;
+//    ball.attack(&b);
+}
 
-    ArcanoidGameManager& manager = ArcanoidGameManager::getManager();
-    ArcanoidGameDrawer drawer(GameSceneBackgroundColor);
-    ArcanoidGameEngine& engine = ArcanoidGameEngine::getEngine();
-    manager.addAllLevelSpecsInPath(LevelSpecsPath, LevelSpecExtension, LevelCount);
-    manager.setDrawer(&drawer);
-    manager.setEngine(&engine);
-
-    manager.startGame();
-
-    std::cout << "Hello, World!" << std::endl;
-    END
+void handleInput(sf::RenderWindow* wnd) {
+    sf::Event e;
+    while(wnd->pollEvent(e)) {
+        if(e.type == sf::Event::Closed) {
+            wnd->close();
+        }
+    }
 }
 
 void test(sf::RenderWindow &window) {
