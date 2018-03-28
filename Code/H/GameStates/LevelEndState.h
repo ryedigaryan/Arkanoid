@@ -9,10 +9,15 @@
 
 class LevelEndSatate : public State {
 public:
-    explicit LevelEndSatate(GameData *gameData, StateDelegate* dlgate = nullptr) : State(gameData, dlgate) {}
+    explicit LevelEndSatate(GameData *gameData, StateDelegate* dlgate = nullptr);
 
     void handleInput() override;
-    void update() override;
+    void update()      override;
+    void pause()       override;
+    void resume()      override;
+
+private:
+    bool m_needsRedraw;
 };
 
 #endif //ARCANOID_LEVELENDSTATE_H

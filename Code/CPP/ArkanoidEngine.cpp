@@ -11,3 +11,13 @@ void ArkanoidEngine::process() {
 int ArkanoidEngine::getProgress() {
     return -1;
 }
+
+void ArkanoidEngine::movePlayer(Side side) {
+    if(side == Side::Left || side == Side::Right) {
+        m_playerMovementDirection = side;
+    }
+}
+
+void ArkanoidEngine::stopPlayer() {
+    m_playerMovementDirection = Side::None;
+}

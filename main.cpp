@@ -15,20 +15,26 @@ void test();
 void handleInput(sf::RenderWindow* wnd);
 
 //sf::RenderWindow window(sf::VideoMode(0, 0), "SFML works!", sf::Style::Fullscreen);
+
+enum A {
+    a,
+    b,
+    c
+};
+
+enum B {
+    d,
+    e,
+    f,
+    c
+};
 int main() {
+    A vA = A::c;
+    B vB = B::c;
 
-//    sf::RenderWindow* wnd = new sf::RenderWindow(sf::VideoMode(500, 500), "testing sfml");
-//    while(wnd->isOpen()) {
-//        handleInput(wnd);
-//    }
+    cout << "A: " << vA << endl;
+    cout << "B: " << vB << endl;
 
-    ArkanoidGameController mainController;
-    mainController.start();
-
-//    Brick b;
-//    Mortal& m = b;
-//    Ball ball;
-//    ball.attack(&b);
 }
 
 void handleInput(sf::RenderWindow* wnd) {

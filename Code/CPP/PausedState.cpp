@@ -4,6 +4,11 @@
 
 #include <GameStates/PausedState.h>
 
+PausedState::PausedState(GameData *gameData, StateDelegate *dlgate) : State(gameData, dlgate)
+{
+    m_needsRedraw = true;
+}
+
 void PausedState::handleInput()
 {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
@@ -21,6 +26,19 @@ void PausedState::handleInput()
 
 void PausedState::update()
 {
-    m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Blue);
-    m_gameData->drawer->getDrawingWindow()->display();
+    if(m_needsRedraw) {
+        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Blue);
+        m_gameData->drawer->getDrawingWindow()->display();
+        m_needsRedraw = false;
+    }
+}
+
+void PausedState::pause()
+{
+    m_needsRedraw = false;
+}
+
+void PausedState::resume()
+{
+    m_needsRedraw = true;
 }

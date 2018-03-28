@@ -13,6 +13,8 @@ void GamingState::handleInput() {
                 case sf::Keyboard::Return:
                     m_delegate->pushNextState();
                     return;
+                case sf::Keyboard::Left:
+                    m_gameData->engine
             }
         }
     }
@@ -20,6 +22,7 @@ void GamingState::handleInput() {
 
 
 void GamingState::update() {
+    m_gameData->engine->process();
     m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Red);
     m_gameData->drawer->getDrawingWindow()->display();
 }

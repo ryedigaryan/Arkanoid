@@ -20,7 +20,8 @@ ArkanoidDrawer::~ArkanoidDrawer() {
 
 void ArkanoidDrawer::drawMenu() {
     sf::Text menu;
-    menu.setString("MAIN MENU");
+    menu.setString("Main Menu");
+    menu.setPosition(20, 200);
     sf::Font font;
     if(!font.loadFromFile("Resources/Fonts/RAVIE.ttf")) {
         cout << "EEEEEEEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOOORRRRRRRRRRRRRRR" << endl;

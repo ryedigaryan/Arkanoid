@@ -4,6 +4,10 @@
 
 #include "GameStates/LevelEndState.h"
 
+LevelEndSatate::LevelEndSatate(GameData *gameData, StateDelegate *dlgate) : State(gameData, dlgate) {
+    m_needsRedraw = true;
+}
+
 void LevelEndSatate::handleInput() {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
     sf::Event e;
@@ -19,6 +23,21 @@ void LevelEndSatate::handleInput() {
 }
 
 void LevelEndSatate::update() {
-    m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Green);
-    m_gameData->drawer->getDrawingWindow()->display();
+    if(m_needsRedraw) {
+        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Green);
+        m_gameData->drawer->getDrawingWindow()->display();
+        m_needsRedraw = false;
+    }
 }
+
+void LevelEndSatate::pause()
+{
+    m_needsRedraw = false;
+}
+
+void LevelEndSatate::resume()
+{
+    m_needsRedraw = true;
+}
+
+

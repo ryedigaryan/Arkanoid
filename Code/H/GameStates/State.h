@@ -15,7 +15,9 @@ public:
     State(GameData* gameData, StateDelegate* dlgate) : m_gameData(gameData), m_delegate(dlgate) {}
 
     virtual void handleInput() = 0;
-    virtual void update() = 0;
+    virtual void update()      = 0;
+    virtual void pause()       = 0;
+    virtual void resume()      = 0;
 
 protected:
     StateDelegate* m_delegate;

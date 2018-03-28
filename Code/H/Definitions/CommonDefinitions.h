@@ -20,5 +20,12 @@ using std::cin;
 
 #define WindowTitle "Arkanoid - by Ruben"
 
+enum Side {
+    Left,
+    Right,
+    Up,
+    Down,
+    None
+};
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

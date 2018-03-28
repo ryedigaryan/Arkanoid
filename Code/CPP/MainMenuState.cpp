@@ -4,6 +4,10 @@
 
 #include "GameStates/MainMenuState.h"
 
+MainMenuState::MainMenuState(GameData *gameData, StateDelegate *dlgate) : State(gameData, dlgate) {
+    m_needsRedraw = true;
+}
+
 void MainMenuState::handleInput() {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
     sf::Event e;
@@ -22,6 +26,17 @@ void MainMenuState::handleInput() {
 }
 
 void MainMenuState::update() {
-    m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Yellow);
-    m_gameData->drawer->drawMenu();
+    if(m_needsRedraw) {
+        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Yellow);
+        m_gameData->drawer->drawMenu();
+        m_needsRedraw = false;
+    }
+}
+
+void MainMenuState::pause() {
+    m_needsRedraw = false;
+}
+
+void MainMenuState::resume() {
+    m_needsRedraw = true;
 }

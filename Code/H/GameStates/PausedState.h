@@ -9,10 +9,15 @@
 
 class PausedState : public State {
 public:
-    explicit PausedState(GameData *gameData, StateDelegate* dlgate = nullptr) : State(gameData, dlgate) {}
+    explicit PausedState(GameData *gameData, StateDelegate* dlgate = nullptr);
 
     void handleInput() override;
-    void update() override;
+    void update()      override;
+    void pause()       override;
+    void resume()      override;
+
+private:
+    bool m_needsRedraw;
 };
 
 #endif //ARCANOID_PAUSEDSTATE_H
