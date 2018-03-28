@@ -8,7 +8,8 @@ MainMenuState::MainMenuState(GameData *gameData, StateDelegate *dlgate) : State(
     m_needsRedraw = true;
 }
 
-void MainMenuState::handleInput() {
+void MainMenuState::handleInput()
+{
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
     sf::Event e;
     while(mainWindow->pollEvent(e)) {
@@ -25,7 +26,8 @@ void MainMenuState::handleInput() {
     }
 }
 
-void MainMenuState::update() {
+void MainMenuState::update()
+{
     if(m_needsRedraw) {
         m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Yellow);
         m_gameData->drawer->drawMenu();
@@ -33,10 +35,12 @@ void MainMenuState::update() {
     }
 }
 
-void MainMenuState::pause() {
+void MainMenuState::pause()
+{
     m_needsRedraw = false;
 }
 
-void MainMenuState::resume() {
+void MainMenuState::resume()
+{
     m_needsRedraw = true;
 }

@@ -15,7 +15,7 @@ ArkanoidGameController::ArkanoidGameController()
     m_gameData.drawer = new ArkanoidDrawer();
 }
 
-State *ArkanoidGameController::nextState()
+State* ArkanoidGameController::nextState()
 {
     return m_allStates[(m_stateMachine.statesCount() + 1) % m_allStates.size()];
 }

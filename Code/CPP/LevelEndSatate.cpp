@@ -8,7 +8,8 @@ LevelEndSatate::LevelEndSatate(GameData *gameData, StateDelegate *dlgate) : Stat
     m_needsRedraw = true;
 }
 
-void LevelEndSatate::handleInput() {
+void LevelEndSatate::handleInput()
+{
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
     sf::Event e;
     while(mainWindow->pollEvent(e)) {
@@ -22,7 +23,8 @@ void LevelEndSatate::handleInput() {
     }
 }
 
-void LevelEndSatate::update() {
+void LevelEndSatate::update()
+{
     if(m_needsRedraw) {
         m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Green);
         m_gameData->drawer->getDrawingWindow()->display();
