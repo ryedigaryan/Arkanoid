@@ -51,7 +51,7 @@ auto ballTxt = new sf::Texture();
 
 sf::Sprite randomSprite() {
     MyRect r = randomRect();
-    if(!ballTxt->loadFromFile("Resources/Pictures/Borders/1 - 50x50.png")) {
+    if(!ballTxt->loadFromFile("Resources/Textures/Borders/1 - 50x50.png")) {
         cout << "FATAL ERROR: randomSprite()" << endl;
     }
 
@@ -74,70 +74,35 @@ sf::Texture* newTexture(std::string path) {
     return t;
 }
 
-int main() {
+int main()
+{
+    std::vector<int*> i;
+    i.resize(5, nullptr);
+    if(i[1] != nullptr) {
+        cout << "11" << endl;
+    };
+    if(i[1] == NULL) {
+        cout << "1" << endl;
+    };
+    if(i[2] == nullptr) {
+        cout << "212" << endl;
+    };
 
-    sf::FloatRect prevBounds;
+    std::vector<int> v;
+//    v.reserve(10);
+    v.resize(10);
+    v.insert(v.begin() + 4, 4);
 
-    sf::Sprite sprite = randomSprite();
-    sf::RectangleShape shapes[ShapeCount];
-    sf::RectangleShape s = randomShape();
+    sf::RectangleShape s;
+    ResourceManager& m = ResourceManager::getManager();
+    s.setTexture(&m.getTexture(BallTexture));
+    m.getTexture(BallTexture);
+    m.getTexture(BallTexture);
 
-    auto bg_txtre = newTexture("C:/Users/ryedigaryan/CLionProjects/Arkanoid/Resources/bg.jpg");
-
-    sf::Sprite bg(*bg_txtre);
-    cout << bg.getScale().x << "  " << bg.getScale().y << endl;
-    cout << window.getSize().x << endl;
-    cout << bg_txtre->getSize().x << endl;
-    cout << window.getSize().y << endl;
-    cout << bg_txtre->getSize().y << endl;
-    bg.setScale(sf::Vector2f((float)window.getSize().x / bg_txtre->getSize().x, (float)window.getSize().y / bg_txtre->getSize().y));
-    cout << bg.getScale().x << "  " << bg.getScale().y << endl;
-    window.draw(bg);
-    window.draw(sprite);
+    s.setPosition(50, 50);
+    window.draw(s);
     window.display();
-    window.draw(bg);
-    window.display();
-    window.display();
-
-
-    if(!emptyTextre->loadFromFile("Resources/Pictures/Borders/empty.png")) {
-        cout << "FATAL ERROR: main()" << endl;
-    }
-
-
-    bool draw = true;
-    bool erase = false;
-    while(window.isOpen()) {
-        sf::Event e;
-        while(window.pollEvent(e)) {
-            if(e.type == sf::Event::Closed) {
-                window.close();
-            }
-            if(e.type == sf::Event::KeyPressed) {
-                if(e.key.code == sf::Keyboard::S) {
-                    sprite.setTexture(*ballTxt);
-                    sprite.setColor(sf::Color::White);
-                }
-                if(e.key.code == sf::Keyboard::D) {
-                    sprite.setTexture(*emptyTextre);
-                    s.setTextureRect(sf::IntRect(0, 0, ballTxt->getSize().x, ballTxt->getSize().y));
-                }
-                if(e.key.code == sf::Keyboard::Return) {
-                    bg.setPosition(prevBounds.left, prevBounds.top);
-                    bg.setTextureRect(
-                            sf::IntRect(prevBounds.left / bg.getScale().x, prevBounds.top / bg.getScale().y, prevBounds.width / bg.getScale().x,
-                                        prevBounds.height / bg.getScale().y));
-                    window.draw(bg);
-
-                    prevBounds = sprite.getGlobalBounds();
-                    sprite.move(sf::Vector2f(10, 10));
-
-                    window.draw(sprite);
-                    window.display();
-                }
-            }
-        }
-    }
+    system("pause");
 }
 
 void handleInput(sf::RenderWindow* wnd) {

@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include "ResourceManager.h"
 
 class ArkanoidDrawer {
 public:
@@ -23,8 +24,12 @@ public:
     void drawObject(const std::string& texturepath, sf::Vector2f position, sf::Vector2f size);
     void redrawObject(const int& id, sf::Vector2f position, sf::Vector2f size);
 private:
+    ResourceManager& m_resourceManager = ResourceManager::getManager();
     sf::RenderWindow* m_window;
     std::vector<sf::RectangleShape*> m_drawnObjects;
+
+    sf::Text m_helperText;
+    sf::RectangleShape m_helperSahpe;
 };
 
 #endif //ARCANOID_ARKANOIDDRAWER_H

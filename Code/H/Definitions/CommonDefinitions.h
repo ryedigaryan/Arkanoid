@@ -14,6 +14,7 @@ using std::cin;
 #include <vector>
 #include <stack>
 #include <list>
+#include <map>
 
 #define FPS 10
 #define OneFrameTime (1 / FPS) // as seconds

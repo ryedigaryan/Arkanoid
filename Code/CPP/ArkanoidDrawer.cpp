@@ -19,16 +19,8 @@ ArkanoidDrawer::~ArkanoidDrawer() {
 }
 
 void ArkanoidDrawer::drawMenu() {
-    sf::Text menu;
-    menu.setString("Main Menu");
-    menu.setPosition(20, 200);
-    sf::Font font;
-    if(!font.loadFromFile("Resources/Fonts/RAVIE.ttf")) {
-        cout << "EEEEEEEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOOORRRRRRRRRRRRRRR" << endl;
-        exit(1);
-    }
-    menu.setFont(font);
-    menu.setCharacterSize(50);
-    m_window->draw(menu);
+    m_helperSahpe.setTexture(&m_resourceManager.getTexture(MainMenuBackground));
+    m_helperSahpe.setSize(sf::Vector2f(m_window->getSize()));
+    m_window->draw(m_helperSahpe);
     m_window->display();
 }
