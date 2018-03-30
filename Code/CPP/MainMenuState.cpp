@@ -3,8 +3,9 @@
 //
 
 #include "GameStates/MainMenuState.h"
+#include "StateMachine.h"
 
-MainMenuState::MainMenuState(GameData *gameData, StateDelegate *dlgate) : State(gameData, dlgate) {
+MainMenuState::MainMenuState(GameData *gameData) : State(gameData) {
     m_needsRedraw = true;
 }
 
@@ -16,12 +17,16 @@ void MainMenuState::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_delegate->pushNextState();
+                    m_gameData->stateMachine->pushState(new PausedState(m_gameData));
                     return;
                 case sf::Keyboard::Escape:
                     mainWindow->close();
                     return;
             }
+        }
+        else if(e.type == sf::Event::Closed) {
+            delete m_gameData->drawer;
+            m_gameData->drawer = nullptr;
         }
     }
 }
@@ -29,7 +34,7 @@ void MainMenuState::handleInput()
 void MainMenuState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Yellow);
+        m_gameData->drawer->clearScreen();
         m_gameData->drawer->drawMenu();
         m_needsRedraw = false;
     }

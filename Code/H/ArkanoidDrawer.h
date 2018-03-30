@@ -16,10 +16,10 @@ public:
 
     sf::RenderWindow* getDrawingWindow();
 
+    void clearScreen(sf::Color fillColor = sf::Color::Black);
     void drawMenu();
     void drawLevelStartInfo();
-    void drawLevelEndInfo();
-    void clear(sf::Color fillColor);
+    void drawLevelEndInfo(bool hasWon);
 
     void drawObject(const std::string& texturepath, sf::Vector2f position, sf::Vector2f size);
     void redrawObject(const int& id, sf::Vector2f position, sf::Vector2f size);

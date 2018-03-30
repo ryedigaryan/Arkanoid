@@ -9,7 +9,7 @@
 
 class PausedState : public State {
 public:
-    explicit PausedState(GameData *gameData, StateDelegate* dlgate = nullptr);
+    explicit PausedState(GameData *gameData);
 
     void handleInput() override;
     void update()      override;

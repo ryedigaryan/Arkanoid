@@ -2,10 +2,23 @@
 // Created by ryedigaryan on 3/29/2018.
 //
 
-#include <SFML/Graphics/Texture.hpp>
-#include <ResourceManager.h>
-#include <SFML/Graphics/Text.hpp>
+#include "ResourceManager.h"
 
+const Resource MainMenuFont("Resources/Fonts/default");
+const Resource LevelInfoFont("Resources/Fonts/default");
+
+const Resource MainMenuBackground("Resources/Textures/main_menu_bg");
+const Resource LevelInfoBackground("Resources/Textures/popup_bg");
+const Resource BallTexture("Resources/Textures/Balls/1");
+const Resource BorderTexture("Resources/Textures/Borders/1");
+const Resource Paddle1Texture("Resources/Textures/Paddles/1");
+const Resource Paddle2Texture("Resources/Textures/Paddles/2");
+const Resource Paddle3Texture("Resources/Textures/Paddles/3");
+const Resource Brick1Texture("Resources/Textures/Bricks/1");
+const Resource Brick2Texture("Resources/Textures/Bricks/2");
+const Resource Brick3Texture("Resources/Textures/Bricks/3");
+const Resource Brick4Texture("Resources/Textures/Bricks/4");
+const Resource Brick5Texture("Resources/Textures/Bricks/5");
 
 ResourceManager &ResourceManager::getManager()
 {
@@ -19,8 +32,8 @@ ResourceManager::ResourceManager() {
         cout << "FATAL ERROR: ResourceManager() - cannot load font: " << DefaultFontPath << endl;
     }
 
-    m_defaultTexture;
-    if(!m_defaultTexture.loadFromFile(DefaultTexturePath)) {
+    m_defaultTexture = new sf::Texture();
+    if(!m_defaultTexture->loadFromFile(DefaultTexturePath)) {
         cout << "FATAL ERROR: ResourceManager() - cannot load texture: " << DefaultTexturePath << endl;
     }
 
@@ -47,11 +60,11 @@ const sf::Font& ResourceManager::getFont(Resource resource)
     return *font;
 }
 
-const sf::Texture& ResourceManager::getTexture(Resource resource)
+const sf::Texture* ResourceManager::getTexture(Resource resource)
 {
     if(m_loadedTextures[resource.id] != NULL) {
         // if the texture is in cache then return it
-        return *m_loadedTextures[resource.id];
+        return m_loadedTextures[resource.id];
     }
     // if resource is not in cache then load it to cache
     sf::Texture* texture = new sf::Texture();
@@ -62,5 +75,5 @@ const sf::Texture& ResourceManager::getTexture(Resource resource)
     }
     // if texture loaded successfully then return it
     m_loadedTextures[resource.id] = texture;
-    return *texture;
+    return texture;
 }

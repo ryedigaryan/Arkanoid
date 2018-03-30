@@ -4,7 +4,7 @@
 
 #include "GameStates/LevelEndState.h"
 
-LevelEndSatate::LevelEndSatate(GameData *gameData, StateDelegate *dlgate) : State(gameData, dlgate) {
+LevelEndSatate::LevelEndSatate(GameData *gameData) : State(gameData) {
     m_needsRedraw = true;
 }
 
@@ -16,7 +16,7 @@ void LevelEndSatate::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_delegate->pushNextState();
+                    m_gameData->stateMachine->popActiveState();
                     return;
             }
         }
@@ -26,8 +26,8 @@ void LevelEndSatate::handleInput()
 void LevelEndSatate::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Green);
-        m_gameData->drawer->getDrawingWindow()->display();
+        m_gameData->drawer->clearScreen(sf::Color::Red);
+        m_gameData->drawer->drawLevelEndInfo(m_gameData->engine->hasWon());
         m_needsRedraw = false;
     }
 }

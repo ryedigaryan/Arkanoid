@@ -2,7 +2,7 @@
 // Created by ruben on 3/25/2018.
 //
 
-#include <GameStates/GamingState.h>
+#include "GameStates/GamingState.h"
 
 void GamingState::handleInput() {
     Side playerMovementSide = Side::None;
@@ -11,7 +11,7 @@ void GamingState::handleInput() {
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_delegate->pushNextState();
+                    m_gameData->stateMachine->pushState(new LevelEndSatate(m_gameData), true);
                     return;
                 case sf::Keyboard::Left:
                     playerMovementSide = Side::Left;

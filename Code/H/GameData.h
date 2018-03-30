@@ -5,13 +5,14 @@
 #ifndef ARCANOID_GAMEDATA_H
 #define ARCANOID_GAMEDATA_H
 
-#include <SFML/Graphics.hpp>
-#include <ArkanoidDrawer.h>
 #include "ArkanoidEngine.h"
+#include "ArkanoidDrawer.h"
+#include "StateMachine.h"
 
 struct GameData {
     ArkanoidEngine* engine;
     ArkanoidDrawer* drawer;
+    StateMachine* stateMachine;
 };
 
 #endif //ARCANOID_GAMEDATA_H

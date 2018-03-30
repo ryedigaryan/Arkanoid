@@ -6,17 +6,16 @@
 #define ARCANOID_RESOURCEMANAGER_H
 
 #include "Definitions/CommonDefinitions.h"
-#include <SFML/Graphics/Font.hpp>
-#include <utility>
+#include <SFML/Graphics.hpp>
 
 #define DefaultTexturePath "Resources/Textures/default"
 #define DefaultFontPath "Resources/Fonts/default"
 
 class Resource {
 public:
-    Resource(const std::string& p) : path(p) {
-        int a = 01;
-    };
+    explicit Resource(const std::string& p) : path(p) {}
+    explicit Resource(std::string&& p) : path(std::move(p)) {}
+
     const std::string path;
     const unsigned id = nextID();
 private:
@@ -26,25 +25,25 @@ private:
     }
 };
 
+extern const Resource MainMenuFont;
+extern const Resource LevelInfoFont;
 
-const static Resource MainMenuFont("Resources/Fonts/default");
-const static Resource LevelInfoFont("Resources/Fonts/default");
-
-const static Resource MainMenuBackground("Resources/Textures/main_menu_bg");
-const static Resource BallTexture("Resources/Textures/Balls/1");
-const static Resource BorderTexture("Resources/Textures/Borders/1");
-const static Resource Paddle1Texture("Resources/Textures/Paddles/1");
-const static Resource Paddle2Texture("Resources/Textures/Paddles/2");
-const static Resource Paddle3Texture("Resources/Textures/Paddles/3");
-const static Resource Brick1Texture("Resources/Textures/Bricks/1");
-const static Resource Brick2Texture("Resources/Textures/Bricks/2");
-const static Resource Brick3Texture("Resources/Textures/Bricks/3");
-const static Resource Brick4Texture("Resources/Textures/Bricks/4");
-const static Resource Brick5Texture("Resources/Textures/Bricks/5");
+extern const Resource MainMenuBackground;
+extern const Resource LevelInfoBackground;
+extern const Resource BallTexture;
+extern const Resource BorderTexture;
+extern const Resource Paddle1Texture;
+extern const Resource Paddle2Texture;
+extern const Resource Paddle3Texture;
+extern const Resource Brick1Texture;
+extern const Resource Brick2Texture;
+extern const Resource Brick3Texture;
+extern const Resource Brick4Texture;
+extern const Resource Brick5Texture;
 
 // TODO: Do not forget to change definitions after adding new Resources
 #define FontReservationSize 2
-#define TextureReservationSize 13
+#define TextureReservationSize 14
 
 class ResourceManager {
 public:
@@ -53,11 +52,12 @@ public:
     void operator=(const ResourceManager&) = delete;
 public:
     const sf::Font& getFont(Resource resource);
-    const sf::Texture& getTexture(Resource resource);
+    const sf::Texture* getTexture(Resource resource);
+
 
 private:
     sf::Font m_defaultFont;
-    sf::Texture m_defaultTexture;
+    sf::Texture* m_defaultTexture;
 
     std::vector<sf::Font*> m_loadedFonts;
     std::vector<sf::Texture*> m_loadedTextures;

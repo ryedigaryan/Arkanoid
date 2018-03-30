@@ -6,11 +6,12 @@
 #define ARCANOID_GAMINGSTATE_H
 
 #include "State.h"
+#include "LevelEndState.h"
 #include "Interfaces/GameEngineDelegate.h"
 
 class GamingState : public State, public GameEngineDelegate {
 public:
-    explicit GamingState(GameData *gameData, StateDelegate* dlgate = nullptr) : State(gameData, dlgate) {}
+    explicit GamingState(GameData *gameData) : State(gameData) {}
 
     void handleInput() override;
     void update()      override;

@@ -6,13 +6,11 @@
 #define ARCANOID_STATE_H
 
 #include "Definitions/CommonDefinitions.h"
-
 #include "GameData.h"
-#include "Interfaces/StateDelegate.h"
 
 class State {
 public:
-    State(GameData* gameData, StateDelegate* dlgate) : m_gameData(gameData), m_delegate(dlgate) {}
+    State(GameData* gameData) : m_gameData(gameData) {}
 
     virtual void handleInput() = 0;
     virtual void update()      = 0;
@@ -20,7 +18,6 @@ public:
     virtual void resume()      = 0;
 
 protected:
-    StateDelegate* m_delegate;
     GameData* m_gameData;
 };
 

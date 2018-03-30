@@ -2,7 +2,7 @@
 // Created by ruben on 3/25/2018.
 //
 
-#include <ArkanoidEngine.h>
+#include "ArkanoidEngine.h"
 
 void ArkanoidEngine::process() {
 
@@ -20,4 +20,8 @@ void ArkanoidEngine::movePlayer(Side side) {
 
 void ArkanoidEngine::stopPlayer() {
     m_playerMovementDirection = Side::None;
+}
+
+bool ArkanoidEngine::hasWon() {
+    return true;
 }

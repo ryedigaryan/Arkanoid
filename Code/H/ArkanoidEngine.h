@@ -14,6 +14,7 @@ public:
 
     void movePlayer(Side side);
     void stopPlayer();
+    bool hasWon();
 
 private:
     Side m_playerMovementDirection = Side::None;

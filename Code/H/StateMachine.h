@@ -6,14 +6,16 @@
 #define ARCANOID_STATEMACHINE_H
 
 #include <stack>
-#include "GameStates/State.h"
+
+class State;
 
 class StateMachine {
 public:
+    ~StateMachine();
     State* getActiveState();
     void popActiveState();
     void pushState(State *newState, bool isReplacing = false);
-    size_t statesCount();
+    unsigned statesCount();
 
 private:
     std::stack<State*> m_states;

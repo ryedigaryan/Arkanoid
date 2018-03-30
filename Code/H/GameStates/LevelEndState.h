@@ -9,7 +9,7 @@
 
 class LevelEndSatate : public State {
 public:
-    explicit LevelEndSatate(GameData *gameData, StateDelegate* dlgate = nullptr);
+    explicit LevelEndSatate(GameData *gameData);
 
     void handleInput() override;
     void update()      override;
