@@ -6,7 +6,12 @@
 #include "GameStates/GamingState.h"
 #include "StateMachine.h"
 
-PausedState::PausedState(GameData *gameData) : State(gameData)
+PausedState::PausedState(GameData *gameData, const unsigned& level) : State(gameData), m_level(level)
+{
+    cout << "State: Paused" << endl;
+}
+
+void PausedState::init()
 {
     m_needsRedraw = true;
 }
@@ -18,8 +23,9 @@ void PausedState::handleInput()
     while(mainWindow->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
-                case sf::Keyboard::Return:
-                    m_gameData->stateMachine->pushState(new GamingState(m_gameData), true);
+                case sf::Keyboard::P:
+                    // pops himself
+                    m_gameData->stateMachine->popActiveState();
                     return;
             }
         }
@@ -29,8 +35,7 @@ void PausedState::handleInput()
 void PausedState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Blue);
-        m_gameData->drawer->getDrawingWindow()->display();
+        m_gameData->drawer->drawLevelStartInfo(m_level);
         m_needsRedraw = false;
     }
 }

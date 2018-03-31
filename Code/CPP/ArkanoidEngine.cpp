@@ -22,6 +22,6 @@ void ArkanoidEngine::stopPlayer() {
     m_playerMovementDirection = Side::None;
 }
 
-bool ArkanoidEngine::hasWon() {
-    return true;
+void ArkanoidEngine::prepareLevel() {
+
 }

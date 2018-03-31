@@ -4,11 +4,15 @@
 
 #include "GameStates/LevelEndState.h"
 
-LevelEndSatate::LevelEndSatate(GameData *gameData) : State(gameData) {
+LevelEndState::LevelEndState(GameData *gameData, const unsigned& level, const bool& hasWon) : State(gameData), m_level(level), m_hasWon(hasWon) {
+    cout << "State: LevelEnd" << endl;
+}
+
+void LevelEndState::init() {
     m_needsRedraw = true;
 }
 
-void LevelEndSatate::handleInput()
+void LevelEndState::handleInput()
 {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
     sf::Event e;
@@ -16,6 +20,7 @@ void LevelEndSatate::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
+                    // pops himself
                     m_gameData->stateMachine->popActiveState();
                     return;
             }
@@ -23,21 +28,21 @@ void LevelEndSatate::handleInput()
     }
 }
 
-void LevelEndSatate::update()
+void LevelEndState::update()
 {
     if(m_needsRedraw) {
         m_gameData->drawer->clearScreen(sf::Color::Red);
-        m_gameData->drawer->drawLevelEndInfo(m_gameData->engine->hasWon());
+        m_gameData->drawer->drawLevelEndInfo(m_level, m_hasWon);
         m_needsRedraw = false;
     }
 }
 
-void LevelEndSatate::pause()
+void LevelEndState::pause()
 {
     m_needsRedraw = false;
 }
 
-void LevelEndSatate::resume()
+void LevelEndState::resume()
 {
     m_needsRedraw = true;
 }

@@ -6,12 +6,13 @@
 #define ARCANOID_MAINMENUSTATE_H
 
 #include "State.h"
-#include "GameStates/PausedState.h"
+#include "GameStates/GamingState.h"
 
 class MainMenuState : public State {
 public:
     explicit MainMenuState(GameData *gameData);
 
+    void init()        override;
     void handleInput() override;
     void update()      override;
     void pause()       override;

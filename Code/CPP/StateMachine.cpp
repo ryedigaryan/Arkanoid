@@ -20,6 +20,7 @@ void StateMachine::pushState(State *newState, bool isReplacing /* = false */) {
         popActiveState();
     }
     m_states.push(newState);
+    newState->init();
 }
 
 size_t StateMachine::statesCount() {

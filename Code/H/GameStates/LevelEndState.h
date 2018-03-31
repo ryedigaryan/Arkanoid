@@ -7,14 +7,18 @@
 
 #include "State.h"
 
-class LevelEndSatate : public State {
+class LevelEndState : public State {
 public:
-    explicit LevelEndSatate(GameData *gameData);
+    LevelEndState(GameData *gameData, const unsigned& level, const bool& hasWon);
 
+    void init()        override;
     void handleInput() override;
     void update()      override;
     void pause()       override;
     void resume()      override;
+
+    bool m_hasWon;
+    unsigned m_level;
 
 private:
     bool m_needsRedraw;

@@ -6,6 +6,7 @@
 #define ARCANOID_COMMONDEFINITIONS_H
 
 #include <iostream>
+#include <fstream>
 using std::cout;
 using std::endl;
 using std::cin;

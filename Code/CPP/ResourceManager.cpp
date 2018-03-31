@@ -9,6 +9,7 @@ const Resource LevelInfoFont("Resources/Fonts/default");
 
 const Resource MainMenuBackground("Resources/Textures/main_menu_bg");
 const Resource LevelInfoBackground("Resources/Textures/popup_bg");
+const Resource GameSceneBackground("Resources/Textures/game_scene_bg");
 const Resource BallTexture("Resources/Textures/Balls/1");
 const Resource BorderTexture("Resources/Textures/Borders/1");
 const Resource Paddle1Texture("Resources/Textures/Paddles/1");
@@ -76,4 +77,41 @@ const sf::Texture* ResourceManager::getTexture(Resource resource)
     // if texture loaded successfully then return it
     m_loadedTextures[resource.id] = texture;
     return texture;
+}
+
+const Resource ResourceManager::getResource(ResourceType type, int number) {
+    switch(type) {
+        case T_Paddle:
+            switch(number) {
+                case 1:
+                    return Paddle1Texture;
+                case 2:
+                    return Paddle2Texture;
+                case 3:
+                    return Paddle3Texture;
+            }
+        case T_Ball:
+            switch(number) {
+                case 1:
+                    return BallTexture;
+            }
+        case T_Border:
+            switch(number) {
+                case 1:
+                    return BorderTexture;
+            }
+        case T_Brick:
+            switch(number) {
+                case 1:
+                    return Brick1Texture;
+                case 2:
+                    return Brick2Texture;
+                case 3:
+                    return Brick3Texture;
+                case 4:
+                    return Brick4Texture;
+                case 5:
+                    return Brick5Texture;
+            }
+    }
 }

@@ -6,7 +6,8 @@
 #define ARCANOID_RESOURCEMANAGER_H
 
 #include "Definitions/CommonDefinitions.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #define DefaultTexturePath "Resources/Textures/default"
 #define DefaultFontPath "Resources/Fonts/default"
@@ -30,6 +31,7 @@ extern const Resource LevelInfoFont;
 
 extern const Resource MainMenuBackground;
 extern const Resource LevelInfoBackground;
+extern const Resource GameSceneBackground;
 extern const Resource BallTexture;
 extern const Resource BorderTexture;
 extern const Resource Paddle1Texture;
@@ -43,7 +45,14 @@ extern const Resource Brick5Texture;
 
 // TODO: Do not forget to change definitions after adding new Resources
 #define FontReservationSize 2
-#define TextureReservationSize 14
+#define TextureReservationSize 15
+
+enum ResourceType {
+    T_Paddle,
+    T_Ball,
+    T_Border,
+    T_Brick,
+};
 
 class ResourceManager {
 public:
@@ -53,6 +62,7 @@ public:
 public:
     const sf::Font& getFont(Resource resource);
     const sf::Texture* getTexture(Resource resource);
+    const Resource getResource(ResourceType type, int number);
 
 
 private:

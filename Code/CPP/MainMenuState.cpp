@@ -3,9 +3,12 @@
 //
 
 #include "GameStates/MainMenuState.h"
-#include "StateMachine.h"
 
 MainMenuState::MainMenuState(GameData *gameData) : State(gameData) {
+    cout << "State: MainMenu" << endl;
+}
+
+void MainMenuState::init() {
     m_needsRedraw = true;
 }
 
@@ -17,7 +20,7 @@ void MainMenuState::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_gameData->stateMachine->pushState(new PausedState(m_gameData));
+                    m_gameData->stateMachine->pushState(new GamingState(m_gameData));
                     return;
                 case sf::Keyboard::Escape:
                     mainWindow->close();

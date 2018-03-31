@@ -11,7 +11,7 @@ class GameObject;
 
 class GameObjectDelegate {
 public:
-    // go stands for "game object"
+    // go stands for "Game Object"
     virtual void go_delegateSet(const GameObject *go)								    = 0;
     virtual void go_moved(unsigned go_id, const Point& go_position)						= 0;
     virtual void go_sizeChanged(unsigned go_id, const Size& go_size)					= 0;

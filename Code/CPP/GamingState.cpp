@@ -4,15 +4,26 @@
 
 #include "GameStates/GamingState.h"
 
+GamingState::GamingState(GameData *gameData) : State(gameData) {
+    cout << "State: Gaming" << endl;
+}
+
+void GamingState::init() {
+    m_currentLevel = 96;
+    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevel));
+}
+
 void GamingState::handleInput() {
     Side playerMovementSide = Side::None;
     sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
-                case sf::Keyboard::Return:
-                    m_gameData->stateMachine->pushState(new LevelEndSatate(m_gameData), true);
+                case sf::Keyboard::Return: //TODO: temporarily case for debug
+                    m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevel, true), true);
                     return;
+                case sf::Keyboard::P: //TODO: configure pause action
+                    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevel));
                 case sf::Keyboard::Left:
                     playerMovementSide = Side::Left;
                     break;
@@ -40,8 +51,6 @@ void GamingState::handleInput() {
 
 void GamingState::update() {
     m_gameData->engine->process();
-    m_gameData->drawer->getDrawingWindow()->clear(sf::Color::Red);
-    m_gameData->drawer->getDrawingWindow()->display();
 }
 
 void GamingState::pause()
@@ -51,5 +60,5 @@ void GamingState::pause()
 
 void GamingState::resume()
 {
-    cout << "TODO: GamingState::resume()" << endl;
+    m_gameData->drawer->drawGameScene();
 }
