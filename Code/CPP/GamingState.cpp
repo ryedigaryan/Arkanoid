@@ -4,31 +4,32 @@
 
 #include "GameStates/GamingState.h"
 
-GamingState::GamingState(GameData *gameData) : State(gameData) {
+GamingState::GamingState(GameData *gameData, unsigned startLevelNumber) : State(gameData)
+{
     cout << "State: Gaming" << endl;
+    m_currentLevelNumber = startLevelNumber;
+    m_currentLevelState = LevelStateNone;
 }
 
-void GamingState::init() {
-    m_currentLevel = 96;
-    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevel));
+void GamingState::init()
+{
+    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
 }
 
-void GamingState::handleInput() {
-    Side playerMovementSide = Side::None;
+void GamingState::handleInput()
+{
+    Side playerMovementSide = SideNone;
     sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
-                case sf::Keyboard::Return: //TODO: temporarily case for debug
-                    m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevel, true), true);
-                    return;
-                case sf::Keyboard::P: //TODO: configure pause action
-                    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevel));
+                case sf::Keyboard::P:
+                    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
                 case sf::Keyboard::Left:
-                    playerMovementSide = Side::Left;
+                    playerMovementSide = SideLeft;
                     break;
                 case sf::Keyboard::Right:
-                    playerMovementSide = Side::Right;
+                    playerMovementSide = SideRight;
                     break;
             }
         }
@@ -36,21 +37,24 @@ void GamingState::handleInput() {
             switch(e.key.code) {
                 case sf::Keyboard::Left:
                 case sf::Keyboard::Right:
-                    playerMovementSide = Side::None;
+                    playerMovementSide = SideNone;
             }
         }
     }
-    if(playerMovementSide == Side::None) {
-        m_gameData->engine->stopPlayer();
-    }
-    else {
-        m_gameData->engine->movePlayer(playerMovementSide);
-    }
+    playerMovementSide == SideNone ? m_gameData->engine->stopPlayer()
+                                   : m_gameData->engine->movePlayer(playerMovementSide);
 }
 
-
-void GamingState::update() {
+void GamingState::update()
+{
     m_gameData->engine->process();
+    m_currentLevelState = m_gameData->engine->getLevelState();
+    if(m_currentLevelState == LevelStateWon) {
+        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, HasWon));
+    }
+    else if(m_currentLevelState == LevelStateLost) {
+        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, HasLost));
+    }
 }
 
 void GamingState::pause()
@@ -60,5 +64,13 @@ void GamingState::pause()
 
 void GamingState::resume()
 {
+    if(m_currentLevelState == LevelStateWon || m_currentLevelState == LevelStateLost) { //TODO: curState != None
+        m_currentLevelNumber++;
+        Level& level = m_gameData->resourceManager->getLevel(m_currentLevelNumber);
+        level.setGoDelegate(this);
+        m_gameData->engine->setLevel(level);
+        m_currentLevelState = m_gameData->engine->getLevelState();
+    }
     m_gameData->drawer->drawGameScene();
 }
+

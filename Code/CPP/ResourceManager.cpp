@@ -20,6 +20,12 @@ const Resource Brick2Texture("Resources/Textures/Bricks/2");
 const Resource Brick3Texture("Resources/Textures/Bricks/3");
 const Resource Brick4Texture("Resources/Textures/Bricks/4");
 const Resource Brick5Texture("Resources/Textures/Bricks/5");
+const Resource Level1("Resources/LevelSpecs/1.lvl");
+const Resource Level2("Resources/LevelSpecs/1.lvl");
+const Resource Level3("Resources/LevelSpecs/1.lvl");
+const Resource Level4("Resources/LevelSpecs/1.lvl");
+const Resource Level5("Resources/LevelSpecs/1.lvl");
+const Resource Level6("Resources/LevelSpecs/1.lvl");
 
 ResourceManager &ResourceManager::getManager()
 {
@@ -63,12 +69,12 @@ const sf::Font& ResourceManager::getFont(Resource resource)
 
 const sf::Texture* ResourceManager::getTexture(Resource resource)
 {
-    if(m_loadedTextures[resource.id] != NULL) {
+    if(m_loadedTextures[resource.id] != nullptr) {
         // if the texture is in cache then return it
         return m_loadedTextures[resource.id];
     }
     // if resource is not in cache then load it to cache
-    sf::Texture* texture = new sf::Texture();
+    auto texture = new sf::Texture();
     if(!texture->loadFromFile(resource.path)) {
         cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
         // if font cannot be loaded then return default texture
@@ -79,7 +85,17 @@ const sf::Texture* ResourceManager::getTexture(Resource resource)
     return texture;
 }
 
-const Resource ResourceManager::getResource(ResourceType type, int number) {
+Level& ResourceManager::getLevel(unsigned number)
+{
+    const Resource resource = getResource(T_Level, number);
+    // every time we load level from file
+    auto level = new Level();
+    level->loadFromSpec(resource.path);
+    return *level;
+}
+
+const Resource ResourceManager::getResource(ResourceType type, int number)
+{
     switch(type) {
         case T_Paddle:
             switch(number) {
@@ -112,6 +128,21 @@ const Resource ResourceManager::getResource(ResourceType type, int number) {
                     return Brick4Texture;
                 case 5:
                     return Brick5Texture;
+            }
+        case T_Level:
+            switch(number) {
+                case 1:
+                    return Level1;
+                case 2:
+                    return Level2;
+                case 3:
+                    return Level3;
+                case 4:
+                    return Level4;
+                case 5:
+                    return Level5;
+                case 6:
+                    return Level6;
             }
     }
 }

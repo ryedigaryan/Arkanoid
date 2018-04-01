@@ -3,6 +3,7 @@
 //
 
 #include "Models/Level.h"
+#include "ResourceManager.h"
 
 Level::Level(GameObjectDelegate* go_dlgate) : go_delegate(go_dlgate)
 {
@@ -52,6 +53,8 @@ void Level::loadPlayer(std::ifstream &specReader)
 void Level::loadBall(std::ifstream &specReader)
 {
     ball.m_texturePath = BallTexture.path;
+    ball.setPosition(Point(player.get(AxisX) + (PlayerWidth - BallWidth) / 2, player.get(AxisY) - BallHeight));
+    ball.setSize(BallSize);
 }
 
 bool Level::isValidBrickType(unsigned id)
@@ -80,4 +83,12 @@ Level::~Level() {
     for(Brick* brick : bricks) {
         delete brick;
     }
+}
+
+void Level::setGoDelegate(GameObjectDelegate *go_dlg) {
+    for(auto brick : bricks) {
+        brick->setDelegate(go_dlg);
+    }
+    player.setDelegate(go_dlg);
+    ball.setDelegate(go_dlg);
 }

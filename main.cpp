@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <unistd.h>
 #include "ArkanoidGameController.h"
 
 using namespace std;
@@ -15,11 +16,18 @@ void g(const int &a) {
     cout << "g: " << a << endl;
 }
 
-int main() {
-    int a = 10;
-    cout << "m: " << a << endl;
-    f(a);
+int v() {
+    int i = 10;
+}
 
+class A {
+public:
+    explicit A(int i) {
+
+    }
+};
+
+int main() {
     ArkanoidGameController c;
     c.start();
     return 0;

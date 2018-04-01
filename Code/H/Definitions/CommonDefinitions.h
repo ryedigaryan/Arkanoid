@@ -22,12 +22,19 @@ using std::cin;
 
 #define WindowTitle "Arkanoid - by Ruben"
 
+#define FirstLevelNumber 1
+
+#define Replace true
+#define HasWon true
+#define HasLost true
+
+
 enum Side {
-    Left,
-    Right,
-    Up,
-    Down,
-    None
+    SideLeft,
+    SideRight,
+    SideUp,
+    SideDown,
+    SideNone
 };
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

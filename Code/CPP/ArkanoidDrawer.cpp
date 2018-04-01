@@ -4,10 +4,11 @@
 
 #include "Definitions/CommonDefinitions.h"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "Definitions/DrawerDefinitions.h"
 #include "ArkanoidDrawer.h"
 
 ArkanoidDrawer::ArkanoidDrawer() {
-    m_window = new sf::RenderWindow(sf::VideoMode(640, 480), WindowTitle/*, sf::Style::Fullscreen*/);
+    m_window = new sf::RenderWindow(sf::VideoMode(300, 300), WindowTitle, sf::Style::Fullscreen);
 }
 
 sf::RenderWindow* ArkanoidDrawer::getDrawingWindow() {
@@ -42,19 +43,26 @@ void ArkanoidDrawer::drawMenu() {
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelStartInfo(int level) {
+void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progress) {
     static sf::Sprite helperSprite;
-    // configure pop-up background
+    // draw pop-up background
     helperSprite.setTexture(*m_resourceManager.getTexture(LevelInfoBackground));
     helperSprite.setScale(sf::Vector2f(0.5, 0.5));
     helperSprite.setPosition((m_window->getSize().x - helperSprite.getGlobalBounds().width) / 2, (m_window->getSize().y - helperSprite.getGlobalBounds().height) / 2);
-    // configure text
+    m_window->draw(helperSprite);
+    // draw text: Level: xxx Won/Loast
     m_helperText.setString(std::string("Level: ") + std::to_string(level));
     m_helperText.setFont(m_resourceManager.getFont(LevelInfoFont));
     m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize() + 10);
-    // draw main menu stuff
-    m_window->draw(helperSprite);
     m_window->draw(m_helperText);
+//    m_window->display();
+//    m_window->display();
+    // draw text: Progress: xxx
+    m_helperText.setString(std::string("Progress: ") + std::to_string(progress));
+    m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize()*2 + 10 + LineSpacing);
+    m_window->draw(m_helperText);
+//    m_window->display();
+//    m_window->display();
     // and display all drawn stuff
     m_window->display();
 }
@@ -136,42 +144,3 @@ void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* backg
     helperShape.setSize(sf::Vector2f(area.width, area.height));
     m_window->draw(helperShape);
 }
-
-bounds ArkanoidDrawer::calc(sf::Window &s) {
-    bounds b;
-    b.x = s.getPosition().x;
-    b.y = s.getPosition().y;
-    b.w = s.getSize().x;
-    b.h = s.getSize().y;
-    return b;
-}
-
-bounds ArkanoidDrawer::calc(sf::Shape &s) {
-    bounds b;
-    b.x = s.getGlobalBounds().left;
-    b.y = s.getGlobalBounds().top;
-    b.w = s.getGlobalBounds().width;
-    b.h = s.getGlobalBounds().height;
-    return b;
-}
-
-bounds ArkanoidDrawer::calc(sf::Text &s) {
-    bounds b;
-    b.x = s.getGlobalBounds().left;
-    b.y = s.getGlobalBounds().top;
-    b.w = s.getGlobalBounds().width;
-    b.h = s.getGlobalBounds().height;
-    return b;
-}
-
-bounds ArkanoidDrawer::calc(sf::Sprite &s) {
-    bounds b;
-    b.x = s.getGlobalBounds().left;
-    b.y = s.getGlobalBounds().top;
-    b.w = s.getGlobalBounds().width;
-    b.h = s.getGlobalBounds().height;
-    return b;
-}
-
-
-

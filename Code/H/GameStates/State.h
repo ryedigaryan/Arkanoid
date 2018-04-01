@@ -10,7 +10,7 @@
 
 class State {
 public:
-    State(GameData* gameData) : m_gameData(gameData) {}
+    explicit State(GameData* gameData) : m_gameData(gameData) {}
 
     virtual void init()        = 0;
     virtual void handleInput() = 0;

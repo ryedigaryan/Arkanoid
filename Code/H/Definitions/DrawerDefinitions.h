@@ -1,0 +1,10 @@
+//
+// Created by ruben on 4/1/2018.
+//
+
+#ifndef ARCANOID_DRAWERDEFINITIONS_H
+#define ARCANOID_DRAWERDEFINITIONS_H
+
+#define LineSpacing 10
+
+#endif //ARCANOID_DRAWERDEFINITIONS_H

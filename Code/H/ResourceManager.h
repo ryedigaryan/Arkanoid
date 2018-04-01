@@ -8,6 +8,7 @@
 #include "Definitions/CommonDefinitions.h"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include "Models/Level.h"
 
 #define DefaultTexturePath "Resources/Textures/default"
 #define DefaultFontPath "Resources/Fonts/default"
@@ -42,6 +43,12 @@ extern const Resource Brick2Texture;
 extern const Resource Brick3Texture;
 extern const Resource Brick4Texture;
 extern const Resource Brick5Texture;
+extern const Resource Level1;
+extern const Resource Level2;
+extern const Resource Level3;
+extern const Resource Level4;
+extern const Resource Level5;
+extern const Resource Level6;
 
 // TODO: Do not forget to change definitions after adding new Resources
 #define FontReservationSize 2
@@ -52,6 +59,7 @@ enum ResourceType {
     T_Ball,
     T_Border,
     T_Brick,
+    T_Level,
 };
 
 class ResourceManager {
@@ -62,6 +70,7 @@ public:
 public:
     const sf::Font& getFont(Resource resource);
     const sf::Texture* getTexture(Resource resource);
+    Level& getLevel(unsigned number);
     const Resource getResource(ResourceType type, int number);
 
 

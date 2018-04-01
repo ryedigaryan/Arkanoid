@@ -11,9 +11,9 @@ void Vector::rotate(int angle) {
 
 int Vector::getProjection(const Axis& axis)
 {
-    return (int)(axis == Axis::X ?
+    return (int)(AxisX == axis ?
            m_module * cos(m_angle * M_PI / StraightAngle)
-                           : m_module * sin(m_angle * M_PI / StraightAngle));
+                               : m_module * sin(m_angle * M_PI / StraightAngle));
 
 }
 

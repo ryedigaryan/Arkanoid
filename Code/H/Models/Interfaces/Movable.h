@@ -9,10 +9,11 @@
 
 class Movable {
 public:
-    virtual void move(int dx, int dy) = 0;
+    virtual void move(int dx, int dy)               = 0;
+    virtual void setVelocity(int module, int angle) = 0;
 
 protected:
-    Movable(Vector velocity = Vector()) : m_velocity(velocity) {}
+    explicit Movable(Vector velocity = Vector()) : m_velocity(velocity) {}
 
     Vector m_velocity;
 };

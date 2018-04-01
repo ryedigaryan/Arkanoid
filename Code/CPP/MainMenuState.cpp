@@ -20,7 +20,7 @@ void MainMenuState::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_gameData->stateMachine->pushState(new GamingState(m_gameData));
+                    m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber));
                     return;
                 case sf::Keyboard::Escape:
                     mainWindow->close();

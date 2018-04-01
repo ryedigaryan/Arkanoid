@@ -9,7 +9,7 @@
 
 class PausedState : public State {
 public:
-    explicit PausedState(GameData *gameData, const unsigned& level);
+    PausedState(GameData *gameData, const unsigned& level, const int progress);
 
     void init()        override;
     void handleInput() override;
@@ -18,6 +18,7 @@ public:
     void resume()      override;
 
     unsigned m_level;
+    const int m_progress;
 private:
     bool m_needsRedraw;
 };

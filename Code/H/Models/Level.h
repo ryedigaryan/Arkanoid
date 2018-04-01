@@ -7,25 +7,23 @@
 
 #include "Definitions/CommonDefinitions.h"
 #include "Definitions/ModelDefinitions.h"
-#include "ResourceManager.h"
 #include "Brick.h"
 #include "Paddle.h"
 #include "Ball.h"
 
 class Level {
 public:
-    explicit Level(GameObjectDelegate* go_delegate);
+    explicit Level(GameObjectDelegate* go_delegate = nullptr);
     ~Level();
 
-    GameObjectDelegate* go_delegate;
-
     unsigned number;
-    std::list<Brick*> bricks;
     unsigned brickRowCount;
     unsigned brickColCount;
-
+    std::list<Brick*> bricks;
     Paddle player;
     Ball ball;
+
+    void setGoDelegate(GameObjectDelegate* go_dlg);
 
     void loadFromSpec(const std::string& specPath);
     void loadBricks(std::ifstream& specReader);
@@ -33,6 +31,9 @@ public:
     void loadBall(std::ifstream& specReader);
     bool isValidBrickType(unsigned id);
     Brick* createBrick(unsigned brickType, unsigned index);
+
+private:
+    GameObjectDelegate* go_delegate;
 };
 
 #endif //ARCANOID_LEVEL_H

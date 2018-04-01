@@ -8,6 +8,7 @@
 #include "Definitions/CommonDefinitions.h"
 #include "Geometry/Geometry.h"
 #include "Interfaces/GameObjectDelegate.h"
+#include "Definitions/ModelDefinitions.h"
 
 class GameObject {
 public:
@@ -38,11 +39,8 @@ protected:
     GameObjectDelegate* m_delegate = nullptr;
 
 protected:
-    const unsigned m_identifier = GameObject::generateIdentifier();
-    static unsigned generateIdentifier() {
-        static unsigned lastIdentifier;
-        return lastIdentifier++;
-    }
+    unsigned m_identifier = GameObject::generateIdentifier();
+    static unsigned generateIdentifier();
 };
 
 #endif //ARCANOID_GAMEOBJECT_H

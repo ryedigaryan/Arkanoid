@@ -2,6 +2,7 @@
 // Created by ruben on 3/25/2018.
 //
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "ArkanoidGameController.h"
 
 ArkanoidGameController::ArkanoidGameController()
@@ -9,6 +10,7 @@ ArkanoidGameController::ArkanoidGameController()
     m_gameData.engine = new ArkanoidEngine(); //TODO: singleton engine
     m_gameData.drawer = new ArkanoidDrawer();
     m_gameData.stateMachine = new StateMachine();
+    m_gameData.resourceManager = &ResourceManager::getManager();
 }
 
 void ArkanoidGameController::start()

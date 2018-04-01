@@ -6,8 +6,8 @@
 #define ARCANOID_POINT_H
 
 enum Axis {
-    X,
-    Y
+    AxisX,
+    AxisY
 };
 
 class Point {

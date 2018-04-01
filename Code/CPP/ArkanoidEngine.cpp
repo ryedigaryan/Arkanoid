@@ -13,15 +13,19 @@ int ArkanoidEngine::getProgress() {
 }
 
 void ArkanoidEngine::movePlayer(Side side) {
-    if(side == Side::Left || side == Side::Right) {
+    if(side == Side::SideLeft || side == Side::SideRight) {
         m_playerMovementDirection = side;
     }
 }
 
 void ArkanoidEngine::stopPlayer() {
-    m_playerMovementDirection = Side::None;
+    m_playerMovementDirection = Side::SideNone;
 }
 
-void ArkanoidEngine::prepareLevel() {
+LevelState ArkanoidEngine::getLevelState() {
+    return LevelStateNone;
+}
 
+void ArkanoidEngine::setLevel(Level& level) {
+    m_level = level;
 }

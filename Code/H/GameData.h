@@ -13,6 +13,7 @@ struct GameData {
     ArkanoidEngine* engine;
     ArkanoidDrawer* drawer;
     StateMachine* stateMachine;
+    ResourceManager* resourceManager;
 };
 
 #endif //ARCANOID_GAMEDATA_H

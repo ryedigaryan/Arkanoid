@@ -5,16 +5,10 @@
 #ifndef ARCANOID_ARKANOIDDRAWER_H
 #define ARCANOID_ARKANOIDDRAWER_H
 
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Text.hpp>
+#include "Definitions/CommonDefinitions.h"
+#include "Definitions/DrawerDefinitions.h"
 #include "ResourceManager.h"
-
-struct bounds {
-    float x;
-    float y;
-    float w;
-    float h;
-};
+#include <SFML/Graphics.hpp>
 
 struct ObjectInfo {
     sf::RectangleShape* object;
@@ -38,7 +32,7 @@ public:
     void clearScreen(sf::Color fillColor = sf::Color::Black);
     void displayChanges();
     void drawMenu();
-    void drawLevelStartInfo(int level);
+    void drawLevelStartInfo(const unsigned& level, const int& progress);
     void drawLevelEndInfo(const unsigned& level, const bool& hasWon);
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);
@@ -53,11 +47,6 @@ private:
     sf::Text m_helperText;
 
     void cleanArea(const sf::IntRect& area, const sf::Texture* background);
-
-    bounds calc(sf::Text&);
-    bounds calc(sf::Shape&);
-    bounds calc(sf::Sprite&);
-    bounds calc(sf::Window&);
 };
 
 #endif //ARCANOID_ARKANOIDDRAWER_H

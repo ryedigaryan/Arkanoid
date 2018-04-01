@@ -46,5 +46,3 @@ void LevelEndState::resume()
 {
     m_needsRedraw = true;
 }
-
-
