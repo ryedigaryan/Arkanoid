@@ -5,14 +5,14 @@
 #include <GameStates/EntireGameWonState.h>
 #include "GameStates/GamingState.h"
 
-GamingState::GamingState(GameData* gameData, unsigned startLevelNumber, unsigned lastLevelNumber) : State(gameData), m_currentLevelNumber(startLevelNumber), m_lastLevelNumber(lastLevelNumber)
+GamingState::GamingState(GameData* gameData, unsigned startLevelNumber, unsigned lastLevelNumber) : State(gameData), m_firstLevelNumber(startLevelNumber), m_lastLevelNumber(lastLevelNumber)
 {
     cout << "State: Gaming" << endl;
 }
 
 void GamingState::init()
 {
-    setEngineLevel(m_currentLevelNumber);
+    setEngineLevel(m_currentLevelNumber = m_firstLevelNumber);
     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
 }
 
@@ -25,6 +25,7 @@ void GamingState::handleInput()
             switch(e.key.code) {
                 case PauseButton:
                     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
+                    return;
                 case MoveLeftButton:
                     playerMovementSide = SideLeft;
                     break;

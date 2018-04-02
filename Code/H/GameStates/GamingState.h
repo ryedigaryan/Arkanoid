@@ -32,7 +32,8 @@ public:
 
 private:
     unsigned m_currentLevelNumber;
-    unsigned m_lastLevelNumber;
+    const unsigned m_firstLevelNumber;
+    const unsigned m_lastLevelNumber;
     LevelState m_currentLevelState;
 
     void setEngineLevel(const unsigned& levelNumber);

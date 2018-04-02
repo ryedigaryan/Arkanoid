@@ -62,6 +62,14 @@ enum ResourceType {
     ResourceTypeLevel,
 };
 
+class NoSuchResourceError {
+public:
+    NoSuchResourceError(ResourceType t, int n) : type(t), number(n) {}
+    ResourceType type;
+    int number;
+};
+
+
 class ResourceManager {
 public:
     static ResourceManager& getManager();

@@ -13,6 +13,7 @@ int ArkanoidEngine::getProgress() {
     if(p == 3) {
         m_state = LevelStateWon;
         p = 0;
+        return 3;
     }
     return p++;
 }

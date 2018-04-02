@@ -141,4 +141,5 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                     return Level6;
             }
     }
+    throw NoSuchResourceError(type, number);
 }
