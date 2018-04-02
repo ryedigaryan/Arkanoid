@@ -10,8 +10,8 @@
 #include "Models/Interfaces/GameObject.h"
 
 enum LevelState {
+    LevelStateLost = 0,
     LevelStateWon,
-    LevelStateLost,
     LevelStateInProcess,
 };
 
@@ -25,10 +25,12 @@ public:
     void stopPlayer();
 
     LevelState getLevelState();
+    Level& getLevel();
 
 private:
     Side m_playerMovementDirection = SideNone;
     Level m_level;
+    LevelState m_state;
 };
 
 #endif //ARCANOID_GAMEENGINE_H

@@ -1,22 +1,26 @@
 //
-// Created by ruben on 3/25/2018.
+// Created by ryedigaryan on 4/2/2018.
 //
 
-#include "GameStates/MainMenuState.h"
+#include "GameStates/StaticImageState.h"
 
-MainMenuState::MainMenuState(GameData* gameData) : StaticImageState(gameData, sf::Keyboard::Return)
+StaticImageState::StaticImageState(GameData* gameData, sf::Keyboard::Key popKey) : State(gameData), m_popKey(popKey)
 {
 
 }
 
-void MainMenuState::handleInput()
+void StaticImageState::init() {
+    m_needsRedraw = true;
+}
+
+void StaticImageState::handleInput()
 {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
-    sf::Event e;
+    static sf::Event e;
     while(mainWindow->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             if(e.key.code == m_popKey) {
-                m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
+                m_gameData->stateMachine->popActiveState(); // pops himself
                 return;
             } else if(e.key.code == sf::Keyboard::Escape) {
                 mainWindow->close();
@@ -30,11 +34,12 @@ void MainMenuState::handleInput()
     }
 }
 
-void MainMenuState::update()
+void StaticImageState::pause()
 {
-    if(m_needsRedraw) {
-        m_gameData->drawer->clearScreen();
-        m_gameData->drawer->drawMenu();
-        m_needsRedraw = false;
-    }
+    m_needsRedraw = false;
+}
+
+void StaticImageState::resume()
+{
+    m_needsRedraw = true;
 }

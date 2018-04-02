@@ -8,18 +8,12 @@
 #include "State.h"
 #include "GameStates/GamingState.h"
 
-class MainMenuState : public State {
+class MainMenuState : public StaticImageState {
 public:
-    explicit MainMenuState(GameData *gameData);
+    explicit MainMenuState(GameData* gameData);
 
-    void init()        override;
     void handleInput() override;
     void update()      override;
-    void pause()       override;
-    void resume()      override;
-
-private:
-    bool m_needsRedraw;
 };
 
 #endif //ARCANOID_MAINMENUSTATE_H

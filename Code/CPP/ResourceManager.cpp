@@ -21,11 +21,11 @@ const Resource Brick3Texture("Resources/Textures/Bricks/3");
 const Resource Brick4Texture("Resources/Textures/Bricks/4");
 const Resource Brick5Texture("Resources/Textures/Bricks/5");
 const Resource Level1("Resources/LevelSpecs/1.lvl");
-const Resource Level2("Resources/LevelSpecs/1.lvl");
-const Resource Level3("Resources/LevelSpecs/1.lvl");
-const Resource Level4("Resources/LevelSpecs/1.lvl");
-const Resource Level5("Resources/LevelSpecs/1.lvl");
-const Resource Level6("Resources/LevelSpecs/1.lvl");
+const Resource Level2("Resources/LevelSpecs/2.lvl");
+const Resource Level3("Resources/LevelSpecs/3.lvl");
+const Resource Level4("Resources/LevelSpecs/4.lvl");
+const Resource Level5("Resources/LevelSpecs/5.lvl");
+const Resource Level6("Resources/LevelSpecs/6.lvl");
 
 ResourceManager &ResourceManager::getManager()
 {
@@ -51,43 +51,39 @@ ResourceManager::ResourceManager() {
 // as the sf::Font and sf::Texture have no common interface which would help to load them, I created 2 separate functions for loading
 const sf::Font& ResourceManager::getFont(Resource resource)
 {
-    if(m_loadedFonts[resource.id] != nullptr) {
-        // if the font is in cache then return it
-        return *m_loadedFonts[resource.id];
+    if(m_loadedFonts[resource.id] == nullptr) {
+        // if resource is not in cache then load it to cache
+        auto font = new sf::Font();
+        if(!font->loadFromFile(resource.path)) {
+            cout << "Returning default font! Cause: cannot load font: " << resource.path << endl;
+            // if font cannot be loaded then return default font
+            return m_defaultFont;
+        }
+        // if font loaded successfully then store it in cache
+        m_loadedFonts[resource.id] = font;
     }
-    // if resource is not in cache then load it to cache
-    auto font = new sf::Font();
-    if(!font->loadFromFile(resource.path)) {
-        cout << "Returning default font! Cause: cannot load font: " << resource.path << endl;
-        // if font cannot be loaded then return default font
-        return m_defaultFont;
-    }
-    // if font loaded successfully then return it
-    m_loadedFonts[resource.id] = font;
-    return *font;
+    return *m_loadedFonts[resource.id];
 }
 
 const sf::Texture* ResourceManager::getTexture(Resource resource)
 {
-    if(m_loadedTextures[resource.id] != nullptr) {
-        // if the texture is in cache then return it
-        return m_loadedTextures[resource.id];
+    if(m_loadedTextures[resource.id] == nullptr) {
+        // if resource is not in cache then load it to cache
+        auto texture = new sf::Texture();
+        if(!texture->loadFromFile(resource.path)) {
+            cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
+            // if font cannot be loaded then return default texture
+            return m_defaultTexture;
+        }
+        // if texture loaded successfully then store it in cache
+        m_loadedTextures[resource.id] = texture;
     }
-    // if resource is not in cache then load it to cache
-    auto texture = new sf::Texture();
-    if(!texture->loadFromFile(resource.path)) {
-        cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
-        // if font cannot be loaded then return default texture
-        return m_defaultTexture;
-    }
-    // if texture loaded successfully then return it
-    m_loadedTextures[resource.id] = texture;
-    return texture;
+    return m_loadedTextures[resource.id];
 }
 
-Level& ResourceManager::getLevel(unsigned number)
+Level& ResourceManager::getLevel(const unsigned& number)
 {
-    const Resource resource = getResource(T_Level, number);
+    const Resource resource = getResource(ResourceTypeLevel, number);
     // every time we load level from file
     auto level = new Level();
     level->loadFromSpec(resource.path);
@@ -97,7 +93,7 @@ Level& ResourceManager::getLevel(unsigned number)
 const Resource ResourceManager::getResource(ResourceType type, int number)
 {
     switch(type) {
-        case T_Paddle:
+        case ResourceTypePaddle:
             switch(number) {
                 case 1:
                     return Paddle1Texture;
@@ -106,17 +102,17 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                 case 3:
                     return Paddle3Texture;
             }
-        case T_Ball:
+        case ResourceTypeBall:
             switch(number) {
                 case 1:
                     return BallTexture;
             }
-        case T_Border:
+        case ResourceTypeBorder:
             switch(number) {
                 case 1:
                     return BorderTexture;
             }
-        case T_Brick:
+        case ResourceTypeBrick:
             switch(number) {
                 case 1:
                     return Brick1Texture;
@@ -129,7 +125,7 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                 case 5:
                     return Brick5Texture;
             }
-        case T_Level:
+        case ResourceTypeLevel:
             switch(number) {
                 case 1:
                     return Level1;
@@ -145,4 +141,5 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                     return Level6;
             }
     }
+    throw NoSuchResourceError(type, number);
 }

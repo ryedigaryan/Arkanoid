@@ -14,7 +14,7 @@
 class GamingState : public State, public GameEngineDelegate, public GameObjectDelegate {
 public:
     /// @param startLevelNumber can be used to continue game from lost level
-    explicit GamingState(GameData *gameData, unsigned startLevelNumber = FirstLevelNumber);
+    GamingState(GameData* gameData, unsigned startLevelNumber, unsigned lastLevelNumber);
 
     // State virtual functions
     void init()        override;
@@ -32,7 +32,11 @@ public:
 
 private:
     unsigned m_currentLevelNumber;
+    const unsigned m_firstLevelNumber;
+    const unsigned m_lastLevelNumber;
     LevelState m_currentLevelState;
+
+    void setEngineLevel(const unsigned& levelNumber);
 };
 
 #endif //ARCANOID_GAMINGSTATE_H

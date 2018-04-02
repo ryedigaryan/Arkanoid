@@ -55,12 +55,20 @@ extern const Resource Level6;
 #define TextureReservationSize 15
 
 enum ResourceType {
-    T_Paddle,
-    T_Ball,
-    T_Border,
-    T_Brick,
-    T_Level,
+    ResourceTypePaddle,
+    ResourceTypeBall,
+    ResourceTypeBorder,
+    ResourceTypeBrick,
+    ResourceTypeLevel,
 };
+
+class NoSuchResourceError {
+public:
+    NoSuchResourceError(ResourceType t, int n) : type(t), number(n) {}
+    ResourceType type;
+    int number;
+};
+
 
 class ResourceManager {
 public:
@@ -70,7 +78,7 @@ public:
 public:
     const sf::Font& getFont(Resource resource);
     const sf::Texture* getTexture(Resource resource);
-    Level& getLevel(unsigned number);
+    Level& getLevel(const unsigned& number);
     const Resource getResource(ResourceType type, int number);
 
 

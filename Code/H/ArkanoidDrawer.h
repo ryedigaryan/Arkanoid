@@ -34,6 +34,7 @@ public:
     void drawMenu();
     void drawLevelStartInfo(const unsigned& level, const int& progress);
     void drawLevelEndInfo(const unsigned& level, const bool& hasWon);
+    void drawCongratulations();
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);
     void moveObject(const unsigned& id, const sf::Vector2f& newPosition);

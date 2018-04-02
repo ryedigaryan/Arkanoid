@@ -7,28 +7,34 @@
 #include "Definitions/DrawerDefinitions.h"
 #include "ArkanoidDrawer.h"
 
-ArkanoidDrawer::ArkanoidDrawer() {
-    m_window = new sf::RenderWindow(sf::VideoMode(300, 300), WindowTitle, sf::Style::Default);
+ArkanoidDrawer::ArkanoidDrawer()
+{
+    m_window = new sf::RenderWindow(sf::VideoMode(640, 480), WindowTitle, sf::Style::Default);
 }
 
-sf::RenderWindow* ArkanoidDrawer::getDrawingWindow() {
+sf::RenderWindow* ArkanoidDrawer::getDrawingWindow()
+{
     return m_window;
 }
 
-ArkanoidDrawer::~ArkanoidDrawer() {
+ArkanoidDrawer::~ArkanoidDrawer()
+{
     m_window->close();
     delete m_window;
 }
 
-void ArkanoidDrawer::clearScreen(sf::Color bgCol) {
+void ArkanoidDrawer::clearScreen(sf::Color bgCol)
+{
     m_window->clear(bgCol);
 }
 
-void ArkanoidDrawer::displayChanges() {
+void ArkanoidDrawer::displayChanges()
+{
     m_window->display();
 }
 
-void ArkanoidDrawer::drawMenu() {
+void ArkanoidDrawer::drawMenu()
+{
     static sf::RectangleShape helperShape(sf::Vector2f(m_window->getSize()));
     helperShape.setTexture(m_resourceManager.getTexture(MainMenuBackground));
     helperShape.setPosition(0, 0);
@@ -43,7 +49,8 @@ void ArkanoidDrawer::drawMenu() {
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progress) {
+void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progress)
+{
     static sf::Sprite helperSprite;
     // draw pop-up background
     helperSprite.setTexture(*m_resourceManager.getTexture(LevelInfoBackground));
@@ -55,19 +62,16 @@ void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progre
     m_helperText.setFont(m_resourceManager.getFont(LevelInfoFont));
     m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize() + 10);
     m_window->draw(m_helperText);
-//    m_window->display();
-//    m_window->display();
     // draw text: Progress: xxx
     m_helperText.setString(std::string("Progress: ") + std::to_string(progress));
     m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize()*2 + 10 + LineSpacing);
     m_window->draw(m_helperText);
-//    m_window->display();
-//    m_window->display();
     // and display all drawn stuff
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon) {
+void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
+{
     drawGameScene();
     static sf::Sprite helperSprite;
     // configure pop-up background
@@ -89,7 +93,8 @@ void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
     m_helperText.setFillColor(sf::Color::White);
 }
 
-unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay /* = false */) {
+unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay /* = false */)
+{
     // create object which must be drawn
     auto object = new sf::RectangleShape(size);
     object->setPosition(position);
@@ -105,7 +110,8 @@ unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vect
     return m_drawnObjects.size() - 1;
 }
 
-void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f &newPosition) {
+void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f &newPosition)
+{
     ObjectInfo& movable = m_drawnObjects[id];
     // clean up scene (only the area which necessarily)
     if(movable.previousArea == nullptr) { // for this statement previousArea declared as pointer, and initializes as nullptr
@@ -123,7 +129,8 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f &newPosit
     m_window->display();
 }
 
-void ArkanoidDrawer::drawGameScene() {
+void ArkanoidDrawer::drawGameScene()
+{
     static sf::RectangleShape helperShape(sf::Vector2f(m_window->getSize()));
     helperShape.setTexture(m_resourceManager.getTexture(GameSceneBackground));
     helperShape.setPosition(0, 0);
@@ -134,6 +141,25 @@ void ArkanoidDrawer::drawGameScene() {
         }
         m_window->display();
     }
+}
+
+void ArkanoidDrawer::drawCongratulations()
+{
+    static sf::Sprite helperSprite;
+    // draw pop-up background
+    helperSprite.setTexture(*m_resourceManager.getTexture(LevelInfoBackground));
+    helperSprite.setScale(sf::Vector2f(0.5, 0.5));
+    helperSprite.setPosition((m_window->getSize().x - helperSprite.getGlobalBounds().width) / 2, (m_window->getSize().y - helperSprite.getGlobalBounds().height) / 2);
+    m_window->draw(helperSprite);
+    // draw text: Congrats!!!
+    m_helperText.setFillColor(sf::Color::Red);
+    m_helperText.setString("  Congrats!!!\nYou have won\n  the game");
+    m_helperText.setFont(m_resourceManager.getFont(LevelInfoFont));
+    m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize() + 10);
+    m_window->draw(m_helperText);
+    m_helperText.setFillColor(sf::Color::White);
+    // and display all drawn stuff
+    m_window->display();
 }
 
 void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background) {
