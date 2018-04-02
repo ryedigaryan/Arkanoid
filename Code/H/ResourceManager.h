@@ -55,11 +55,11 @@ extern const Resource Level6;
 #define TextureReservationSize 15
 
 enum ResourceType {
-    T_Paddle,
-    T_Ball,
-    T_Border,
-    T_Brick,
-    T_Level,
+    ResourceTypePaddle,
+    ResourceTypeBall,
+    ResourceTypeBorder,
+    ResourceTypeBrick,
+    ResourceTypeLevel,
 };
 
 class ResourceManager {

@@ -73,7 +73,7 @@ Brick* Level::createBrick(unsigned brickType, unsigned index)
     position.x = BrickWidth * columnNumber;
     position.y = BrickHeight * rowNumber;
     // now brick type indicates Brick's health
-    Brick* brick = new Brick(ResourceManager::getManager().getResource(T_Brick, brickType).path, position, BrickSize, brickType);
+    Brick* brick = new Brick(ResourceManager::getManager().getResource(ResourceTypeBrick, brickType).path, position, BrickSize, brickType);
     if(go_delegate != nullptr) {
         brick->setDelegate(go_delegate);
     }

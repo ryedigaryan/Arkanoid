@@ -83,7 +83,7 @@ const sf::Texture* ResourceManager::getTexture(Resource resource)
 
 Level& ResourceManager::getLevel(const unsigned& number)
 {
-    const Resource resource = getResource(T_Level, number);
+    const Resource resource = getResource(ResourceTypeLevel, number);
     // every time we load level from file
     auto level = new Level();
     level->loadFromSpec(resource.path);
@@ -93,7 +93,7 @@ Level& ResourceManager::getLevel(const unsigned& number)
 const Resource ResourceManager::getResource(ResourceType type, int number)
 {
     switch(type) {
-        case T_Paddle:
+        case ResourceTypePaddle:
             switch(number) {
                 case 1:
                     return Paddle1Texture;
@@ -102,17 +102,17 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                 case 3:
                     return Paddle3Texture;
             }
-        case T_Ball:
+        case ResourceTypeBall:
             switch(number) {
                 case 1:
                     return BallTexture;
             }
-        case T_Border:
+        case ResourceTypeBorder:
             switch(number) {
                 case 1:
                     return BorderTexture;
             }
-        case T_Brick:
+        case ResourceTypeBrick:
             switch(number) {
                 case 1:
                     return Brick1Texture;
@@ -125,7 +125,7 @@ const Resource ResourceManager::getResource(ResourceType type, int number)
                 case 5:
                     return Brick5Texture;
             }
-        case T_Level:
+        case ResourceTypeLevel:
             switch(number) {
                 case 1:
                     return Level1;
