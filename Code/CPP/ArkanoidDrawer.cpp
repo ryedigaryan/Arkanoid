@@ -8,7 +8,7 @@
 #include "ArkanoidDrawer.h"
 
 ArkanoidDrawer::ArkanoidDrawer() {
-    m_window = new sf::RenderWindow(sf::VideoMode(300, 300), WindowTitle, sf::Style::Fullscreen);
+    m_window = new sf::RenderWindow(sf::VideoMode(300, 300), WindowTitle, sf::Style::Default);
 }
 
 sf::RenderWindow* ArkanoidDrawer::getDrawingWindow() {

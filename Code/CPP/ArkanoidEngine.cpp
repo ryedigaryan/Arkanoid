@@ -23,7 +23,7 @@ void ArkanoidEngine::stopPlayer() {
 }
 
 LevelState ArkanoidEngine::getLevelState() {
-    return LevelStateNone;
+    return LevelStateWon;
 }
 
 void ArkanoidEngine::setLevel(Level& level) {

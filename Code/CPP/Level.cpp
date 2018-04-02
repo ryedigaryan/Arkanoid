@@ -14,6 +14,7 @@ void Level::loadFromSpec(const std::string &specPath)
 {
     std::ifstream levelSpecReader;
     levelSpecReader.open(specPath);
+    cout << "Reading LevelSpec: " << specPath << endl;
     loadBricks(levelSpecReader);
     loadPlayer(levelSpecReader);
     loadBall(levelSpecReader);
@@ -27,15 +28,15 @@ void Level::loadBricks(std::ifstream &specReader)
     specReader >> brickColCount;
 
     // type of current Brick
-    unsigned brickType;
+    char brickType;
     // ordinal number of current Brick
     unsigned brickNumber = 0;
     while (!specReader.eof()) {
         // get the ID of current Brick
         specReader >> brickType;
-        if (isValidBrickType(brickType)) {
+        if (isValidBrickType(brickType - '0')) {
             // create Brick if it is a acceptable ID
-            Brick* brick = createBrick(brickType, brickNumber);
+            Brick* brick = createBrick(brickType - '0', brickNumber);
             // put the created Brick into all bricks list
             bricks.push_back(brick);
         }

@@ -12,7 +12,7 @@
 enum LevelState {
     LevelStateWon,
     LevelStateLost,
-    LevelStateNone,
+    LevelStateInProcess,
 };
 
 class ArkanoidEngine {

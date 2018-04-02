@@ -8,7 +8,7 @@ GamingState::GamingState(GameData *gameData, unsigned startLevelNumber) : State(
 {
     cout << "State: Gaming" << endl;
     m_currentLevelNumber = startLevelNumber;
-    m_currentLevelState = LevelStateNone;
+    m_currentLevelState = m_gameData->engine->getLevelState();
 }
 
 void GamingState::init()
