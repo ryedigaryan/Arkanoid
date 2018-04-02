@@ -19,7 +19,7 @@ void GamingState::init()
 void GamingState::handleInput()
 {
     Side playerMovementSide = SideNone;
-    sf::Event e;
+    static sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
@@ -49,7 +49,6 @@ void GamingState::update()
 {
     m_gameData->engine->process();
     m_currentLevelState = m_gameData->engine->getLevelState();
-    // if level ended then after pushing LevelEndState we load the next level
     if(m_currentLevelState != LevelStateInProcess) {
         if(m_currentLevelState == LevelStateWon && m_currentLevelNumber == m_lastLevelNumber) {
             m_gameData->stateMachine->pushState(new EntireGameWonState(m_gameData), Replace);
@@ -70,13 +69,6 @@ void GamingState::pause()
 
 void GamingState::resume()
 {
-//    if(m_currentLevelState == LevelStateWon || m_currentLevelState == LevelStateLost) { //TODO: curState != None
-//        m_currentLevelNumber++;
-//        Level& level = m_gameData->resourceManager->getLevel(m_currentLevelNumber);
-//        level.setGoDelegate(this);
-//        m_gameData->engine->setLevel(level);
-//        m_currentLevelState = m_gameData->engine->getLevelState();
-//    }
     m_gameData->drawer->drawGameScene();
 }
 

@@ -16,7 +16,7 @@ void StaticImageState::init() {
 void StaticImageState::handleInput()
 {
     sf::RenderWindow* mainWindow = m_gameData->drawer->getDrawingWindow();
-    sf::Event e;
+    static sf::Event e;
     while(mainWindow->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
             if(e.key.code == m_popKey) {
