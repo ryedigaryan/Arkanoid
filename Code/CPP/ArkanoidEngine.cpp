@@ -9,23 +9,33 @@ void ArkanoidEngine::process() {
 }
 
 int ArkanoidEngine::getProgress() {
-    return -1;
+    static int p = 0;
+    if(p == 3) {
+        m_state = LevelStateWon;
+        p = 0;
+    }
+    return p++;
 }
 
 void ArkanoidEngine::movePlayer(Side side) {
-    if(side == Side::SideLeft || side == Side::SideRight) {
+    if(side == SideLeft || side == SideRight) {
         m_playerMovementDirection = side;
     }
 }
 
 void ArkanoidEngine::stopPlayer() {
-    m_playerMovementDirection = Side::SideNone;
+    m_playerMovementDirection = SideNone;
 }
 
 LevelState ArkanoidEngine::getLevelState() {
-    return LevelStateWon;
+    return m_state;
 }
 
 void ArkanoidEngine::setLevel(Level& level) {
     m_level = level;
+    m_state = LevelStateInProcess;
+}
+
+Level &ArkanoidEngine::getLevel() {
+    return m_level;
 }

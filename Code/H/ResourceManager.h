@@ -70,7 +70,7 @@ public:
 public:
     const sf::Font& getFont(Resource resource);
     const sf::Texture* getTexture(Resource resource);
-    Level& getLevel(unsigned number);
+    Level& getLevel(const unsigned& number);
     const Resource getResource(ResourceType type, int number);
 
 

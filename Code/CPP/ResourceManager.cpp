@@ -21,11 +21,11 @@ const Resource Brick3Texture("Resources/Textures/Bricks/3");
 const Resource Brick4Texture("Resources/Textures/Bricks/4");
 const Resource Brick5Texture("Resources/Textures/Bricks/5");
 const Resource Level1("Resources/LevelSpecs/1.lvl");
-const Resource Level2("Resources/LevelSpecs/1.lvl");
-const Resource Level3("Resources/LevelSpecs/1.lvl");
-const Resource Level4("Resources/LevelSpecs/1.lvl");
-const Resource Level5("Resources/LevelSpecs/1.lvl");
-const Resource Level6("Resources/LevelSpecs/1.lvl");
+const Resource Level2("Resources/LevelSpecs/2.lvl");
+const Resource Level3("Resources/LevelSpecs/3.lvl");
+const Resource Level4("Resources/LevelSpecs/4.lvl");
+const Resource Level5("Resources/LevelSpecs/5.lvl");
+const Resource Level6("Resources/LevelSpecs/6.lvl");
 
 ResourceManager &ResourceManager::getManager()
 {
@@ -85,7 +85,7 @@ const sf::Texture* ResourceManager::getTexture(Resource resource)
     return texture;
 }
 
-Level& ResourceManager::getLevel(unsigned number)
+Level& ResourceManager::getLevel(const unsigned& number)
 {
     const Resource resource = getResource(T_Level, number);
     // every time we load level from file

@@ -16,8 +16,12 @@ void StateMachine::popActiveState() {
 }
 
 void StateMachine::pushState(State *newState, bool isReplacing /* = false */) {
-    if(isReplacing) {
-        popActiveState();
+    if(!m_states.empty()) {
+        if (isReplacing) {
+            popActiveState();
+        } else {
+            getActiveState()->pause();
+        }
     }
     m_states.push(newState);
     newState->init();

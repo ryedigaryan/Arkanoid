@@ -23,10 +23,15 @@ using std::cin;
 #define WindowTitle "Arkanoid - by Ruben"
 
 #define FirstLevelNumber 1
+#define LastLevelNumber 6
 
-#define Replace true
+#define Replace true // used when StateMachine must replace current active state with the new one
 #define HasWon true
 #define HasLost true
+
+#define PauseButton sf::Keyboard::P
+#define MoveLeftButton sf::Keyboard::Left
+#define MoveRightButton sf::Keyboard::Right
 
 
 enum Side {
