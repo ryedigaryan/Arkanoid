@@ -51,38 +51,34 @@ ResourceManager::ResourceManager() {
 // as the sf::Font and sf::Texture have no common interface which would help to load them, I created 2 separate functions for loading
 const sf::Font& ResourceManager::getFont(Resource resource)
 {
-    if(m_loadedFonts[resource.id] != nullptr) {
-        // if the font is in cache then return it
-        return *m_loadedFonts[resource.id];
+    if(m_loadedFonts[resource.id] == nullptr) {
+        // if resource is not in cache then load it to cache
+        auto font = new sf::Font();
+        if(!font->loadFromFile(resource.path)) {
+            cout << "Returning default font! Cause: cannot load font: " << resource.path << endl;
+            // if font cannot be loaded then return default font
+            return m_defaultFont;
+        }
+        // if font loaded successfully then store it in cache
+        m_loadedFonts[resource.id] = font;
     }
-    // if resource is not in cache then load it to cache
-    auto font = new sf::Font();
-    if(!font->loadFromFile(resource.path)) {
-        cout << "Returning default font! Cause: cannot load font: " << resource.path << endl;
-        // if font cannot be loaded then return default font
-        return m_defaultFont;
-    }
-    // if font loaded successfully then return it
-    m_loadedFonts[resource.id] = font;
-    return *font;
+    return *m_loadedFonts[resource.id];
 }
 
 const sf::Texture* ResourceManager::getTexture(Resource resource)
 {
-    if(m_loadedTextures[resource.id] != nullptr) {
-        // if the texture is in cache then return it
-        return m_loadedTextures[resource.id];
+    if(m_loadedTextures[resource.id] == nullptr) {
+        // if resource is not in cache then load it to cache
+        auto texture = new sf::Texture();
+        if(!texture->loadFromFile(resource.path)) {
+            cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
+            // if font cannot be loaded then return default texture
+            return m_defaultTexture;
+        }
+        // if texture loaded successfully then store it in cache
+        m_loadedTextures[resource.id] = texture;
     }
-    // if resource is not in cache then load it to cache
-    auto texture = new sf::Texture();
-    if(!texture->loadFromFile(resource.path)) {
-        cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
-        // if font cannot be loaded then return default texture
-        return m_defaultTexture;
-    }
-    // if texture loaded successfully then return it
-    m_loadedTextures[resource.id] = texture;
-    return texture;
+    return m_loadedTextures[resource.id];
 }
 
 Level& ResourceManager::getLevel(const unsigned& number)
