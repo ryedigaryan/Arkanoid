@@ -12,7 +12,7 @@ Level::Level(unsigned num, Size bricksDistance, int bricksCountOnPlayer, GameObj
 }
 
 Level::Level(const Level& other)
-        : number(other.number), brickRowCount(other.brickRowCount), brickColCount(other.brickColCount), player(other.player), ball(other.ball),                                   // publics
+        : number(other.number), brickRowCount(other.brickRowCount), brickColCount(other.brickColCount), player(other.player), ball(other.ball), borders(other.borders),                                   // publics
           go_delegate(other.go_delegate), m_brickDistance(other.m_brickDistance), m_bricksCountOnPlayer(other.m_bricksCountOnPlayer),  m_resourceManager(other.m_resourceManager) // privates
 {
     for(auto brick : other.bricks) {
@@ -31,6 +31,7 @@ Level& Level::operator=(const Level& other) {
         for(auto otherBrick : other.bricks) {
             bricks.push_back(new Brick(*otherBrick));
         }
+        borders = other.borders;
         // privates
         go_delegate = other.go_delegate;
         m_brickDistance = other.m_brickDistance;
@@ -176,6 +177,9 @@ void Level::setGoDelegate(GameObjectDelegate* go_dlg) {
     go_delegate = go_dlg;
     for(auto brick : bricks) {
         brick->setDelegate(go_dlg);
+    }
+    for(auto border : borders) {
+        border.setDelegate(go_dlg);
     }
     player.setDelegate(go_dlg);
     ball.setDelegate(go_dlg);

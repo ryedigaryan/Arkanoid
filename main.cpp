@@ -31,9 +31,9 @@ int main()
 {
 
 
-    ArkanoidGameController c;
-    c.start();
-    return 0;
+//    ArkanoidGameController c;
+//    c.start();
+//    return 0;
     sf::RenderWindow w(sf::VideoMode(500, 500), "test");
     sf::RectangleShape s;
     s.setFillColor(sf::Color::Red);
@@ -42,9 +42,11 @@ int main()
     sf::Image img;
     img.loadFromFile(ResourceManager::getManager().pathToTexture(ObjectTypeBrick, 3, ResolutionMedium));
 
-    sf::Texture texture;
-    texture.loadFromImage(img);
-    sf::Sprite spr(texture);
+    auto texture = new sf::Texture(*ResourceManager::getManager().getTexture(ObjectTypeBorder, 1));
+
+    sf::RectangleShape spr;
+    spr.setSize(sf::Vector2f(25, 100));
+    spr.setTexture(texture);
     w.draw(spr);
     w.display();
 
@@ -52,6 +54,9 @@ int main()
         sf::Event e;
         while(w.pollEvent(e)) {
             if(e.type == sf::Event::Closed) {
+                w.close();
+            }
+            else if(e.type == sf::Event::KeyPressed) {
                 w.close();
             }
         }
