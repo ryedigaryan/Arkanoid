@@ -52,6 +52,7 @@ void GamingState::update()
     m_currentLevelState = m_gameData->engine->getLevelState();
     if(m_currentLevelState != LevelStateInProcess) {
         if(m_currentLevelState == LevelStateWon && m_currentLevelNumber == m_lastLevelNumber) {
+            m_gameData->drawer->clearScreen();
             m_gameData->stateMachine->pushState(new EntireGameWonState(m_gameData), Replace);
             return;
         }

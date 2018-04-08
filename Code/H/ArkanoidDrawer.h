@@ -43,7 +43,7 @@ public:
 private:
     ResourceManager& m_resourceManager = ResourceManager::getManager();
     sf::RenderWindow* m_window;
-    std::vector<ObjectInfo> m_drawnObjects;
+    std::vector<ObjectInfo*> m_drawnObjects;
 
     sf::Text m_helperText;
 
