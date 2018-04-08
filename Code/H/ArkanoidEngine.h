@@ -29,7 +29,7 @@ public:
 
 private:
     Side m_playerMovementDirection = SideNone;
-    Level m_level;
+    Level m_level = Level(0, BricksDistance, BricksCountOnPlayer);
     LevelState m_state;
 };
 

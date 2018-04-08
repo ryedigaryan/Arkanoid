@@ -4,36 +4,14 @@
 
 #include "ResourceManager.h"
 
-const Resource MainMenuFont("Resources/Fonts/default");
-const Resource LevelInfoFont("Resources/Fonts/default");
-
-const Resource MainMenuBackground("Resources/Textures/main_menu_bg");
-const Resource LevelInfoBackground("Resources/Textures/popup_bg");
-const Resource GameSceneBackground("Resources/Textures/game_scene_bg");
-const Resource BallTexture("Resources/Textures/Balls/1");
-const Resource BorderTexture("Resources/Textures/Borders/1");
-const Resource Paddle1Texture("Resources/Textures/Paddles/1");
-const Resource Paddle2Texture("Resources/Textures/Paddles/2");
-const Resource Paddle3Texture("Resources/Textures/Paddles/3");
-const Resource Brick1Texture("Resources/Textures/Bricks/1");
-const Resource Brick2Texture("Resources/Textures/Bricks/2");
-const Resource Brick3Texture("Resources/Textures/Bricks/3");
-const Resource Brick4Texture("Resources/Textures/Bricks/4");
-const Resource Brick5Texture("Resources/Textures/Bricks/5");
-const Resource Level1("Resources/LevelSpecs/1.lvl");
-const Resource Level2("Resources/LevelSpecs/2.lvl");
-const Resource Level3("Resources/LevelSpecs/3.lvl");
-const Resource Level4("Resources/LevelSpecs/4.lvl");
-const Resource Level5("Resources/LevelSpecs/5.lvl");
-const Resource Level6("Resources/LevelSpecs/6.lvl");
-
-ResourceManager &ResourceManager::getManager()
+ResourceManager& ResourceManager::getManager()
 {
     static ResourceManager instance;
     return instance;
 }
 
-ResourceManager::ResourceManager() {
+ResourceManager::ResourceManager()
+{
     m_defaultFont;
     if(!m_defaultFont.loadFromFile(DefaultFontPath)) {
         cout << "FATAL ERROR: ResourceManager() - cannot load font: " << DefaultFontPath << endl;
@@ -44,102 +22,163 @@ ResourceManager::ResourceManager() {
         cout << "FATAL ERROR: ResourceManager() - cannot load texture: " << DefaultTexturePath << endl;
     }
 
-    m_loadedFonts.resize(FontReservationSize, nullptr);
-    m_loadedTextures.resize(TextureReservationSize, nullptr);
+    m_resolution = ResolutionMedium;
 }
 
-// as the sf::Font and sf::Texture have no common interface which would help to load them, I created 2 separate functions for loading
-const sf::Font& ResourceManager::getFont(Resource resource)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////Functions for getting resources////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const sf::Font& ResourceManager::getFont(StateType state)
 {
-    if(m_loadedFonts[resource.id] == nullptr) {
-        // if resource is not in cache then load it to cache
-        auto font = new sf::Font();
-        if(!font->loadFromFile(resource.path)) {
-            cout << "Returning default font! Cause: cannot load font: " << resource.path << endl;
-            // if font cannot be loaded then return default font
+    if(m_loadedFonts.size() < state + 1) {
+        m_loadedFonts.resize(state + 1, nullptr);
+    }
+    if(m_loadedFonts[state] == nullptr) {
+        auto newFont = new sf::Font();
+        if(!newFont->loadFromFile(pathToFont(state))) {
+            cout << "FATAL ERROR: Cannot Read Font for state: " << state << " at path: " << pathToFont(state) << endl;
             return m_defaultFont;
         }
-        // if font loaded successfully then store it in cache
-        m_loadedFonts[resource.id] = font;
+        m_loadedFonts[state] = newFont;
+
     }
-    return *m_loadedFonts[resource.id];
+    return *m_loadedFonts[state];
 }
 
-const sf::Texture* ResourceManager::getTexture(Resource resource)
+const sf::Texture* ResourceManager::getTexture(StateType stateType)
 {
-    if(m_loadedTextures[resource.id] == nullptr) {
-        // if resource is not in cache then load it to cache
-        auto texture = new sf::Texture();
-        if(!texture->loadFromFile(resource.path)) {
-            cout << "Returning default texture! Cause: cannot load texture: " << resource.path << endl;
-            // if font cannot be loaded then return default texture
+    if(m_loadedStateTextures.size() < stateType + 1) {
+        m_loadedStateTextures.resize(stateType + 1, nullptr);
+    }
+    if(m_loadedStateTextures[stateType] == nullptr) {
+        // if there is no texture for query State in cache then load it from file
+        auto newTexture = new sf::Texture();
+        if(!newTexture->loadFromFile(pathToTexture(stateType, m_resolution))) {
+            cout << "FATAL ERROR: Cannot Read Texture for State: " << stateType << " at path: " << pathToTexture(stateType, m_resolution) << endl;
             return m_defaultTexture;
         }
-        // if texture loaded successfully then store it in cache
-        m_loadedTextures[resource.id] = texture;
+        m_loadedStateTextures[stateType] = newTexture;
+
     }
-    return m_loadedTextures[resource.id];
+    return m_loadedStateTextures[stateType];
 }
 
-Level& ResourceManager::getLevel(const unsigned& number)
+const sf::Texture* ResourceManager::getTexture(ObjectType objectType, unsigned number /* = 1 */)
 {
-    const Resource resource = getResource(ResourceTypeLevel, number);
-    // every time we load level from file
-    auto level = new Level();
-    level->loadFromSpec(resource.path);
-    return *level;
+    if(m_loadedObjectTextures.size() < objectType + 1) {
+        std::vector<sf::Texture*> emptyVector;
+        m_loadedObjectTextures.resize(objectType + 1, emptyVector);
+    }
+    if(m_loadedObjectTextures[objectType].size() < number) {
+        m_loadedObjectTextures[objectType].resize(number, nullptr);
+    }
+    if(m_loadedObjectTextures[objectType][number - 1] == nullptr) {
+        // if there is no texture for query object in cache then load it from file
+        auto newTexture = new sf::Texture();
+        if(!newTexture->loadFromFile(pathToTexture(objectType, number, m_resolution))) {
+            cout << "FATAL ERROR: Cannot Read Texture for object: " << objectType << " at path: " << pathToTexture(objectType, number, m_resolution) << endl;
+            return m_defaultTexture;
+        }
+        m_loadedObjectTextures[objectType][number - 1] = newTexture;
+
+    }
+    return m_loadedObjectTextures[objectType][number - 1];
 }
 
-const Resource ResourceManager::getResource(ResourceType type, int number)
+Level ResourceManager::getLevel(const unsigned& levelNumber)
 {
-    switch(type) {
-        case ResourceTypePaddle:
-            switch(number) {
-                case 1:
-                    return Paddle1Texture;
-                case 2:
-                    return Paddle2Texture;
-                case 3:
-                    return Paddle3Texture;
-            }
-        case ResourceTypeBall:
-            switch(number) {
-                case 1:
-                    return BallTexture;
-            }
-        case ResourceTypeBorder:
-            switch(number) {
-                case 1:
-                    return BorderTexture;
-            }
-        case ResourceTypeBrick:
-            switch(number) {
-                case 1:
-                    return Brick1Texture;
-                case 2:
-                    return Brick2Texture;
-                case 3:
-                    return Brick3Texture;
-                case 4:
-                    return Brick4Texture;
-                case 5:
-                    return Brick5Texture;
-            }
-        case ResourceTypeLevel:
-            switch(number) {
-                case 1:
-                    return Level1;
-                case 2:
-                    return Level2;
-                case 3:
-                    return Level3;
-                case 4:
-                    return Level4;
-                case 5:
-                    return Level5;
-                case 6:
-                    return Level6;
-            }
+    if(m_loadedLevels.size() < levelNumber) {
+        m_loadedLevels.resize(levelNumber, nullptr);
     }
-    throw NoSuchResourceError(type, number);
+    if(m_loadedLevels[levelNumber - 1] == nullptr) {
+        auto newLevel = new Level(levelNumber, BricksDistance, BricksCountOnPlayer);
+        newLevel->loadFromSpec(pathToLevel(levelNumber));
+        m_loadedLevels[levelNumber - 1] = newLevel;
+    }
+    return *m_loadedLevels[levelNumber - 1];
+//    auto levelSpecPath = pathToLevel(levelNumber);
+//    // every time we load level from file
+//    auto level = new Level();
+//    level->loadFromSpec(pathToLevel(levelNumber));
+//    return *level;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////Functions for path creating//////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+std::string ResourceManager::pathToFont(StateType state)
+{
+    return DefaultFontPath;
+}
+
+std::string ResourceManager::pathToTexture(StateType stateType, Resolution screenResolution)
+{
+    std::string path = TexturesDir;
+    path.append(toString(screenResolution) + PathSeparator)
+        .append(toString(stateType));
+    return path;
+}
+
+std::string ResourceManager::pathToTexture(ObjectType objectType, unsigned number, Resolution screenResolution)
+{
+    std::string path = TexturesDir;
+    path.append(toString(screenResolution) + PathSeparator)
+        .append(toString(objectType) + PathSeparator)
+        .append(toString(number));
+    return path;
+}
+
+std::string ResourceManager::pathToLevel(unsigned levelNumber)
+{
+    return LevelSpecsDir + toString(levelNumber);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////Functions for converting integral types to std::string/////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+std::string ResourceManager::toString(StateType stateType)
+{
+    switch(stateType) {
+        case StateTypeMainMenu:
+            return "main_menu_bg";
+        case StateTypeGaming:
+            return "game_scene_bg";
+        case StateTypePaused:
+        case StateTypeLevelEnd:
+        case StateTypeEntireGameWon:
+            return "popup_bg";
+    }
+}
+
+std::string ResourceManager::toString(ObjectType objectType)
+{
+    switch(objectType) {
+        case ObjectTypePaddle:
+            return "Paddles";
+        case ObjectTypeBall:
+            return "Balls";
+        case ObjectTypeBorder:
+            return "Borders";
+        case ObjectTypeBrick:
+            return "Bricks";
+        case ObjectTypeLevel:
+            return "Levels";
+    }
+}
+
+std::string ResourceManager::toString(Resolution resolution)
+{
+    switch(resolution) {
+        case ResolutionHigh:
+            return "ResolutionHigh";
+        case ResolutionMedium:
+            return "ResolutionMedium";
+        case ResolutionLow:
+            return "ResolutionLow";
+    }
+}
+
+std::string ResourceManager::toString(unsigned number)
+{
+    return std::to_string(number);
 }

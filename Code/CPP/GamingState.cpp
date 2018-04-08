@@ -57,8 +57,6 @@ void GamingState::update()
         }
         // else
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState));
-        setEngineLevel(++m_currentLevelNumber);
-        m_currentLevelState = m_gameData->engine->getLevelState();
     }
     m_gameData->drawer->drawGameScene();
 }
@@ -70,12 +68,15 @@ void GamingState::pause()
 
 void GamingState::resume()
 {
+    if(m_currentLevelState != LevelStateInProcess) {
+        setEngineLevel(++m_currentLevelNumber);
+    }
     m_gameData->drawer->drawGameScene();
 }
 
 void GamingState::setEngineLevel(const unsigned& levelNumber) {
-    Level& level = m_gameData->resourceManager->getLevel(levelNumber);
+    Level level = m_gameData->resourceManager->getLevel(levelNumber);
     level.setGoDelegate(this);
     m_gameData->engine->setLevel(level);
+    m_currentLevelState = m_gameData->engine->getLevelState();
 }
-

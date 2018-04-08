@@ -4,11 +4,13 @@
 
 #include "ArkanoidEngine.h"
 
-void ArkanoidEngine::process() {
+void ArkanoidEngine::process()
+{
 
 }
 
-int ArkanoidEngine::getProgress() {
+int ArkanoidEngine::getProgress()
+{
     static int p = 0;
     if(p == 3) {
         m_state = LevelStateWon;
@@ -37,6 +39,6 @@ void ArkanoidEngine::setLevel(Level& level) {
     m_state = LevelStateInProcess;
 }
 
-Level &ArkanoidEngine::getLevel() {
+Level& ArkanoidEngine::getLevel() {
     return m_level;
 }

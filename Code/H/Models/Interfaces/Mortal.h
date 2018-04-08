@@ -11,7 +11,7 @@ public:
     //virtual void heal(int diff) = 0;
 
 protected:
-    Mortal(int health = 0) : m_health(health) {}
+    explicit Mortal(int health = 1) : m_health(health) {}
 
     int m_health;
 };

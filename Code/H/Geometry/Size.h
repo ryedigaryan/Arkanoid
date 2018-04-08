@@ -6,13 +6,15 @@
 #define ARCANOID_SIZE_H
 
 enum Dimension {
-    Width,
-    Height
+    DimensionWidth,
+    DimensionHeight
 };
+
+class Point;
 
 class Size {
 public:
-    Size(int width = 0, int height = 0)
+    explicit Size(int width = 0, int height = 0)
             : width(width), height(height) {}
 
 public:

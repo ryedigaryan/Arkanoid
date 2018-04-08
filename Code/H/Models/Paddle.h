@@ -11,8 +11,8 @@
 
 class Paddle : public GameObject, public Movable, public Mortal {
 public:
-    explicit Paddle(const std::string& texturePath = "", Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = DefaultPaddleInitialHealth)
-            : GameObject(texturePath, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
+    explicit Paddle(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = DefaultPaddleInitialHealth)
+            : GameObject(ObjectTypePaddle, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
     void move(int dx, int dy) override {
         m_position.x += dx;
@@ -20,7 +20,7 @@ public:
         m_delegate->go_moved(m_identifier, m_position);
     }
 
-    void setVelocity(int module, int angle) {
+    void setVelocity(int module, int angle) override {
         m_velocity.m_module = module;
         m_velocity.m_angle = angle;
     }

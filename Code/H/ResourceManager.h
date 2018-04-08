@@ -6,88 +6,44 @@
 #define ARCANOID_RESOURCEMANAGER_H
 
 #include "Definitions/CommonDefinitions.h"
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
 #include "Models/Level.h"
-
-#define DefaultTexturePath "Resources/Textures/default"
-#define DefaultFontPath "Resources/Fonts/default"
-
-class Resource {
-public:
-    explicit Resource(const std::string& p) : path(p) {}
-    explicit Resource(std::string&& p) : path(std::move(p)) {}
-
-    const std::string path;
-    const unsigned id = nextID();
-private:
-    unsigned nextID() {
-        static unsigned id = 0;
-        return id++;
-    }
-};
-
-extern const Resource MainMenuFont;
-extern const Resource LevelInfoFont;
-
-extern const Resource MainMenuBackground;
-extern const Resource LevelInfoBackground;
-extern const Resource GameSceneBackground;
-extern const Resource BallTexture;
-extern const Resource BorderTexture;
-extern const Resource Paddle1Texture;
-extern const Resource Paddle2Texture;
-extern const Resource Paddle3Texture;
-extern const Resource Brick1Texture;
-extern const Resource Brick2Texture;
-extern const Resource Brick3Texture;
-extern const Resource Brick4Texture;
-extern const Resource Brick5Texture;
-extern const Resource Level1;
-extern const Resource Level2;
-extern const Resource Level3;
-extern const Resource Level4;
-extern const Resource Level5;
-extern const Resource Level6;
-
-// TODO: Do not forget to change definitions after adding new Resources
-#define FontReservationSize 2
-#define TextureReservationSize 15
-
-enum ResourceType {
-    ResourceTypePaddle,
-    ResourceTypeBall,
-    ResourceTypeBorder,
-    ResourceTypeBrick,
-    ResourceTypeLevel,
-};
-
-class NoSuchResourceError {
-public:
-    NoSuchResourceError(ResourceType t, int n) : type(t), number(n) {}
-    ResourceType type;
-    int number;
-};
-
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 class ResourceManager {
-public:
+public: // making singleton
     static ResourceManager& getManager();
     ResourceManager(const ResourceManager&) = delete;
     void operator=(const ResourceManager&) = delete;
-public:
-    const sf::Font& getFont(Resource resource);
-    const sf::Texture* getTexture(Resource resource);
-    Level& getLevel(const unsigned& number);
-    const Resource getResource(ResourceType type, int number);
 
+public: // public interface
+    Resolution m_resolution;
 
-private:
+    // resource getters
+    const sf::Font&     getFont(StateType state);
+    const sf::Texture*  getTexture(StateType stateType);
+    const sf::Texture*  getTexture(ObjectType objectType, unsigned number = 1);
+    Level               getLevel(const unsigned& levelNumber);
+    // path creators
+    std::string pathToFont(StateType state);
+    std::string pathToTexture(StateType stateType, Resolution screenResolution);
+    std::string pathToTexture(ObjectType objectType, unsigned number, Resolution screenResolution);
+    std::string pathToLevel(unsigned levelNumber);
+    // helpers(converters to string)
+    std::string toString(StateType objectType);
+    std::string toString(ObjectType objectType);
+    std::string toString(Resolution resolution);
+    std::string toString(unsigned number);
+
+private: // private data
     sf::Font m_defaultFont;
     sf::Texture* m_defaultTexture;
 
     std::vector<sf::Font*> m_loadedFonts;
-    std::vector<sf::Texture*> m_loadedTextures;
+    std::vector<sf::Texture*> m_loadedStateTextures;
+    std::vector<std::vector<sf::Texture*>> m_loadedObjectTextures;
+    std::vector<Level*> m_loadedLevels;
+
 
 private:
     ResourceManager();

@@ -67,7 +67,7 @@ int GameObject::get(const Axis& axis) const
 
 void GameObject::set(const Dimension& dimension, const int& value)
 {
-    dimension == Dimension::Width ? m_size.width = value : m_size.height = value;
+    dimension == Dimension::DimensionWidth ? m_size.width = value : m_size.height = value;
     if(m_delegate != nullptr) {
         m_delegate->go_sizeChanged(m_identifier, m_size);
     }
@@ -75,11 +75,16 @@ void GameObject::set(const Dimension& dimension, const int& value)
 
 int GameObject::get(const Dimension& dimension) const
 {
-    return (dimension == Dimension::Width ? m_size.width : m_size.height);
+    return (dimension == Dimension::DimensionWidth ? m_size.width : m_size.height);
 }
 
 unsigned GameObject::generateIdentifier()
 {
     static unsigned lastIdentifier;
     return lastIdentifier++;
+}
+
+ObjectType GameObject::getType() const
+{
+    return m_type;
 }

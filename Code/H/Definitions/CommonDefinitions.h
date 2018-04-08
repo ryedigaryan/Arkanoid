@@ -33,13 +33,45 @@ using std::cin;
 #define MoveLeftButton sf::Keyboard::Left
 #define MoveRightButton sf::Keyboard::Right
 
+#define DefaultTexturePath "Resources/Textures/default"
+#define DefaultFontPath "Resources/Fonts/default"
+#define LevelSpecsDir "Resources/LevelSpecs/"
+#define TexturesDir "Resources/Textures/"
+#define PathSeparator "/"
+
+#define IDontCare 666
+
+#define BricksDistance Size(2, 2)
+#define BricksCountOnPlayer 5
+
+enum StateType {
+    StateTypeMainMenu,
+    StateTypeGaming,
+    StateTypePaused,
+    StateTypeLevelEnd,
+    StateTypeEntireGameWon,
+};
+
+enum ObjectType {
+    ObjectTypePaddle,
+    ObjectTypeBall,
+    ObjectTypeBorder,
+    ObjectTypeBrick,
+    ObjectTypeLevel,
+};
+
+enum Resolution {
+    ResolutionHigh,   // 2k - ∞
+    ResolutionMedium, // 1920x1080 - 2k
+    ResolutionLow,    // 480x640 - 1920x1080
+};
 
 enum Side {
     SideLeft,
     SideRight,
     SideUp,
     SideDown,
-    SideNone
+    SideNone,
 };
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

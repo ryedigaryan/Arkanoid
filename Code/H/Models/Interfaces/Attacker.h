@@ -9,10 +9,11 @@
 
 class Attacker {
 public:
-    Attacker(int damage = 0)
+    explicit Attacker(int damage = 0)
             : m_damage(damage) {}
 
-    virtual void attack(Mortal* mortal) {
+    virtual void attack(Mortal* mortal)
+    {
         mortal->harm(m_damage);
     }
 

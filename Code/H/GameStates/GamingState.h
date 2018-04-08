@@ -24,7 +24,11 @@ public:
     void resume()      override;
 
     // GameObjectDelegate virtual functions
-    void go_delegateSet(const GameObject *go)                                 override {}
+    void go_delegateSet(const GameObject* go)                                 override {
+        m_gameData->drawer->drawObject(sf::Vector2f(go->get(AxisX), go->get(AxisY)), sf::Vector2f(go->get(DimensionWidth), go->get(DimensionHeight)), m_gameData->resourceManager->getTexture(go->getType()));
+//        m_gameData->drawer->displayChanges();
+//        m_gameData->drawer->displayChanges();
+    }
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override {}
     void go_isAtPeaceNow(unsigned go_id)                                      override {}
     void go_moved(unsigned go_id, const Point &go_position)                   override {}

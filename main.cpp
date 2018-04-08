@@ -27,17 +27,26 @@ public:
     }
 };
 
-int main() {
+int main()
+{
+
+
     ArkanoidGameController c;
     c.start();
     return 0;
     sf::RenderWindow w(sf::VideoMode(500, 500), "test");
     sf::RectangleShape s;
     s.setFillColor(sf::Color::Red);
-    sf::Vector2f pos(10, 10);
-    sf::Vector2f siz(20, 20);
-    s.setPosition(pos);
-    s.setSize(siz);
+    w.clear(sf::Color::Red);
+
+    sf::Image img;
+    img.loadFromFile(ResourceManager::getManager().pathToTexture(ObjectTypeBrick, 3, ResolutionMedium));
+
+    sf::Texture texture;
+    texture.loadFromImage(img);
+    sf::Sprite spr(texture);
+    w.draw(spr);
+    w.display();
 
     while(w.isOpen()) {
         sf::Event e;
@@ -45,37 +54,8 @@ int main() {
             if(e.type == sf::Event::Closed) {
                 w.close();
             }
-            else if(e.type == sf::Event::KeyPressed) {
-                switch(e.key.code) {
-                    case sf::Keyboard::Left:
-                        pos.x -= 10;
-                        break;
-                    case sf::Keyboard::Right:
-                        pos.x += 10;
-                        break;
-                    case sf::Keyboard::Up:
-                        pos.y -= 10;
-                        break;
-                    case sf::Keyboard::Down:
-                        pos.y += 10;
-                        break;
-                    case sf::Keyboard::Add:
-                        siz.x += 10;
-                        siz.y += 10;
-                        break;
-                    case sf::Keyboard::Subtract:
-                        siz.x -= 10;
-                        siz.y -= 10;
-                        break;
-                }
-            }
         }
 
-        w.clear();
-        s.setPosition(pos);
-        s.setSize(siz);
-        w.draw(s);
-        w.display();
     }
 
 }

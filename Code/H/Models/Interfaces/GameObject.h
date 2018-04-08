@@ -11,9 +11,10 @@
 #include "Definitions/ModelDefinitions.h"
 
 class GameObject {
-public:
-    explicit GameObject(const std::string& texturePath, Point position = Point(), Size size = Size())
-            : m_position(position), m_size(size), m_texturePath(texturePath) {}
+public: // public interface
+    explicit GameObject(ObjectType type, Point position = Point(), Size size = Size()) : m_type(type), m_position(position), m_size(size), m_identifier(generateIdentifier()) {}
+
+//    GameObject(GameObject& other) : m_position(other.m_position), m_size(other.m_size), m_delegate(other.m_delegate), m_identifier(other.m_identifier) {}
 
     ~GameObject();
 
@@ -25,21 +26,22 @@ public:
     void setSize(const Size& size);
     Point getPosition() const;
     Size getSize() const;
+    ObjectType getType() const;
 
     void set(const Axis& axis, const int& value);
     void set(const Dimension& dimension, const int& value);
     int get(const Axis& axis) const;
     int get(const Dimension& dimension) const;
 
-    std::string m_texturePath;
-protected:
+protected: // data
     Point m_position;
     Size m_size;
+    ObjectType m_type;
 
     GameObjectDelegate* m_delegate = nullptr;
 
 protected:
-    unsigned m_identifier = GameObject::generateIdentifier();
+    unsigned m_identifier;
     static unsigned generateIdentifier();
 };
 
