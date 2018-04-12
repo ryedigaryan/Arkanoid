@@ -35,6 +35,7 @@ Level& Level::operator=(const Level& other) {
         brickColCount = other.brickColCount;
         player = other.player;
         ball = other.ball;
+        bricks.clear();
         for(auto otherBrick : other.bricks) {
             bricks.push_back(new Brick(*otherBrick));
         }

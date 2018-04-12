@@ -20,7 +20,7 @@ void LevelEndState::init() {
 void LevelEndState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->drawLevelEndInfo(m_level, m_hasWon);
+        m_gameData->drawer->drawLevelEndPopUp(m_level, m_hasWon);
         m_needsRedraw = false;
     }
 }

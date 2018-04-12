@@ -14,7 +14,7 @@ PausedState::PausedState(GameData* gameData, const unsigned& level, const int& p
 void PausedState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->drawLevelStartInfo(m_level, m_progress);
+        m_gameData->drawer->drawLevelStartPopUp(m_level, m_progress);
         m_needsRedraw = false;
     }
 }

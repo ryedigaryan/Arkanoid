@@ -12,7 +12,7 @@
 #define BrickWidth 100
 #define BrickSize Size(BrickWidth, BrickHeight)
 
-#define PlayerWidth 200
+#define PlayerWidth 300
 #define PlayerHeight 50
 #define PlayerSize Size(PlayerWidth, PlayerHeight)
 

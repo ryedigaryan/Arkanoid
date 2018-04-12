@@ -33,9 +33,9 @@ public:
     void clearScreen(sf::Color fillColor = sf::Color::Black);
     void displayChanges();
     void drawMenu();
-    void drawLevelStartInfo(const unsigned& level, const int& progress);
+    void drawLevelStartPopUp(const unsigned &level, const int &progress);
     void drawGameScene(const int& progress);
-    void drawLevelEndInfo(const unsigned& level, const bool& hasWon);
+    void drawLevelEndPopUp(const unsigned &level, const bool &hasWon);
     void drawCongratulations();
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);

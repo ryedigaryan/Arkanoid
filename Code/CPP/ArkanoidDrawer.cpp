@@ -56,7 +56,7 @@ void ArkanoidDrawer::drawMenu()
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progress)
+void ArkanoidDrawer::drawLevelStartPopUp(const unsigned &level, const int &progress)
 {
     static sf::Sprite helperSprite;
     // draw pop-up background
@@ -91,7 +91,7 @@ void ArkanoidDrawer::drawGameScene(const int& progress)
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
+void ArkanoidDrawer::drawLevelEndPopUp(const unsigned &level, const bool &hasWon)
 {
     static sf::Sprite helperSprite;
     // configure pop-up background

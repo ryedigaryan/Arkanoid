@@ -72,7 +72,6 @@ void GamingState::resume()
     }
     // game scene must be updated 2 times because now screen may be modified (for example - pause info may be drawn)
     m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
-    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::setEngineLevel(const unsigned& levelNumber)
@@ -84,6 +83,8 @@ void GamingState::setEngineLevel(const unsigned& levelNumber)
     // we do not set delegate for border because it will not change it's position or size, or will not disappear
     m_gameData->engine->setLevel(level);
     m_currentLevelState = m_gameData->engine->getState();
+    // drawing game scene just because pause pop-up must be drawn on it
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress(false)));
 }
 
@@ -100,6 +101,7 @@ void GamingState::engine_levelSet(const Level &level)
     }
     drawer->drawObject(scale(level.player.getPosition()), scale(level.player.getSize()), m_gameData->resourceManager->getTexture(ObjectTypePaddle));
     drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
+    drawer->displayChanges();
 }
 
 void GamingState::calculateScaling()
@@ -118,4 +120,24 @@ sf::Vector2f GamingState::scale(const Point& position)
 sf::Vector2f GamingState::scale(const Size& size)
 {
     return sf::Vector2f(size.width * m_scaleFactor.x, size.height * m_scaleFactor.y);
+}
+
+void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthChange)
+{
+
+}
+
+void GamingState::go_isAtPeaceNow(unsigned go_id)
+{
+
+}
+
+void GamingState::go_moved(unsigned go_id, const Point &go_position)
+{
+
+}
+
+void GamingState::go_sizeChanged(unsigned go_id, const Size &go_size)
+{
+
 }
