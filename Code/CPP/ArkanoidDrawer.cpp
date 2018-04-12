@@ -9,7 +9,7 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode(), WindowTitle, sf::Style::Fullscreen);
+    m_window = new sf::RenderWindow(sf::VideoMode(500, 600), WindowTitle, sf::Style::Default);
 }
 
 sf::RenderWindow* ArkanoidDrawer::getDrawingWindow()
