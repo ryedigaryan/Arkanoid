@@ -12,9 +12,6 @@ EntireGameWonState::EntireGameWonState(GameData* gameData) : StaticImageState(ga
 void EntireGameWonState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->clearScreen(sf::Color::Red);
-        m_gameData->drawer->drawCongratulations();
-        m_gameData->drawer->clearScreen(sf::Color::Red);
         m_gameData->drawer->drawCongratulations();
         m_needsRedraw = false;
     }

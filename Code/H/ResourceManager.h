@@ -26,8 +26,8 @@ public: // public interface
     Level               getLevel(const unsigned& levelNumber);
     // path creators
     std::string pathToFont(StateType state);
-    std::string pathToTexture(StateType stateType, Resolution screenResolution);
-    std::string pathToTexture(ObjectType objectType, unsigned number, Resolution screenResolution);
+    std::string pathToTexture(StateType stateType);
+    std::string pathToTexture(ObjectType objectType, unsigned number);
     std::string pathToLevel(unsigned levelNumber);
     // helpers(converters to string)
     std::string toString(StateType objectType);

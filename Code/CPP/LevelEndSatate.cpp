@@ -4,17 +4,22 @@
 
 #include "GameStates/LevelEndState.h"
 
-LevelEndState::LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon) : StaticImageState(gameData, sf::Keyboard::Return), m_level(level), m_hasWon(hasWon)
+LevelEndState::LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon, const unsigned& lastLevel)
+        : StaticImageState(gameData, sf::Keyboard::Return), m_level(level), m_hasWon(hasWon), m_lastLevel(lastLevel)
 {
     cout << "State: LevelEnd" << endl;
+}
+
+void LevelEndState::init() {
+    StaticImageState::init();
+    if(m_level == m_lastLevel && m_hasWon) {
+        m_gameData->stateMachine->pushState(new EntireGameWonState(m_gameData), Replace);
+    }
 }
 
 void LevelEndState::update()
 {
     if(m_needsRedraw) {
-        m_gameData->drawer->clearScreen(sf::Color::Red);
-        m_gameData->drawer->drawLevelEndInfo(m_level, m_hasWon);
-        m_gameData->drawer->clearScreen(sf::Color::Red);
         m_gameData->drawer->drawLevelEndInfo(m_level, m_hasWon);
         m_needsRedraw = false;
     }

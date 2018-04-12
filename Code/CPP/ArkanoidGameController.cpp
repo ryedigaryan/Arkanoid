@@ -11,6 +11,8 @@ ArkanoidGameController::ArkanoidGameController()
     m_gameData.drawer = new ArkanoidDrawer();
     m_gameData.stateMachine = new StateMachine();
     m_gameData.resourceManager = &ResourceManager::getManager();
+    //TODO: resolution must be dependent from screen
+    m_gameData.resourceManager->m_resolution = ResolutionMedium;
 }
 
 void ArkanoidGameController::start()

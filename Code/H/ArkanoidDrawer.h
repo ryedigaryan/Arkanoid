@@ -33,21 +33,27 @@ public:
     void displayChanges();
     void drawMenu();
     void drawLevelStartInfo(const unsigned& level, const int& progress);
+    void drawGameScene();
     void drawLevelEndInfo(const unsigned& level, const bool& hasWon);
     void drawCongratulations();
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);
     void moveObject(const unsigned& id, const sf::Vector2f& newPosition);
-    void drawGameScene();
     void resizeObject(const unsigned& id, const sf::Vector2f& change);
 private:
+    sf::FloatRect m_backgroundRect;
+    sf::RectangleShape m_progressBar;
     ResourceManager& m_resourceManager = ResourceManager::getManager();
     sf::RenderWindow* m_window;
     std::vector<ObjectInfo*> m_drawnObjects;
 
     sf::Text m_helperText;
 
+private: // helper functions
     void cleanArea(const sf::IntRect& area, const sf::Texture* background);
+    void drawBackground(const sf::Texture *bgTexture, int corner);
+    void drawGameScenePane(Side side);
+    void drawProgressBar(unsigned progress);
 };
 
 #endif //ARCANOID_ARKANOIDDRAWER_H

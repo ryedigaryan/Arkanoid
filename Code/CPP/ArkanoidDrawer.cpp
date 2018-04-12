@@ -70,9 +70,20 @@ void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progre
     m_window->display();
 }
 
+void ArkanoidDrawer::drawGameScene()
+{
+        drawBackground(m_resourceManager.getTexture(StateTypeGaming), SideDown);
+        drawProgressBar(50);
+        drawGameScenePane(SideLeft);
+        drawGameScenePane(SideRight);
+        for (auto objInfo : m_drawnObjects) {
+            m_window->draw(*objInfo->object);
+        }
+        m_window->display();
+}
+
 void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
 {
-//    drawGameScene();
     static sf::Sprite helperSprite;
     // configure pop-up background
     helperSprite.setTexture(*m_resourceManager.getTexture(StateTypeLevelEnd));
@@ -98,11 +109,34 @@ void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
     m_drawnObjects.clear();
 }
 
+void ArkanoidDrawer::drawCongratulations()
+{
+    static sf::Sprite helperSprite;
+    // draw pop-up background
+    helperSprite.setTexture(*m_resourceManager.getTexture(StateTypeEntireGameWon));
+    helperSprite.setScale(sf::Vector2f(0.5, 0.5));
+    helperSprite.setPosition((m_window->getSize().x - helperSprite.getGlobalBounds().width) / 2, (m_window->getSize().y - helperSprite.getGlobalBounds().height) / 2);
+    m_window->draw(helperSprite);
+    // draw text: Congrats!!!
+    m_helperText.setFillColor(sf::Color::Red);
+    m_helperText.setString("  Congrats!!!\nYou have won\n  the game");
+    m_helperText.setFont(m_resourceManager.getFont(StateTypeEntireGameWon));
+    m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize() + 10);
+    m_window->draw(m_helperText);
+    m_helperText.setFillColor(sf::Color::White);
+    // and display all drawn stuff
+    m_window->display();
+    for(auto obj : m_drawnObjects) {
+        delete obj;
+    }
+    m_drawnObjects.clear();
+}
+
 unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay /* = false */)
 {
     // create object which must be drawn
     auto object = new sf::RectangleShape(size);
-    object->setPosition(position);
+    object->setPosition(position.x + m_backgroundRect.left, position.y + m_backgroundRect.top);
     object->setTexture(texture);
     // draw and add it to already drawn objects array
     m_window->draw(*object);
@@ -134,48 +168,68 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f &newPosit
     m_window->display();
 }
 
-void ArkanoidDrawer::drawGameScene()
+void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background)
 {
-    static sf::RectangleShape helperShape(sf::Vector2f(m_window->getSize()));
-    helperShape.setTexture(m_resourceManager.getTexture(StateTypeGaming));
-    helperShape.setPosition(0, 0);
-    for(int i = 1; i <= 2; i++) {
-        m_window->draw(helperShape);
-        for (auto objInfo : m_drawnObjects) {
-            m_window->draw(*objInfo->object);
-        }
-        m_window->display();
-    }
-}
-
-void ArkanoidDrawer::drawCongratulations()
-{
-    static sf::Sprite helperSprite;
-    // draw pop-up background
-    helperSprite.setTexture(*m_resourceManager.getTexture(StateTypeEntireGameWon));
-    helperSprite.setScale(sf::Vector2f(0.5, 0.5));
-    helperSprite.setPosition((m_window->getSize().x - helperSprite.getGlobalBounds().width) / 2, (m_window->getSize().y - helperSprite.getGlobalBounds().height) / 2);
-    m_window->draw(helperSprite);
-    // draw text: Congrats!!!
-    m_helperText.setFillColor(sf::Color::Red);
-    m_helperText.setString("  Congrats!!!\nYou have won\n  the game");
-    m_helperText.setFont(m_resourceManager.getFont(StateTypeEntireGameWon));
-    m_helperText.setPosition((helperSprite.getGlobalBounds().width - m_helperText.getLocalBounds().width) / 2 + helperSprite.getGlobalBounds().left, helperSprite.getGlobalBounds().top + m_helperText.getCharacterSize() + 10);
-    m_window->draw(m_helperText);
-    m_helperText.setFillColor(sf::Color::White);
-    // and display all drawn stuff
-    m_window->display();
-    for(auto obj : m_drawnObjects) {
-        delete obj;
-    }
-    m_drawnObjects.clear();
-}
-
-void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background) {
     static sf::RectangleShape helperShape;
     helperShape.setTexture(background);
     helperShape.setTextureRect(area);
     helperShape.setPosition(area.left, area.top);
     helperShape.setSize(sf::Vector2f(area.width, area.height));
     m_window->draw(helperShape);
+}
+
+void ArkanoidDrawer::drawBackground(const sf::Texture *bgTexture, int corner)
+{
+    sf::RectangleShape helperShape;
+    helperShape.setSize(sf::Vector2f(bgTexture->getSize()));
+    helperShape.setTexture(bgTexture);
+    float xPos = (m_window->getSize().x - bgTexture->getSize().x) / 2;
+    float yPos = (m_window->getSize().y - bgTexture->getSize().y) / 2;;
+    if((corner & SideLeft) == SideLeft) {
+        xPos = 0;
+    }
+    if((corner & SideRight) == SideRight) {
+        xPos = m_window->getSize().x - bgTexture->getSize().x;
+    }
+    if((corner & SideUp) == SideUp) {
+        yPos = 0;
+    }
+    if((corner & SideDown) == SideDown) {
+        yPos = m_window->getSize().y - bgTexture->getSize().y;
+    }
+    helperShape.setPosition(xPos, yPos);
+    m_backgroundRect = helperShape.getGlobalBounds();
+    m_window->draw(helperShape);
+}
+
+void ArkanoidDrawer::drawGameScenePane(Side side)
+{
+    sf::RectangleShape shape;
+    switch(side) {
+        case SideLeft:
+            shape.setPosition(0, m_backgroundRect.top);
+            shape.setSize(sf::Vector2f(m_backgroundRect.left, m_backgroundRect.height));
+            shape.setFillColor(sf::Color(190, 190, 190));
+            m_window->draw(shape);
+            break;
+        case SideRight:
+            shape.setPosition(m_backgroundRect.left + m_backgroundRect.width, m_backgroundRect.top);
+            shape.setSize(sf::Vector2f(m_window->getSize().x - m_backgroundRect.left - m_backgroundRect.width, m_backgroundRect.height));
+            shape.setFillColor(sf::Color::Blue);
+            m_window->draw(shape);
+            break;
+    }
+}
+
+void ArkanoidDrawer::drawProgressBar(unsigned progress) {
+    static sf::RectangleShape bg;
+    bg.setPosition(0, 0);
+    bg.setSize(sf::Vector2f(m_window->getSize().x, m_backgroundRect.top));
+    bg.setFillColor(sf::Color::Black);
+    static sf::RectangleShape bar;
+    bar.setSize(sf::Vector2f((bg.getSize().x - 20.f) * (progress / 100.f), bg.getSize().y / 3.f));
+    bar.setPosition(10, (bg.getSize().y - bar.getSize().y) / 2);
+    bar.setFillColor(sf::Color::Green);
+    m_window->draw(bg);
+    m_window->draw(bar);
 }

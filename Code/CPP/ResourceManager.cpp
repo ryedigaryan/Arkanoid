@@ -53,8 +53,8 @@ const sf::Texture* ResourceManager::getTexture(StateType stateType)
     if(m_loadedStateTextures[stateType] == nullptr) {
         // if there is no texture for query State in cache then load it from file
         auto newTexture = new sf::Texture();
-        if(!newTexture->loadFromFile(pathToTexture(stateType, m_resolution))) {
-            cout << "FATAL ERROR: Cannot Read Texture for State: " << stateType << " at path: " << pathToTexture(stateType, m_resolution) << endl;
+        if(!newTexture->loadFromFile(pathToTexture(stateType))) {
+            cout << "FATAL ERROR: Cannot Read Texture for State: " << stateType << " at path: " << pathToTexture(stateType) << endl;
             return m_defaultTexture;
         }
         m_loadedStateTextures[stateType] = newTexture;
@@ -75,8 +75,8 @@ const sf::Texture* ResourceManager::getTexture(ObjectType objectType, unsigned n
     if(m_loadedObjectTextures[objectType][number - 1] == nullptr) {
         // if there is no texture for query object in cache then load it from file
         auto newTexture = new sf::Texture();
-        if(!newTexture->loadFromFile(pathToTexture(objectType, number, m_resolution))) {
-            cout << "FATAL ERROR: Cannot Read Texture for object: " << objectType << " at path: " << pathToTexture(objectType, number, m_resolution) << endl;
+        if(!newTexture->loadFromFile(pathToTexture(objectType, number))) {
+            cout << "FATAL ERROR: Cannot Read Texture for object: " << objectType << " at path: " << pathToTexture(objectType, number) << endl;
             return m_defaultTexture;
         }
         m_loadedObjectTextures[objectType][number - 1] = newTexture;
@@ -96,11 +96,6 @@ Level ResourceManager::getLevel(const unsigned& levelNumber)
         m_loadedLevels[levelNumber - 1] = newLevel;
     }
     return *m_loadedLevels[levelNumber - 1];
-//    auto levelSpecPath = pathToLevel(levelNumber);
-//    // every time we load level from file
-//    auto level = new Level();
-//    level->loadFromSpec(pathToLevel(levelNumber));
-//    return *level;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,18 +106,18 @@ std::string ResourceManager::pathToFont(StateType state)
     return DefaultFontPath;
 }
 
-std::string ResourceManager::pathToTexture(StateType stateType, Resolution screenResolution)
+std::string ResourceManager::pathToTexture(StateType stateType)
 {
     std::string path = TexturesDir;
-    path.append(toString(screenResolution) + PathSeparator)
+    path.append(toString(m_resolution) + PathSeparator)
         .append(toString(stateType));
     return path;
 }
 
-std::string ResourceManager::pathToTexture(ObjectType objectType, unsigned number, Resolution screenResolution)
+std::string ResourceManager::pathToTexture(ObjectType objectType, unsigned number)
 {
     std::string path = TexturesDir;
-    path.append(toString(screenResolution) + PathSeparator)
+    path.append(toString(m_resolution) + PathSeparator)
         .append(toString(objectType) + PathSeparator)
         .append(toString(number));
     return path;

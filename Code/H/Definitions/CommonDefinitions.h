@@ -67,11 +67,11 @@ enum Resolution {
 };
 
 enum Side {
-    SideLeft,
-    SideRight,
-    SideUp,
-    SideDown,
-    SideNone,
+    SideLeft  = 0x0000000f,
+    SideRight = 0x000000f0,
+    SideUp    = 0x00000f00,
+    SideDown  = 0x0000f000,
+    SideNone  = 0x000f0000,
 };
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

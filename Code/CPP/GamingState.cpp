@@ -12,6 +12,8 @@ GamingState::GamingState(GameData* gameData, unsigned startLevelNumber, unsigned
 
 void GamingState::init()
 {
+    m_gameData->drawer->drawGameScene();
+    m_gameData->drawer->drawGameScene();
     setEngineLevel(m_currentLevelNumber = m_firstLevelNumber);
     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
 }
@@ -51,26 +53,27 @@ void GamingState::update()
     m_gameData->engine->process();
     m_currentLevelState = m_gameData->engine->getLevelState();
     if(m_currentLevelState != LevelStateInProcess) {
-        if(m_currentLevelState == LevelStateWon && m_currentLevelNumber == m_lastLevelNumber) {
-            m_gameData->stateMachine->pushState(new EntireGameWonState(m_gameData), Replace);
-            return;
-        }
-        // else
-        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState));
+        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
     }
     m_gameData->drawer->drawGameScene();
 }
 
 void GamingState::pause()
 {
-    m_gameData->drawer->drawGameScene();
+    // nothing must be done
 }
 
 void GamingState::resume()
 {
     if(m_currentLevelState != LevelStateInProcess) {
+        if(m_currentLevelNumber == m_lastLevelNumber) {
+            m_gameData->stateMachine->popActiveState();
+            return;
+        }
         setEngineLevel(++m_currentLevelNumber);
     }
+    // game scene must be updated 2 times because now screen may be modified (for example - pause info may be drawn)
+    m_gameData->drawer->drawGameScene();
     m_gameData->drawer->drawGameScene();
 }
 

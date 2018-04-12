@@ -6,15 +6,18 @@
 #define ARCANOID_LEVELENDSTATE_H
 
 #include "StaticImageState.h"
+#include "EntireGameWonState.h"
 
 class LevelEndState : public StaticImageState {
 public:
-    LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon);
+    LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon, const unsigned& maxLevel);
 
-    void update()      override;
+    void init()   override;
+    void update() override;
 
     bool m_hasWon;
     unsigned m_level;
+    unsigned m_lastLevel;
 };
 
 #endif //ARCANOID_LEVELENDSTATE_H
