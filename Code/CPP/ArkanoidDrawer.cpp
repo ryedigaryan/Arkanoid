@@ -9,7 +9,7 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode(), WindowTitle, sf::Style::Fullscreen);
+    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
 }
 
 ArkanoidDrawer::~ArkanoidDrawer()
@@ -77,12 +77,12 @@ void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progre
     m_window->display();
 }
 
-void ArkanoidDrawer::drawGameScene()
+void ArkanoidDrawer::drawGameScene(const int& progress)
 {
     drawBackground(m_resourceManager.getTexture(ObjectTypeLevel, 1), SideDown);
     drawBorder(SideLeft);
     drawBorder(SideRight);
-    drawProgressBar(50);
+    drawProgressBar(progress);
     drawGameScenePane(SideLeft);
     drawGameScenePane(SideRight);
     for (auto objInfo : m_drawnObjects) {
@@ -111,7 +111,6 @@ void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
     // and display all drawn stuff
     m_window->display();
     m_helperText.setFillColor(sf::Color::White);
-//    m_drawnObjects.clear();
     for(auto obj : m_drawnObjects) {
         delete obj;
     }
@@ -254,7 +253,8 @@ void ArkanoidDrawer::drawGameScenePane(Side side)
     }
 }
 
-void ArkanoidDrawer::drawProgressBar(unsigned progress) {
+void ArkanoidDrawer::drawProgressBar(int progress)
+{
     static sf::RectangleShape bg;
     bg.setPosition(0, 0);
     bg.setSize(sf::Vector2f(m_window->getSize().x, m_backgroundRect.top));

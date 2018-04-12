@@ -9,6 +9,10 @@ class Mortal {
 public:
     virtual void harm(int damage) = 0;
     //virtual void heal(int diff) = 0;
+    virtual int getHealth()
+    {
+        return m_health;
+    }
 
 protected:
     explicit Mortal(int health = 1) : m_health(health) {}

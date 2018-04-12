@@ -40,7 +40,8 @@ private:
 
     void setEngineLevel(const unsigned& levelNumber);
     void calculateScaling();
-    std::pair<sf::Vector2f, sf::Vector2f> scale(const Point& position, const Size& size);
+    sf::Vector2f scale(const Point& position);
+    sf::Vector2f scale(const Size& position);
 };
 
 #endif //ARCANOID_GAMINGSTATE_H

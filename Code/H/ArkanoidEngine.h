@@ -26,12 +26,12 @@ public:
 public:
     void setLevel(Level& level);
     void process();
-    int getProgress();
+    int getProgress(bool change = true);
 
     void movePlayer(Side side);
     void stopPlayer();
 
-    LevelState getLevelState();
+    LevelState getState();
     Level& getLevel();
 
     ArkanoidEngineDelegate* m_delegate;

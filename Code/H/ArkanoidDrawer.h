@@ -34,7 +34,7 @@ public:
     void displayChanges();
     void drawMenu();
     void drawLevelStartInfo(const unsigned& level, const int& progress);
-    void drawGameScene();
+    void drawGameScene(const int& progress);
     void drawLevelEndInfo(const unsigned& level, const bool& hasWon);
     void drawCongratulations();
 
@@ -56,7 +56,7 @@ private: // helper functions
     void drawBackground(const sf::Texture *bgTexture, int corner);
     void drawBorder(Side borderSide);
     void drawGameScenePane(Side side);
-    void drawProgressBar(unsigned progress);
+    void drawProgressBar(int progress);
 };
 
 #endif //ARCANOID_ARKANOIDDRAWER_H

@@ -9,15 +9,14 @@ void ArkanoidEngine::process()
 
 }
 
-int ArkanoidEngine::getProgress()
+int ArkanoidEngine::getProgress(bool change)
 {
     static int p = 0;
-    if(p == 3) {
+    if(p > 100) {
         m_state = LevelStateWon;
         p = 0;
-        return 3;
     }
-    return p++;
+    return change ? p+=20 : p;
 }
 
 void ArkanoidEngine::movePlayer(Side side) {
@@ -30,7 +29,7 @@ void ArkanoidEngine::stopPlayer() {
     m_playerMovementDirection = SideNone;
 }
 
-LevelState ArkanoidEngine::getLevelState() {
+LevelState ArkanoidEngine::getState() {
     return m_state;
 }
 

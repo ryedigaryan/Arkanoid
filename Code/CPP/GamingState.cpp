@@ -12,10 +12,8 @@ GamingState::GamingState(GameData* gameData, unsigned startLevelNumber, unsigned
 
 void GamingState::init()
 {
-    m_gameData->drawer->drawGameScene();
-    m_gameData->drawer->drawGameScene();
+    m_gameData->drawer->drawGameScene(0);
     setEngineLevel(m_currentLevelNumber = m_firstLevelNumber);
-    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
 }
 
 void GamingState::handleInput()
@@ -51,11 +49,11 @@ void GamingState::handleInput()
 void GamingState::update()
 {
     m_gameData->engine->process();
-    m_currentLevelState = m_gameData->engine->getLevelState();
+    m_currentLevelState = m_gameData->engine->getState();
     if(m_currentLevelState != LevelStateInProcess) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
     }
-    m_gameData->drawer->drawGameScene();
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::pause()
@@ -73,8 +71,8 @@ void GamingState::resume()
         setEngineLevel(++m_currentLevelNumber);
     }
     // game scene must be updated 2 times because now screen may be modified (for example - pause info may be drawn)
-    m_gameData->drawer->drawGameScene();
-    m_gameData->drawer->drawGameScene();
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::setEngineLevel(const unsigned& levelNumber)
@@ -83,8 +81,25 @@ void GamingState::setEngineLevel(const unsigned& levelNumber)
     level.setGoDelegate(this, ObjectTypePaddle);
     level.setGoDelegate(this, ObjectTypeBall);
     level.setGoDelegate(this, ObjectTypeBrick);
+    // we do not set delegate for border because it will not change it's position or size, or will not disappear
     m_gameData->engine->setLevel(level);
-    m_currentLevelState = m_gameData->engine->getLevelState();
+    m_currentLevelState = m_gameData->engine->getState();
+    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress(false)));
+}
+
+void GamingState::engine_levelSet(const Level &level)
+{
+    calculateScaling();
+    ArkanoidDrawer* drawer = m_gameData->drawer;
+    // draw blank game scene, without any object (brick, paddle or ball)
+    // its like clearing the scene
+    drawer->drawGameScene(m_gameData->engine->getProgress(false));
+    // and then draw bricks, paddle(player) and ball
+    for(auto brick : level.bricks) {
+        drawer->drawObject(scale(brick->getPosition()), scale(brick->getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(brick->getHealth())));
+    }
+    drawer->drawObject(scale(level.player.getPosition()), scale(level.player.getSize()), m_gameData->resourceManager->getTexture(ObjectTypePaddle));
+    drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
 }
 
 void GamingState::calculateScaling()
@@ -95,20 +110,12 @@ void GamingState::calculateScaling()
     m_scaleFactor.y = drawerLevelSize.y / engineLevelSize.height;
 }
 
-std::pair<sf::Vector2f, sf::Vector2f> GamingState::scale(const Point& position, const Size &size)
+sf::Vector2f GamingState::scale(const Point& position)
 {
-    sf::Vector2f scaledSize(size.width * m_scaleFactor.x, size.height * m_scaleFactor.y);
-    sf::Vector2f scaledPosition;
-    scaledPosition.x = position.x + (scaledSize.x - size.width) / 2.f;
-    scaledPosition.y = position.y + (scaledSize.y - size.height) / 2.f;
-    return std::pair<sf::Vector2f, sf::Vector2f>(scaledPosition, scaledSize);
+    return sf::Vector2f(position.x * m_scaleFactor.x, position.y * m_scaleFactor.y);
 }
 
-void GamingState::engine_levelSet(const Level &level) {
-    calculateScaling();
-//    std::pair<sf::Vector2f, sf::Vector2f> scaled;
-    for(auto brick : level.bricks) {
-        std::pair<sf::Vector2f, sf::Vector2f> scaled = scale(brick->getPosition(), brick->getSize());
-        m_gameData->drawer->drawObject(scaled.first, scaled.second, m_gameData->resourceManager->getTexture(brick->getType()));
-    }
+sf::Vector2f GamingState::scale(const Size& size)
+{
+    return sf::Vector2f(size.width * m_scaleFactor.x, size.height * m_scaleFactor.y);
 }
