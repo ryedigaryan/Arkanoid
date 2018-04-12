@@ -5,8 +5,11 @@
 #ifndef ARCANOID_GAMEENGINEDELEGATE_H
 #define ARCANOID_GAMEENGINEDELEGATE_H
 
-class GameEngineDelegate {
+#include "Models/Level.h"
 
+class ArkanoidEngineDelegate {
+public:
+    virtual void engine_levelSet(const Level& level) = 0;
 };
 
 #endif //ARCANOID_GAMEENGINEDELEGATE_H

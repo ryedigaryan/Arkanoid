@@ -5,6 +5,7 @@
 #ifndef ARCANOID_GAMEENGINE_H
 #define ARCANOID_GAMEENGINE_H
 
+#include <Interfaces/ArkanoidEngineDelegate.h>
 #include "Models/Level.h"
 #include "Definitions/CommonDefinitions.h"
 #include "Models/Interfaces/GameObject.h"
@@ -17,6 +18,12 @@ enum LevelState {
 
 class ArkanoidEngine {
 public:
+    ArkanoidEngine() : m_delegate(nullptr), m_level(Level(0, BricksDistance, BricksCountOnPlayer)), m_playerMovementDirection(SideNone)
+    {
+
+    }
+
+public:
     void setLevel(Level& level);
     void process();
     int getProgress();
@@ -27,9 +34,11 @@ public:
     LevelState getLevelState();
     Level& getLevel();
 
+    ArkanoidEngineDelegate* m_delegate;
+
 private:
-    Side m_playerMovementDirection = SideNone;
-    Level m_level = Level(0, BricksDistance, BricksCountOnPlayer);
+    Side m_playerMovementDirection;
+    Level m_level;
     LevelState m_state;
 };
 

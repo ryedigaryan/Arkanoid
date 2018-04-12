@@ -28,6 +28,7 @@ public:
     ~ArkanoidDrawer();
 
     sf::RenderWindow* getDrawingWindow();
+    sf::Vector2f getLevelSize(bool considerBorders = false);
 
     void clearScreen(sf::Color fillColor = sf::Color::Black);
     void displayChanges();
@@ -41,6 +42,7 @@ public:
     void moveObject(const unsigned& id, const sf::Vector2f& newPosition);
     void resizeObject(const unsigned& id, const sf::Vector2f& change);
 private:
+    float m_borderWidth;
     sf::FloatRect m_backgroundRect;
     sf::RectangleShape m_progressBar;
     ResourceManager& m_resourceManager = ResourceManager::getManager();
@@ -52,6 +54,7 @@ private:
 private: // helper functions
     void cleanArea(const sf::IntRect& area, const sf::Texture* background);
     void drawBackground(const sf::Texture *bgTexture, int corner);
+    void drawBorder(Side borderSide);
     void drawGameScenePane(Side side);
     void drawProgressBar(unsigned progress);
 };

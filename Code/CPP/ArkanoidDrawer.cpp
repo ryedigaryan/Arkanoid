@@ -9,7 +9,13 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode(500, 600), WindowTitle, sf::Style::Default);
+    m_window = new sf::RenderWindow(sf::VideoMode(), WindowTitle, sf::Style::Fullscreen);
+}
+
+ArkanoidDrawer::~ArkanoidDrawer()
+{
+    m_window->close();
+    delete m_window;
 }
 
 sf::RenderWindow* ArkanoidDrawer::getDrawingWindow()
@@ -17,10 +23,11 @@ sf::RenderWindow* ArkanoidDrawer::getDrawingWindow()
     return m_window;
 }
 
-ArkanoidDrawer::~ArkanoidDrawer()
-{
-    m_window->close();
-    delete m_window;
+sf::Vector2f ArkanoidDrawer::getLevelSize(bool considerBorders /* = false */) {
+    if(considerBorders) {
+        return sf::Vector2f(m_backgroundRect.width + 2 * m_borderWidth, m_backgroundRect.height);
+    }
+    return sf::Vector2f(m_backgroundRect.width, m_backgroundRect.height);
 }
 
 void ArkanoidDrawer::clearScreen(sf::Color bgCol)
@@ -72,14 +79,16 @@ void ArkanoidDrawer::drawLevelStartInfo(const unsigned& level, const int& progre
 
 void ArkanoidDrawer::drawGameScene()
 {
-        drawBackground(m_resourceManager.getTexture(StateTypeGaming), SideDown);
-        drawProgressBar(50);
-        drawGameScenePane(SideLeft);
-        drawGameScenePane(SideRight);
-        for (auto objInfo : m_drawnObjects) {
-            m_window->draw(*objInfo->object);
-        }
-        m_window->display();
+    drawBackground(m_resourceManager.getTexture(ObjectTypeLevel, 1), SideDown);
+    drawBorder(SideLeft);
+    drawBorder(SideRight);
+    drawProgressBar(50);
+    drawGameScenePane(SideLeft);
+    drawGameScenePane(SideRight);
+    for (auto objInfo : m_drawnObjects) {
+        m_window->draw(*objInfo->object);
+    }
+    m_window->display();
 }
 
 void ArkanoidDrawer::drawLevelEndInfo(const unsigned& level, const bool& hasWon)
@@ -202,20 +211,44 @@ void ArkanoidDrawer::drawBackground(const sf::Texture *bgTexture, int corner)
     m_window->draw(helperShape);
 }
 
+void ArkanoidDrawer::drawBorder(Side borderSide) {
+    sf::RectangleShape border;
+    const sf::Texture* texture;
+    switch(borderSide) {
+        case SideLeft:
+            texture = m_resourceManager.getTexture(ObjectTypeBorder, LeftBorder);
+            border.setTexture(texture);
+            border.setSize(sf::Vector2f(texture->getSize()));
+            border.setPosition(m_backgroundRect.left - border.getSize().x, m_backgroundRect.top);
+            m_window->draw(border);
+            m_borderWidth = border.getSize().x;
+            return;
+        case SideRight:
+            texture = m_resourceManager.getTexture(ObjectTypeBorder, RightBorder);
+            border.setTexture(texture);
+            border.setSize(sf::Vector2f(texture->getSize()));
+            border.setPosition(m_backgroundRect.left + m_backgroundRect.width, m_backgroundRect.top);
+            m_window->draw(border);
+            m_borderWidth = border.getSize().x;
+            return;
+    }
+}
+
 void ArkanoidDrawer::drawGameScenePane(Side side)
 {
+    sf::FloatRect alreadyDrawnRect(m_backgroundRect.left - m_borderWidth, m_backgroundRect.top, m_backgroundRect.width + 2 * m_borderWidth, m_backgroundRect.height);
     sf::RectangleShape shape;
     switch(side) {
         case SideLeft:
-            shape.setPosition(0, m_backgroundRect.top);
-            shape.setSize(sf::Vector2f(m_backgroundRect.left, m_backgroundRect.height));
+            shape.setPosition(0, alreadyDrawnRect.top);
+            shape.setSize(sf::Vector2f(alreadyDrawnRect.left, alreadyDrawnRect.height));
             shape.setFillColor(sf::Color(190, 190, 190));
             m_window->draw(shape);
             break;
         case SideRight:
-            shape.setPosition(m_backgroundRect.left + m_backgroundRect.width, m_backgroundRect.top);
-            shape.setSize(sf::Vector2f(m_window->getSize().x - m_backgroundRect.left - m_backgroundRect.width, m_backgroundRect.height));
-            shape.setFillColor(sf::Color::Blue);
+            shape.setPosition(alreadyDrawnRect.left + alreadyDrawnRect.width, alreadyDrawnRect.top);
+            shape.setSize(sf::Vector2f(m_window->getSize().x - alreadyDrawnRect.left - alreadyDrawnRect.width, alreadyDrawnRect.height));
+//            shape.setFillColor(sf::Color::Blue);
             m_window->draw(shape);
             break;
     }

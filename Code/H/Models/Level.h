@@ -33,8 +33,10 @@ public: // public data
 
 public: // interface functions
     void setGoDelegate(GameObjectDelegate* go_dlg);
+    void setGoDelegate(GameObjectDelegate* go_dlg, ObjectType goType);
+    void removeGoDelegate(ObjectType goType);
     void loadFromSpec(const std::string& specPath);
-    Size getSize();
+    Size getSize(bool considerBorders = false);
 
 private: // private (setup) data
     GameObjectDelegate* go_delegate;

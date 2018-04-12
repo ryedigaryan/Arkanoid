@@ -42,8 +42,8 @@ set(PROJECT_EXECUTABLES
         Code/H/GameStates/EntireGameWonState.h
         Code/H/GameStates/StaticImageState.h
         Code/H/Interfaces/GameObjectDelegate.h
-        Code/H/Interfaces/GameEngineDelegate.h
-        Code/H/Interfaces/GameEngineDelegate.h
+        Code/H/Interfaces/ArkanoidEngineDelegate.h
+        Code/H/Interfaces/ArkanoidEngineDelegate.h
         Code/H/Definitions/ModelDefinitions.h
         Code/H/Definitions/CommonDefinitions.h
         Code/H/Definitions/DrawerDefinitions.h

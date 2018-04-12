@@ -37,6 +37,7 @@ LevelState ArkanoidEngine::getLevelState() {
 void ArkanoidEngine::setLevel(Level& level) {
     m_level = level;
     m_state = LevelStateInProcess;
+    m_delegate->engine_levelSet(m_level);
 }
 
 Level& ArkanoidEngine::getLevel() {

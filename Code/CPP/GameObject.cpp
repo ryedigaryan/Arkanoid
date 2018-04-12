@@ -18,10 +18,7 @@ unsigned GameObject::getIdentifier() const
 
 void GameObject::setDelegate(GameObjectDelegate* dlgate)
 {
-    if(dlgate != nullptr) {
-        m_delegate = dlgate;
-        m_delegate->go_delegateSet(this);
-    }
+    m_delegate = dlgate;
 }
 
 void GameObject::setPosition(const Point& position)

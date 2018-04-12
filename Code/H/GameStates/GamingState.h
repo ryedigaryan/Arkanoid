@@ -6,12 +6,12 @@
 #define ARCANOID_GAMINGSTATE_H
 
 #include "State.h"
-#include "Interfaces/GameEngineDelegate.h"
+#include "Interfaces/ArkanoidEngineDelegate.h"
 #include "PausedState.h"
 #include "LevelEndState.h"
 #include "Definitions/CommonDefinitions.h"
 
-class GamingState : public State, public GameEngineDelegate, public GameObjectDelegate {
+class GamingState : public State, public ArkanoidEngineDelegate, public GameObjectDelegate {
 public:
     /// @param startLevelNumber can be used to continue game from lost level
     GamingState(GameData* gameData, unsigned startLevelNumber, unsigned lastLevelNumber);
@@ -24,23 +24,23 @@ public:
     void resume()      override;
 
     // GameObjectDelegate virtual functions
-    void go_delegateSet(const GameObject* go)                                 override {
-        m_gameData->drawer->drawObject(sf::Vector2f(go->get(AxisX), go->get(AxisY)), sf::Vector2f(go->get(DimensionWidth), go->get(DimensionHeight)), m_gameData->resourceManager->getTexture(go->getType()));
-//        m_gameData->drawer->displayChanges();
-//        m_gameData->drawer->displayChanges();
-    }
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override {}
     void go_isAtPeaceNow(unsigned go_id)                                      override {}
     void go_moved(unsigned go_id, const Point &go_position)                   override {}
     void go_sizeChanged(unsigned go_id, const Size &go_size)                  override {}
 
+    // ArkanoidEngineDelegate virtual functions
+    void engine_levelSet(const Level& level) override;
 private:
+    sf::Vector2f m_scaleFactor;
     unsigned m_currentLevelNumber;
     const unsigned m_firstLevelNumber;
     const unsigned m_lastLevelNumber;
     LevelState m_currentLevelState;
 
     void setEngineLevel(const unsigned& levelNumber);
+    void calculateScaling();
+    std::pair<sf::Vector2f, sf::Vector2f> scale(const Point& position, const Size& size);
 };
 
 #endif //ARCANOID_GAMINGSTATE_H

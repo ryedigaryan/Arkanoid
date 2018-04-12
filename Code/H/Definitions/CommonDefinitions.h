@@ -44,6 +44,11 @@ using std::cin;
 #define BricksDistance Size(2, 2)
 #define BricksCountOnPlayer 5
 
+#define LeftBorder 1
+#define RightBorder 2
+
+#define ConsiderBorders true
+
 enum StateType {
     StateTypeMainMenu,
     StateTypeGaming,

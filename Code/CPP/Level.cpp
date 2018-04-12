@@ -12,11 +12,18 @@ Level::Level(unsigned num, Size bricksDistance, int bricksCountOnPlayer, GameObj
 }
 
 Level::Level(const Level& other)
-        : number(other.number), brickRowCount(other.brickRowCount), brickColCount(other.brickColCount), player(other.player), ball(other.ball), borders(other.borders),                                   // publics
-          go_delegate(other.go_delegate), m_brickDistance(other.m_brickDistance), m_bricksCountOnPlayer(other.m_bricksCountOnPlayer),  m_resourceManager(other.m_resourceManager) // privates
+        : number(other.number), brickRowCount(other.brickRowCount), brickColCount(other.brickColCount), player(other.player), ball(other.ball), borders(other.borders),           // publics
+          go_delegate(other.go_delegate), m_brickDistance(other.m_brickDistance), m_bricksCountOnPlayer(other.m_bricksCountOnPlayer), m_size(other.m_size), m_resourceManager(other.m_resourceManager) // privates
 {
     for(auto brick : other.bricks) {
         bricks.push_back(new Brick(*brick));
+    }
+}
+
+Level::~Level()
+{
+    for(Brick* brick : bricks) {
+        delete brick;
     }
 }
 
@@ -36,6 +43,7 @@ Level& Level::operator=(const Level& other) {
         go_delegate = other.go_delegate;
         m_brickDistance = other.m_brickDistance;
         m_bricksCountOnPlayer = other.m_bricksCountOnPlayer;
+        m_size = other.m_size;
     }
     return *this;
 }
@@ -52,8 +60,11 @@ void Level::loadFromSpec(const std::string& specPath)
     levelSpecReader.close();
 }
 
-Size Level::getSize()
+Size Level::getSize(bool considerBorders /* = false */)
 {
+    if(!considerBorders) {
+        return Size(m_size.width - BorderWidth, m_size.height);
+    }
     return m_size;
 //    Size levelSize;
 //    int distance;
@@ -167,13 +178,8 @@ Brick* Level::createBrick(unsigned health, Point cellPos, Point offset)
     return new Brick(position, BrickSize, health);
 }
 
-Level::~Level() {
-    for(Brick* brick : bricks) {
-        delete brick;
-    }
-}
-
-void Level::setGoDelegate(GameObjectDelegate* go_dlg) {
+void Level::setGoDelegate(GameObjectDelegate* go_dlg)
+{
     go_delegate = go_dlg;
     for(auto brick : bricks) {
         brick->setDelegate(go_dlg);
@@ -183,4 +189,30 @@ void Level::setGoDelegate(GameObjectDelegate* go_dlg) {
     }
     player.setDelegate(go_dlg);
     ball.setDelegate(go_dlg);
+}
+
+void Level::setGoDelegate(GameObjectDelegate *go_dlg, ObjectType goType)
+{
+    switch(goType) {
+        case ObjectTypePaddle:
+            player.setDelegate(go_dlg);
+            break;
+        case ObjectTypeBall:
+            ball.setDelegate(go_dlg);
+            break;
+        case ObjectTypeBorder:
+            for(auto border : borders) {
+                border.setDelegate(go_dlg);
+            }
+            break;
+        case ObjectTypeBrick:
+            for(auto brick : bricks) {
+                brick->setDelegate(go_dlg);
+            }
+            break;
+    }
+}
+
+void Level::removeGoDelegate(ObjectType goType) {
+    setGoDelegate(nullptr, goType);
 }

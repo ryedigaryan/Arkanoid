@@ -20,6 +20,6 @@
 #define BallHeight 50
 #define BallSize Size(BallWidth, BallHeight)
 
-#define BorderWidth 25
+#define BorderWidth 0
 
 #endif //ARCANOID_MODELDEFINITIONS_H
