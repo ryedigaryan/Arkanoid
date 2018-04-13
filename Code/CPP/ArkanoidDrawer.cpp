@@ -79,7 +79,7 @@ void ArkanoidDrawer::drawLevelStartPopUp(const unsigned &level, const int &progr
 
 void ArkanoidDrawer::drawGameScene(const int& progress)
 {
-    drawBackground(m_resourceManager.getTexture(ObjectTypeLevel, 1), SideDown);
+    drawBackground(m_resourceManager.getTexture(ObjectTypeLevel), SideDown);
     drawBorder(SideLeft);
     drawBorder(SideRight);
     drawProgressBar(progress);
@@ -157,30 +157,34 @@ unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vect
     return m_drawnObjects.size() - 1;
 }
 
-void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f &newPosition)
+void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosition)
 {
     ObjectInfo* movable = m_drawnObjects[id];
     // clean up scene (only the area which necessarily)
     if(movable->previousArea == nullptr) { // for this statement previousArea declared as pointer, and initializes as nullptr
         movable->previousArea = new sf::IntRect(movable->object->getGlobalBounds());
     }
-    cleanArea(*(movable->previousArea), m_resourceManager.getTexture(StateTypeGaming));
+    cleanArea(*(movable->previousArea), m_resourceManager.getTexture(ObjectTypeLevel));
     // save current area as previous for further moving
     movable->previousArea->top = static_cast<int>(movable->object->getGlobalBounds().top);
     movable->previousArea->left = static_cast<int>(movable->object->getGlobalBounds().left);
     movable->previousArea->width = static_cast<int>(movable->object->getGlobalBounds().width);
     movable->previousArea->height = static_cast<int>(movable->object->getGlobalBounds().height);
     // move the object and draw in new position
-    movable->object->move(newPosition.x - movable->object->getPosition().x, newPosition.y - movable->object->getPosition().y);
+    movable->object->move(newPosition.x + m_backgroundRect.left - movable->object->getPosition().x, newPosition.y + m_backgroundRect.top- movable->object->getPosition().y);
     m_window->draw(*movable->object);
     m_window->display();
 }
 
 void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background)
 {
+//    cout << "passed area: " << area.left << '\t' << area.top << '\t' << area.width << '\t' << area.height<< endl;
+//    cout << "transformed: " << area.left - m_borderWidth << '\t' << area.top - m_progressBar.getSize().y<< '\t' << area.width << '\t' << area.height<< endl;
+//    cout << "progres bar: " << m_progressBar.getSize().y << endl;
+//    cout << "textur size: " << background->getSize().x << '\t' << background->getSize().y << endl;
     static sf::RectangleShape helperShape;
     helperShape.setTexture(background);
-    helperShape.setTextureRect(area);
+    helperShape.setTextureRect(sf::IntRect(area.left - m_backgroundRect.left, area.top - m_backgroundRect.top, area.width, area.height));
     helperShape.setPosition(area.left, area.top);
     helperShape.setSize(sf::Vector2f(area.width, area.height));
     m_window->draw(helperShape);
@@ -247,7 +251,6 @@ void ArkanoidDrawer::drawGameScenePane(Side side)
         case SideRight:
             shape.setPosition(alreadyDrawnRect.left + alreadyDrawnRect.width, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(m_window->getSize().x - alreadyDrawnRect.left - alreadyDrawnRect.width, alreadyDrawnRect.height));
-//            shape.setFillColor(sf::Color::Blue);
             m_window->draw(shape);
             break;
     }

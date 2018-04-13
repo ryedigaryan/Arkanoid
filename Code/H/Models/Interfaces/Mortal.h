@@ -5,7 +5,9 @@
 #ifndef ARCANOID_MORTAL_H
 #define ARCANOID_MORTAL_H
 
-class Mortal {
+#include "GameObject.h"
+
+class Mortal : public virtual GameObject {
 public:
     virtual void harm(int damage) = 0;
     //virtual void heal(int diff) = 0;
@@ -15,7 +17,7 @@ public:
     }
 
 protected:
-    explicit Mortal(int health = 1) : m_health(health) {}
+    explicit Mortal(int health = 1) : GameObject(ObjectTypeNone), m_health(health) {}
 
     int m_health;
 };

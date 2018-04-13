@@ -8,7 +8,7 @@
 #include "Models/Interfaces/Mortal.h"
 #include "Models/Interfaces/GameObject.h"
 
-class Border : public GameObject, public Mortal {
+class Border : public Mortal {
 public:
     explicit Border(Point position = Point(), Size size = Size())
             : GameObject(ObjectTypeBorder, position, size) {}

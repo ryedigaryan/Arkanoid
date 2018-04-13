@@ -67,19 +67,35 @@ Size Level::getSize(bool considerBorders /* = false */)
         return Size(m_size.width - BorderWidth, m_size.height);
     }
     return m_size;
-//    Size levelSize;
-//    int distance;
-//    for(auto brick : bricks) {
-//        distance = brick->get(AxisX) + brick->get(DimensionWidth);
-//        if(distance > levelSize.width) {
-//            levelSize.width = distance;
-//        }
-//        distance = brick->get(AxisY) + brick->get(DimensionHeight);
-//        if(distance > levelSize.height) {
-//            levelSize.height = distance;
-//        }
-//    }
-//    return levelSize;
+}
+
+const Border& Level::getBorder(Side sceneSide) const
+{
+    switch(sceneSide) {
+        case SideLeft:
+            return borders[0];
+        case SideRight:
+            return borders[1];
+        case SideUp:
+            return borders[2];
+    }
+}
+
+unsigned Level::smallestIdentifier() const
+{
+    return player.getIdentifier() < ball.getIdentifier() ? player.getIdentifier() : ball.getIdentifier();
+}
+
+unsigned Level::biggestIdentifier() const
+{
+    // as the upper border is the last created object when loading level from spec,
+    // so we assume that it has the biggest ID
+    return getBorder(SideUp).getIdentifier();
+}
+
+unsigned Level::countOfGameObjects() const
+{
+    return biggestIdentifier() - smallestIdentifier() + 1;
 }
 
 void Level::loadBricks(std::ifstream& specReader)
@@ -111,17 +127,6 @@ void Level::loadBricks(std::ifstream& specReader)
     // enlarge level's size as new bricks have been added
     m_size.width += brickColCount * BrickWidth + (brickColCount - 1) * m_brickDistance.width;
     m_size.height += brickRowCount * BrickHeight + (brickRowCount - 1) * m_brickDistance.height;
-//    while (!specReader.eof()) {
-//        // get the ID of current Brick
-//        specReader >> brickType;
-//        if (isValidBrickType(static_cast<unsigned int>(brickType - '0'))) {
-//            // create Brick if it is a acceptable ID
-//            Brick* brick = createBrick(static_cast<unsigned int>(brickType - '0'), brickNumber);
-//            // put the created Brick into all bricks list
-//            bricks.push_back(brick);
-//        }
-//        brickNumber++;
-//    }
 }
 
 void Level::loadPlayer(std::ifstream& specReader)

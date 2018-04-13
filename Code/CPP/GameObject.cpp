@@ -85,3 +85,7 @@ ObjectType GameObject::getType() const
 {
     return m_type;
 }
+
+Rect GameObject::getRect() const {
+    return Rect(m_position, m_size);
+}

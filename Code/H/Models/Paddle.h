@@ -9,19 +9,23 @@
 #include "Models/Interfaces/Movable.h"
 #include "Models/Interfaces/Mortal.h"
 
-class Paddle : public GameObject, public Movable, public Mortal {
+class Paddle : public Movable, public Mortal {
 public:
     explicit Paddle(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = DefaultPaddleInitialHealth)
             : GameObject(ObjectTypePaddle, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
-    void move(int dx, int dy) override {
-        m_position.x += dx;
-        m_position.y += dy;
+    void move() override {
+        m_position.x += m_velocity.getProjection(AxisX);
+        m_position.y += m_velocity.getProjection(AxisY);
         m_delegate->go_moved(m_identifier, m_position);
     }
 
     void setVelocity(int module, int angle) override {
         m_velocity.m_module = module;
+        m_velocity.m_angle = angle;
+    }
+
+    void setAngle(int angle) {
         m_velocity.m_angle = angle;
     }
 

@@ -10,7 +10,7 @@
 
 #include "Definitions/ModelDefinitions.h"
 
-class Brick : public GameObject, public Mortal {
+class Brick : public Mortal {
 public:
     explicit Brick(Point position = Point(), Size size = Size(), int initialHealth = DefaultBrickInitialHealth)
             : GameObject(ObjectTypeBrick, position, size), Mortal(initialHealth) {}

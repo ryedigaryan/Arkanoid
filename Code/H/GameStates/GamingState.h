@@ -31,17 +31,25 @@ public:
 
     // ArkanoidEngineDelegate virtual functions
     void engine_levelSet(const Level& level) override;
-private:
+
+private: // private data
     sf::Vector2f m_scaleFactor;
     unsigned m_currentLevelNumber;
     const unsigned m_firstLevelNumber;
     const unsigned m_lastLevelNumber;
     LevelState m_currentLevelState;
+    // model ID is the index
+    // view ID is the value
+    std::vector<unsigned> m_model2ViewBindings;
+    unsigned m_bingingsOffset;
 
+private: // helper functions
     void setEngineLevel(const unsigned& levelNumber);
     void calculateScaling();
     sf::Vector2f scale(const Point& position);
     sf::Vector2f scale(const Size& position);
+    void setViewForModel(unsigned modelID, unsigned viewiD);
+    unsigned getViewOfModel(unsigned modelID);
 };
 
 #endif //ARCANOID_GAMINGSTATE_H

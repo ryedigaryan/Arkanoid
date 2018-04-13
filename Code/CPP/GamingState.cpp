@@ -18,7 +18,6 @@ void GamingState::init()
 
 void GamingState::handleInput()
 {
-    Side playerMovementSide = SideNone;
     static sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
@@ -27,10 +26,10 @@ void GamingState::handleInput()
                     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
                     return;
                 case MoveLeftButton:
-                    playerMovementSide = SideLeft;
+                    m_gameData->engine->movePlayer(SideLeft);
                     break;
                 case MoveRightButton:
-                    playerMovementSide = SideRight;
+                    m_gameData->engine->movePlayer(SideRight);
                     break;
             }
         }
@@ -38,12 +37,10 @@ void GamingState::handleInput()
             switch(e.key.code) {
                 case MoveLeftButton:
                 case MoveRightButton:
-                    playerMovementSide = SideNone;
+                    m_gameData->engine->stopPlayer();
             }
         }
     }
-    playerMovementSide == SideNone ? m_gameData->engine->stopPlayer()
-                                   : m_gameData->engine->movePlayer(playerMovementSide);
 }
 
 void GamingState::update()
@@ -53,7 +50,7 @@ void GamingState::update()
     if(m_currentLevelState != LevelStateInProcess) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
     }
-    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
+//    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::pause()
@@ -72,6 +69,7 @@ void GamingState::resume()
     }
     // game scene must be updated 2 times because now screen may be modified (for example - pause info may be drawn)
     m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::setEngineLevel(const unsigned& levelNumber)
@@ -88,7 +86,7 @@ void GamingState::setEngineLevel(const unsigned& levelNumber)
     m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress(false)));
 }
 
-void GamingState::engine_levelSet(const Level &level)
+void GamingState::engine_levelSet(const Level& level)
 {
     calculateScaling();
     ArkanoidDrawer* drawer = m_gameData->drawer;
@@ -96,11 +94,20 @@ void GamingState::engine_levelSet(const Level &level)
     // its like clearing the scene
     drawer->drawGameScene(m_gameData->engine->getProgress(false));
     // and then draw bricks, paddle(player) and ball
+    unsigned drawnObjectID;
+    m_bingingsOffset = level.smallestIdentifier();
+    m_model2ViewBindings.clear();
+    m_model2ViewBindings.resize(level.countOfGameObjects());
+    std::ofstream fout("level.log.txt");
     for(auto brick : level.bricks) {
-        drawer->drawObject(scale(brick->getPosition()), scale(brick->getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(brick->getHealth())));
+        drawnObjectID = drawer->drawObject(scale(brick->getPosition()), scale(brick->getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(brick->getHealth())));
+        setViewForModel(brick->getIdentifier(), drawnObjectID);
+
     }
-    drawer->drawObject(scale(level.player.getPosition()), scale(level.player.getSize()), m_gameData->resourceManager->getTexture(ObjectTypePaddle));
-    drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
+    drawnObjectID = drawer->drawObject(scale(level.player.getPosition()), scale(level.player.getSize()), m_gameData->resourceManager->getTexture(ObjectTypePaddle));
+    setViewForModel(level.player.getIdentifier(), drawnObjectID);
+    drawnObjectID = drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
+    setViewForModel(level.ball.getIdentifier(), drawnObjectID);
     drawer->displayChanges();
 }
 
@@ -122,6 +129,16 @@ sf::Vector2f GamingState::scale(const Size& size)
     return sf::Vector2f(size.width * m_scaleFactor.x, size.height * m_scaleFactor.y);
 }
 
+void GamingState::setViewForModel(unsigned modelID, unsigned viewiD)
+{
+    m_model2ViewBindings[modelID - m_bingingsOffset] = viewiD;
+}
+
+unsigned GamingState::getViewOfModel(unsigned modelID)
+{
+    return m_model2ViewBindings[modelID - m_bingingsOffset];
+}
+
 void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthChange)
 {
 
@@ -132,9 +149,10 @@ void GamingState::go_isAtPeaceNow(unsigned go_id)
 
 }
 
-void GamingState::go_moved(unsigned go_id, const Point &go_position)
+void GamingState::go_moved(unsigned go_id, const Point& go_position)
 {
-
+    auto viewID = getViewOfModel(go_id);
+    m_gameData->drawer->moveObject(viewID, scale(go_position));
 }
 
 void GamingState::go_sizeChanged(unsigned go_id, const Size &go_size)

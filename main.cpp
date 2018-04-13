@@ -63,6 +63,8 @@ void print(int val) {
 
 int main()
 {
+    int a = 10;
+    const int& b = a;
 //    print(SideLeft);
 //    print(SideRight);
 //    print(SideUp);

@@ -6,11 +6,12 @@
 #define ARCANOID_ATTACKER_H
 
 #include "Mortal.h"
+#include "GameObject.h"
 
-class Attacker {
+class Attacker : public virtual GameObject {
 public:
     explicit Attacker(int damage = 0)
-            : m_damage(damage) {}
+            : GameObject(ObjectTypeNone), m_damage(damage) {}
 
     virtual void attack(Mortal* mortal)
     {

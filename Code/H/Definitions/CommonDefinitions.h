@@ -17,8 +17,8 @@ using std::cin;
 #include <list>
 #include <map>
 
-#define FPS 10
-#define OneFrameDuration (1 / FPS) // as seconds
+#define FPS 70
+#define OneFrameDuration (1.0 / FPS) // as seconds
 
 #define WindowTitle "Arkanoid - by Ruben"
 
@@ -63,6 +63,7 @@ enum ObjectType {
     ObjectTypeBorder,
     ObjectTypeBrick,
     ObjectTypeLevel,
+    ObjectTypeNone,
 };
 
 enum Resolution {
@@ -78,5 +79,7 @@ enum Side {
     SideDown  = 0x0000f000,
     SideNone  = 0x000f0000,
 };
+
+typedef std::pair<Side, Side> TwoSides;
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

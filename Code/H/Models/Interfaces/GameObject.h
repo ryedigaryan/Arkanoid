@@ -5,6 +5,7 @@
 #ifndef ARCANOID_GAMEOBJECT_H
 #define ARCANOID_GAMEOBJECT_H
 
+#include <Geometry/Rect.h>
 #include "Definitions/CommonDefinitions.h"
 #include "Geometry/Geometry.h"
 #include "Interfaces/GameObjectDelegate.h"
@@ -26,6 +27,7 @@ public: // public interface
     void setSize(const Size& size);
     Point getPosition() const;
     Size getSize() const;
+    Rect getRect() const;
     ObjectType getType() const;
 
     void set(const Axis& axis, const int& value);

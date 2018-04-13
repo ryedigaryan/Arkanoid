@@ -37,8 +37,14 @@ public: // interface functions
     void removeGoDelegate(ObjectType goType);
     void loadFromSpec(const std::string& specPath);
     Size getSize(bool considerBorders = false);
+    const Border& getBorder(Side sceneSide) const;
 
-private: // private (setup) data
+
+    unsigned smallestIdentifier() const;
+    unsigned biggestIdentifier() const;
+    unsigned countOfGameObjects() const;
+
+private: // private data
     GameObjectDelegate* go_delegate;
     ResourceManager& m_resourceManager;
     Size m_brickDistance;

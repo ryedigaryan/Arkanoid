@@ -79,9 +79,6 @@ const sf::Texture* ResourceManager::getTexture(ObjectType objectType, unsigned n
             cout << "FATAL ERROR: Cannot Read Texture for object: " << objectType << " at path: " << pathToTexture(objectType, number) << endl;
             return m_defaultTexture;
         }
-        if(objectType == ObjectTypeBorder) {
-            newTexture->setRepeated(true);
-        }
         m_loadedObjectTextures[objectType][number - 1] = newTexture;
     }
     return m_loadedObjectTextures[objectType][number - 1];

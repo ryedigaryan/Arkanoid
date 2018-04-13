@@ -15,6 +15,7 @@
 #define PlayerWidth 300
 #define PlayerHeight 50
 #define PlayerSize Size(PlayerWidth, PlayerHeight)
+#define PlayerSpeed 20
 
 #define BallWidth 50
 #define BallHeight 50

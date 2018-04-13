@@ -5,7 +5,8 @@
 #ifndef ARCANOID_GAMEENGINE_H
 #define ARCANOID_GAMEENGINE_H
 
-#include <Interfaces/ArkanoidEngineDelegate.h>
+#include "Interfaces/ArkanoidEngineDelegate.h"
+#include "Geometry/Rect.h"
 #include "Models/Level.h"
 #include "Definitions/CommonDefinitions.h"
 #include "Models/Interfaces/GameObject.h"
@@ -40,6 +41,11 @@ private:
     Side m_playerMovementDirection;
     Level m_level;
     LevelState m_state;
+    Rect* predictCollision(const Movable& first, const GameObject& second);
+    Point predictCollision(const Movable& first, const Movable& second);
+    TwoSides predictCollisionSides(const Rect &first, const Rect &second, const Rect &middle);
+    Rect rectAfterMoving(const Movable &movable);
+    Point* lineIntersection(Line first, Line second);
 };
 
 #endif //ARCANOID_GAMEENGINE_H
