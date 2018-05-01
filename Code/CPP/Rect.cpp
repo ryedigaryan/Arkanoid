@@ -4,17 +4,35 @@
 
 #include "Geometry/Rect.h"
 
-Line Rect::getSide(Side side) {
+Line Rect::side(Side side) {
     switch(side) {
         case SideLeft:
-            return Line(position, Point(position.x, position.y + size.height));
+            return Line(Point(left, top), Point(left, bottom()));
         case SideRight:
-            return Line(Point(position.x + size.width, position.y), position + size);
+            return Line(Point(right(), top), Point(right(), bottom()));
         case SideUp:
-            return Line(position, Point(position.x + size.width, position.y));
+            return Line(Point(left, top), Point(right(), top));
         case SideDown:
-            return Line(Point(position.x, position.y + size.height), position + size);
-        case SideNone:
+            return Line(Point(left, bottom()), Point(right(), bottom()));
+        default:
             return Line(Point(), Point());
     }
+}
+
+int Rect::right() const
+{
+    return left + width;
+}
+
+int Rect::bottom() const
+{
+    return top + height;
+}
+
+bool Rect::operator==(const Rect& other) {
+    return this->left == other.left && this->top == other.top && this->width == other.width && this->height == other.height;
+}
+
+bool Rect::operator!=(const Rect &other) {
+    return !(*this == other);
 }

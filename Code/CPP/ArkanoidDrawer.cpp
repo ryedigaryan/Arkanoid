@@ -9,7 +9,8 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
+//    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
+    m_window = new sf::RenderWindow(sf::VideoMode(1920, 1000), WindowTitle, sf::Style::Default);
 }
 
 ArkanoidDrawer::~ArkanoidDrawer()
@@ -168,8 +169,8 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosit
     // save current area as previous for further moving
     movable->previousArea->top = static_cast<int>(movable->object->getGlobalBounds().top);
     movable->previousArea->left = static_cast<int>(movable->object->getGlobalBounds().left);
-    movable->previousArea->width = static_cast<int>(movable->object->getGlobalBounds().width);
-    movable->previousArea->height = static_cast<int>(movable->object->getGlobalBounds().height);
+    movable->previousArea->width = static_cast<int>(movable->object->getGlobalBounds().width + 2);
+    movable->previousArea->height = static_cast<int>(movable->object->getGlobalBounds().height + 2);
     // move the object and draw in new position
     movable->object->move(newPosition.x + m_backgroundRect.left - movable->object->getPosition().x, newPosition.y + m_backgroundRect.top- movable->object->getPosition().y);
     m_window->draw(*movable->object);
@@ -178,10 +179,6 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosit
 
 void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background)
 {
-//    cout << "passed area: " << area.left << '\t' << area.top << '\t' << area.width << '\t' << area.height<< endl;
-//    cout << "transformed: " << area.left - m_borderWidth << '\t' << area.top - m_progressBar.getSize().y<< '\t' << area.width << '\t' << area.height<< endl;
-//    cout << "progres bar: " << m_progressBar.getSize().y << endl;
-//    cout << "textur size: " << background->getSize().x << '\t' << background->getSize().y << endl;
     static sf::RectangleShape helperShape;
     helperShape.setTexture(background);
     helperShape.setTextureRect(sf::IntRect(area.left - m_backgroundRect.left, area.top - m_backgroundRect.top, area.width, area.height));
@@ -251,6 +248,7 @@ void ArkanoidDrawer::drawGameScenePane(Side side)
         case SideRight:
             shape.setPosition(alreadyDrawnRect.left + alreadyDrawnRect.width, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(m_window->getSize().x - alreadyDrawnRect.left - alreadyDrawnRect.width, alreadyDrawnRect.height));
+            shape.setFillColor(sf::Color(190, 190, 190));
             m_window->draw(shape);
             break;
     }

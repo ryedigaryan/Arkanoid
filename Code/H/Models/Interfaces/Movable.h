@@ -12,6 +12,12 @@ class Movable : public virtual GameObject {
 public:
     virtual void move()                             = 0;
     virtual void setVelocity(int module, int angle) = 0;
+
+    virtual void setVelocity(const Vector& velocity)
+    {
+        setVelocity(velocity.m_module, velocity.m_angle);
+    }
+
     virtual Vector getVelocity() const
     {
         return m_velocity;

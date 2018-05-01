@@ -23,6 +23,7 @@ set(PROJECT_EXECUTABLES
         Code/H/Geometry/Vector.h
         Code/H/Geometry/Point.h
         Code/H/Geometry/Size.h
+        Code/H/Geometry/Rect.h
         Code/H/Models/Interfaces/Attacker.h
         Code/H/Models/Interfaces/GameObject.h
         Code/H/Models/Interfaces/Mortal.h
@@ -47,6 +48,7 @@ set(PROJECT_EXECUTABLES
         Code/H/Definitions/ModelDefinitions.h
         Code/H/Definitions/CommonDefinitions.h
         Code/H/Definitions/DrawerDefinitions.h
+        Code/CPP/utility_functions.cpp
         Code/CPP/Vector.cpp
         Code/CPP/StateMachine.cpp
         Code/CPP/GameObject.cpp
@@ -62,7 +64,7 @@ set(PROJECT_EXECUTABLES
         Code/CPP/EntireGameWonState.cpp
         Code/CPP/StaticImageState.cpp
         Code/CPP/Point.cpp
-        Code/H/Geometry/Rect.h Code/CPP/Rect.cpp Code/H/Geometry/Line.h)
+        Code/CPP/Rect.cpp)
 
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}/Code/H")

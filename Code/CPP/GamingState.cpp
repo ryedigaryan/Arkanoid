@@ -31,13 +31,34 @@ void GamingState::handleInput()
                 case MoveRightButton:
                     m_gameData->engine->movePlayer(SideRight);
                     break;
+                //ToDo: These cases are for debugging
+                case sf::Keyboard::Up:
+                    m_gameData->engine->movePlayer(SideUp);
+                    break;
+                case sf::Keyboard::Down:
+                    m_gameData->engine->movePlayer(SideDown);
+                    break;
             }
         }
         else if(e.type == sf::Event::KeyReleased){
             switch(e.key.code) {
                 case MoveLeftButton:
+                    // if the right movement button is pressed then player should move right
+                    if(!sf::Keyboard::isKeyPressed(MoveRightButton)) {
+                        m_gameData->engine->stopPlayer();
+                    }
+                    break;
                 case MoveRightButton:
+                    // if the left movement button is pressed then player should move left
+                    if(!sf::Keyboard::isKeyPressed(MoveLeftButton)) {
+                        m_gameData->engine->stopPlayer();
+                    }
+                    break;
+                //TODO: These cases are for debugging
+                case sf::Keyboard::Up:
+                case sf::Keyboard::Down:
                     m_gameData->engine->stopPlayer();
+                    break;
             }
         }
     }
@@ -50,7 +71,6 @@ void GamingState::update()
     if(m_currentLevelState != LevelStateInProcess) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
     }
-//    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
 }
 
 void GamingState::pause()
@@ -98,7 +118,6 @@ void GamingState::engine_levelSet(const Level& level)
     m_bingingsOffset = level.smallestIdentifier();
     m_model2ViewBindings.clear();
     m_model2ViewBindings.resize(level.countOfGameObjects());
-    std::ofstream fout("level.log.txt");
     for(auto brick : level.bricks) {
         drawnObjectID = drawer->drawObject(scale(brick->getPosition()), scale(brick->getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(brick->getHealth())));
         setViewForModel(brick->getIdentifier(), drawnObjectID);

@@ -13,18 +13,30 @@ typedef std::pair<Point, Point> Line;
 
 class Rect {
 public:
-    Rect(Point pos, Size siz)
-            : position(pos), size(siz), x(pos.x), y(pos.y), width(size.width), height(size.height) {}
+    explicit Rect(Point position = Point(), Size size = Size()) noexcept
+            : m_position(position), m_size(size), left(position.x), top(position.y), width(size.width), height(size.height) {}
 
-    int x;
-    int y;
+    int left;
+    int top;
     int width;
     int height;
-    Line getSide(Side side);
+    Line side(Side side);
+
+    int right() const;
+    int bottom() const;
+
+    bool operator ==(const Rect& other);
+    bool operator !=(const Rect& other);
+
+    void log(const std::string &front = "", const std::string &back = "\n") const {
+        logstream << front;
+        logstream << "left: " << left << " top: " << top << " w: " << width << " h: " << height;
+        logstream << back;
+    }
 
 private:
-    Point position;
-    Size size;
+    Point m_position;
+    Size m_size;
 };
 
 #endif //ARCANOID_RECT_H

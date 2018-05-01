@@ -1,6 +1,6 @@
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <unistd.h>
 #include "ArkanoidGameController.h"
 
 using namespace std;
@@ -84,5 +84,4 @@ int main()
     ArkanoidGameController c;
     c.start();
     return 0;
-
 }

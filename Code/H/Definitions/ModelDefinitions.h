@@ -8,19 +8,23 @@
 #define DefaultBrickInitialHealth 1
 #define DefaultPaddleInitialHealth 3
 
-#define BrickHeight 50
-#define BrickWidth 100
-#define BrickSize Size(BrickWidth, BrickHeight)
+#define BrickHeight  50
+#define BrickWidth   100
+#define BrickSize    Size(BrickWidth, BrickHeight)
 
-#define PlayerWidth 300
+#define PlayerWidth  300
 #define PlayerHeight 50
-#define PlayerSize Size(PlayerWidth, PlayerHeight)
-#define PlayerSpeed 20
+#define PlayerSize   Size(PlayerWidth, PlayerHeight)
+#define PlayerSpeed  15
+#define AngleRight   0
+#define AngleLeft    180
+#define AngleUp      (-90)
+#define AngleDown    90
 
-#define BallWidth 50
-#define BallHeight 50
-#define BallSize Size(BallWidth, BallHeight)
+#define BallWidth    50
+#define BallHeight   50
+#define BallSize     Size(BallWidth, BallHeight)
 
-#define BorderWidth 0
+#define BorderWidth  1
 
 #endif //ARCANOID_MODELDEFINITIONS_H

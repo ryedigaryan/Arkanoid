@@ -14,7 +14,7 @@ enum Axis {
 
 class Point {
 public:
-    explicit Point(int x = 0, int y = 0)
+    explicit Point(int x = 0, int y = 0) noexcept
             : x(x), y(y) {}
 
     explicit Point(const Size& size);

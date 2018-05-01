@@ -75,9 +75,9 @@ const Border& Level::getBorder(Side sceneSide) const
         case SideLeft:
             return borders[0];
         case SideRight:
-            return borders[1];
-        case SideUp:
             return borders[2];
+        case SideUp:
+            return borders[1];
     }
 }
 
@@ -146,6 +146,7 @@ void Level::loadBall(std::ifstream& specReader)
     // as the ball is not added at the bottom of level, so there is no need to enlarge level's size
     ball.setPosition(Point(player.get(AxisX) + (PlayerWidth - BallWidth) / 2, player.get(AxisY) - BallHeight));
     ball.setSize(BallSize);
+    ball.setVelocity(10, -30);
     ball.setDelegate(go_delegate);
 }
 
@@ -161,8 +162,8 @@ void Level::loadBorders(std::ifstream& specReader)
 
     // level's size has already been enlarged for Left and Upper borders
     borders.emplace_back(Point(), Size(BorderWidth, m_size.height));                            // left border
-    borders.emplace_back(Point(BorderWidth), Size(m_size.width - BorderWidth, BorderWidth));    // right border
-    borders.emplace_back(Point(m_size.width), Size(BorderWidth, m_size.height));                // upper border
+    borders.emplace_back(Point(BorderWidth), Size(m_size.width - BorderWidth, BorderWidth));    // upper border
+    borders.emplace_back(Point(m_size.width), Size(BorderWidth, m_size.height));                // right border
     // enlarge level's size as the Right border have been added
     m_size.width += BorderWidth;
     for(auto border : borders) {

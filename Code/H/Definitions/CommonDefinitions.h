@@ -17,7 +17,7 @@ using std::cin;
 #include <list>
 #include <map>
 
-#define FPS 70
+#define FPS 100
 #define OneFrameDuration (1.0 / FPS) // as seconds
 
 #define WindowTitle "Arkanoid - by Ruben"
@@ -48,6 +48,8 @@ using std::cin;
 #define RightBorder 2
 
 #define ConsiderBorders true
+
+#define NotFound nullptr
 
 enum StateType {
     StateTypeMainMenu,
@@ -81,5 +83,9 @@ enum Side {
 };
 
 typedef std::pair<Side, Side> TwoSides;
+
+std::string nameOf(ObjectType);
+std::string nameOf(Side);
+extern std::ofstream logstream;
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

@@ -27,7 +27,7 @@ public: // public interface
     void setSize(const Size& size);
     Point getPosition() const;
     Size getSize() const;
-    Rect getRect() const;
+    Rect rect() const;
     ObjectType getType() const;
 
     void set(const Axis& axis, const int& value);

@@ -36,16 +36,20 @@ public:
     Level& getLevel();
 
     ArkanoidEngineDelegate* m_delegate;
+    Side m_playerMovementDirection;
 
 private:
-    Side m_playerMovementDirection;
     Level m_level;
     LevelState m_state;
-    Rect* predictCollision(const Movable& first, const GameObject& second);
+    Rect predictCollision(const Movable& first, const GameObject& second);
     Point predictCollision(const Movable& first, const Movable& second);
-    TwoSides predictCollisionSides(const Rect &first, const Rect &second, const Rect &middle);
+    TwoSides predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect rectAfterMoving(const Movable &movable);
-    Point* lineIntersection(Line first, Line second);
+    Point* lineIntersection(Line l1, Line l2);
+    Vector vector(GameObject from, Rect to);
+    void processPlayer();
+    void processBall();
+//    bool
 };
 
 #endif //ARCANOID_GAMEENGINE_H

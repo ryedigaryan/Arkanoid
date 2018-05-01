@@ -14,7 +14,7 @@ class Point;
 
 class Size {
 public:
-    explicit Size(int width = 0, int height = 0)
+    explicit Size(int width = 0, int height = 0) noexcept
             : width(width), height(height) {}
 
 public:
