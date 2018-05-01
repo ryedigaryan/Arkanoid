@@ -20,7 +20,15 @@ Point operator*(const Point& left, const Size& right) {
     return Point(left.x * right.width, left.y * right.height);
 }
 
-Point::Point(const Size &size) {
+Point::Point(const Size& size) {
     x = size.width;
     y = size.height;
+}
+
+bool Point::operator==(const Point& other) {
+    return this->x == other.x && this->y == other.y;
+}
+
+bool Point::operator!=(const Point& other) {
+    return this->x != other.x || this->y != other.y;
 }

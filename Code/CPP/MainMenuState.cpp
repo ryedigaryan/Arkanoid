@@ -30,7 +30,7 @@ void MainMenuState::handleInput()
     }
 }
 
-void MainMenuState::update()
+void MainMenuState::draw()
 {
     if(m_needsRedraw) {
         m_gameData->drawer->clearScreen();

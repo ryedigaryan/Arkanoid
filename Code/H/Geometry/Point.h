@@ -19,6 +19,9 @@ public:
 
     explicit Point(const Size& size);
 
+    bool operator ==(const Point& other);
+    bool operator !=(const Point& other);
+
     friend Point operator+(const Point& left, const Point& right);
     friend Point operator+(const Point& left, const Size& right);
     friend Point operator+(const Point& left, const int& right);

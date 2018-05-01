@@ -27,6 +27,7 @@ void ArkanoidGameController::start()
             c.restart();
             stateMachine->getActiveState()->handleInput();
             stateMachine->getActiveState()->update();
+            stateMachine->getActiveState()->draw();
         }
     }
 }

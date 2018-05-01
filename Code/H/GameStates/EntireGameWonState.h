@@ -11,7 +11,7 @@ class EntireGameWonState : public StaticImageState {
 public:
     explicit EntireGameWonState(GameData* gameData);
 
-    void update()      override;
+    void draw()      override;
 
 };
 

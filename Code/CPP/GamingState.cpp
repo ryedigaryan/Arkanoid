@@ -18,6 +18,8 @@ void GamingState::init()
 
 void GamingState::handleInput()
 {
+    m_gameData->drawer->displayChanges();
+    m_gameData->drawer->displayChanges();
     static sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
@@ -71,6 +73,10 @@ void GamingState::update()
     if(m_currentLevelState != LevelStateInProcess) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
     }
+}
+
+void GamingState::draw() {
+    m_gameData->drawer->displayChanges();
 }
 
 void GamingState::pause()

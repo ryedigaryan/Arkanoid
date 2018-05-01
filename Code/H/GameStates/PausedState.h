@@ -11,7 +11,7 @@ class PausedState : public StaticImageState {
 public:
     PausedState(GameData* gameData, const unsigned& level, const int& progress);
 
-    void update()      override;
+    void draw()      override;
 
     unsigned m_level;
     const int m_progress;

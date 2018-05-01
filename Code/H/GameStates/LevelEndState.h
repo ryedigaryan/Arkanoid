@@ -13,7 +13,7 @@ public:
     LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon, const unsigned& maxLevel);
 
     void init()   override;
-    void update() override;
+    void draw() override;
 
     bool m_hasWon;
     unsigned m_level;

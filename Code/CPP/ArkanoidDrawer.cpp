@@ -9,8 +9,8 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-//    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
-    m_window = new sf::RenderWindow(sf::VideoMode(1920, 1000), WindowTitle, sf::Style::Default);
+    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
+//    m_window = new sf::RenderWindow(sf::VideoMode(1920, 1000), WindowTitle, sf::Style::Default);
 }
 
 ArkanoidDrawer::~ArkanoidDrawer()
@@ -39,6 +39,12 @@ void ArkanoidDrawer::clearScreen(sf::Color bgCol)
 void ArkanoidDrawer::displayChanges()
 {
     m_window->display();
+    for(unsigned i = 0; i < m_drawnObjects.size(); i++) {
+        if(m_drawnObjects[i]->previousArea != nullptr) {
+            moveObject(i, sf::Vector2f(m_drawnObjects[i]->object->getPosition().x - m_backgroundRect.left, m_drawnObjects[i]->object->getPosition().y - m_backgroundRect.top));
+            m_drawnObjects[i]->previousArea = nullptr;
+        }
+    }
 }
 
 void ArkanoidDrawer::drawMenu()
@@ -163,21 +169,20 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosit
     ObjectInfo* movable = m_drawnObjects[id];
     // clean up scene (only the area which necessarily)
     if(movable->previousArea == nullptr) { // for this statement previousArea declared as pointer, and initializes as nullptr
-        movable->previousArea = new sf::IntRect(movable->object->getGlobalBounds());
+        movable->previousArea = new sf::FloatRect(movable->object->getGlobalBounds());
     }
     cleanArea(*(movable->previousArea), m_resourceManager.getTexture(ObjectTypeLevel));
     // save current area as previous for further moving
-    movable->previousArea->top = static_cast<int>(movable->object->getGlobalBounds().top);
-    movable->previousArea->left = static_cast<int>(movable->object->getGlobalBounds().left);
-    movable->previousArea->width = static_cast<int>(movable->object->getGlobalBounds().width + 2);
-    movable->previousArea->height = static_cast<int>(movable->object->getGlobalBounds().height + 2);
+    movable->previousArea->top = movable->object->getGlobalBounds().top;
+    movable->previousArea->left = movable->object->getGlobalBounds().left;
+    movable->previousArea->width = movable->object->getGlobalBounds().width;
+    movable->previousArea->height = movable->object->getGlobalBounds().height;
     // move the object and draw in new position
-    movable->object->move(newPosition.x + m_backgroundRect.left - movable->object->getPosition().x, newPosition.y + m_backgroundRect.top- movable->object->getPosition().y);
+    movable->object->move(newPosition.x + m_backgroundRect.left - movable->object->getPosition().x, newPosition.y + m_backgroundRect.top - movable->object->getPosition().y);
     m_window->draw(*movable->object);
-    m_window->display();
 }
 
-void ArkanoidDrawer::cleanArea(const sf::IntRect& area, const sf::Texture* background)
+void ArkanoidDrawer::cleanArea(const sf::FloatRect& area, const sf::Texture* background)
 {
     static sf::RectangleShape helperShape;
     helperShape.setTexture(background);

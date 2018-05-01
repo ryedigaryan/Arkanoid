@@ -10,7 +10,7 @@ Rect ILLEGAL_RECT(ILLEGAL_POINT, ILLEGAL_SIZE); //TODO: mb rename ????
 
 void ArkanoidEngine::process()
 {
-//    processPlayer();
+    processPlayer();
     processBall();
 }
 
@@ -50,131 +50,90 @@ Level& ArkanoidEngine::getLevel() {
     return m_level;
 }
 
-Rect ArkanoidEngine::predictCollision(const Movable& first, const GameObject& second)
+Point ArkanoidEngine::predictCollision(const Movable& first, const GameObject& second)
 {
-    Rect destinationOfFirst = first.rect();
     Rect firstRect = first.rect();
     Rect movedFirstRect = rectAfterMoving(first);
-    TwoSides collisionSides = predictCollisionSides(firstRect, movedFirstRect, second.rect());
-    // first is x (left, right)
-    switch(collisionSides.first) {
-        case SideRight: {
-            Line lineBetweenCorners = Line(Point(firstRect.right(), firstRect.top), Point(movedFirstRect.right(), movedFirstRect.top));
-            Point *intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideLeft));
-            if (intersectionPoint == NotFound) {
-//                lineBetweenCorners.first.y = firstRect.bottom();
-//                lineBetweenCorners.second.y = movedFirstRect.bottom();
-//                intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideLeft));
-//                if (intersectionPoint == NotFound) {
-//                    break;
-//                }
-//                destinationOfFirst.left = intersectionPoint->x - destinationOfFirst.width;
-//                destinationOfFirst.top = intersectionPoint->y - destinationOfFirst.height;
-            } else {
+    Line movementTrajectory(first.getPosition(), movedFirstRect.position());
+    Line collisionLine; // the line with which first will be collided
+    int collisionSides = predictCollisionSides(firstRect, movedFirstRect, second.rect());
 
-.+                destinationOfFirst.left = intersectionPoint->x - destinationOfFirst.width;
-                destinationOfFirst.top = intersectionPoint->y;
-            }
-            delete intersectionPoint;
-            return destinationOfFirst;
-        }
-        case SideLeft: {
-            Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top), (movedFirstRect.left, movedFirstRect.top));
-            Point *intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideRight));
-            if (intersectionPoint == NotFound) {
-//                lineBetweenCorners.first.y = firstRect.bottom();
-//                lineBetweenCorners.second.y = movedFirstRect.bottom();
-//                intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideRight));
-//                if (intersectionPoint == NotFound) {
-//                    break;
-//                }
-//                destinationOfFirst.left = intersectionPoint->x;
-//                destinationOfFirst.top = intersectionPoint->y - destinationOfFirst.height;
-            } else {
-                destinationOfFirst.left = intersectionPoint->x;
-                destinationOfFirst.top = intersectionPoint->y;
-            }
-            delete intersectionPoint;
-            return destinationOfFirst;
-        }
+    if((collisionSides & SideRight) == SideRight) {
+        collisionLine = second.rect().side(SideLeft);
     }
-    // second is y (up, down)
-    switch(collisionSides.second) {
-        case SideUp: {
-            Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top), (movedFirstRect.left, movedFirstRect.top));
-            Point *intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideDown));
-            if (intersectionPoint == NotFound) {
-//                lineBetweenCorners.first.x = firstRect.right();
-//                lineBetweenCorners.second.x = movedFirstRect.right();
-//                intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideDown));
-//                if (intersectionPoint == NotFound) {
-//                    break;
-//                }
-//                destinationOfFirst.left = intersectionPoint->x - destinationOfFirst.width;
-//                destinationOfFirst.top = intersectionPoint->y;
-            } else {
-                destinationOfFirst.left = intersectionPoint->x;
-                destinationOfFirst.top = intersectionPoint->y;
-            }
-            delete intersectionPoint;
-            return destinationOfFirst;
-        }
-            break;
-        case SideDown: {
-            Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top + firstRect.height), (movedFirstRect.left, movedFirstRect.top + movedFirstRect.height));
-            Point *intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideUp));
-            if (intersectionPoint == NotFound) {
-//                lineBetweenCorners.first.x = firstRect.right();
-//                lineBetweenCorners.second.x = movedFirstRect.right();
-//                intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideDown));
-//                if (intersectionPoint == NotFound) {
-//                    break;
-//                }
-//                destinationOfFirst.left = intersectionPoint->x - destinationOfFirst.width;
-//                destinationOfFirst.top = intersectionPoint->y - destinationOfFirst.height;
-            } else {
-                destinationOfFirst.left = intersectionPoint->x;
-                destinationOfFirst.top = intersectionPoint->y - destinationOfFirst.height;
-            }
-            delete intersectionPoint;
-            return destinationOfFirst;
-        }
-            break;
+    if((collisionSides & SideLeft) == SideLeft) {
+        collisionLine = second.rect().side(SideRight);
     }
-    // if none of sides is colliding with middle object then return ILLEGAL_RECT
-    return ILLEGAL_RECT;
+    if((collisionSides & SideDown) == SideDown) {
+        collisionLine = second.rect().side(SideUp);
+    }
+    if((collisionSides & SideUp) == SideUp) {
+        collisionLine = second.rect().side(SideDown);
+    }
+
+//    Point destinationPosition = first.getPosition();
+//    Rect destinationOfFirst = first.rect();
+//    Rect firstRect = first.rect();
+//    Rect movedFirstRect = rectAfterMoving(first);
+//    int collisionSides = predictCollisionSides(firstRect, movedFirstRect, second.rect());
+//    if((collisionSides & SideRight) == SideRight) {
+//        Line lineBetweenCorners = Line(Point(firstRect.right(), firstRect.top), Point(movedFirstRect.right(), movedFirstRect.top));
+//        Point intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideLeft));
+//        destinationOfFirst.left = intersectionPoint.x - destinationOfFirst.width;
+//        destinationOfFirst.top = intersectionPoint.y;
+//        return destinationOfFirst;
+//    }
+//    if((collisionSides & SideLeft) == SideLeft) {
+//        Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top), (movedFirstRect.left, movedFirstRect.top));
+//        Point intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideRight));
+//        destinationOfFirst.left = intersectionPoint.x;
+//        destinationOfFirst.top = intersectionPoint.y;
+//        return destinationOfFirst;
+//    }
+//    if((collisionSides & SideDown) == SideDown) {
+//        Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top), (movedFirstRect.left, movedFirstRect.top));
+//        Point intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideDown));
+//        destinationOfFirst.left = intersectionPoint.x;
+//        destinationOfFirst.top = intersectionPoint.y;
+//        return destinationOfFirst;
+//    }
+//    if((collisionSides & SideUp) == SideUp) {
+//        Line lineBetweenCorners = Line(Point(firstRect.left, firstRect.top + firstRect.height), (movedFirstRect.left, movedFirstRect.top + movedFirstRect.height));
+//        Point intersectionPoint = lineIntersection(lineBetweenCorners, second.rect().side(SideUp));
+//        destinationOfFirst.left = intersectionPoint.x;
+//        destinationOfFirst.top = intersectionPoint.y - destinationOfFirst.height;
+//        return destinationOfFirst;
+//    }
+//    // if none of sides is colliding with middle object then return ILLEGAL_RECT
+//    return destinationPosition;
 }
 
-TwoSides ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second)
+int ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second)
 {
-    logstream << "predictCollisionSides" << endl;
-    first.log("\tfirst - ");
-    movedFirst.log("\tsecnd - ");
-    second.log("\tmiddl - ");
-    TwoSides result(SideNone, SideNone);
+    int result = 0;
     // first moves right && right side is at left of second, then first will hit on it's right side
     if(first.left < movedFirst.left && first.right() <= second.left && second.left <= movedFirst.right()) {
-        result.first = SideRight;
+        result = SideRight;
     }
     // first moves left && left side is at right of second, then first will hit on it's left side
     else if(first.left > movedFirst.left && movedFirst.left <= second.right() && second.right() <= first.left) {
-        result.first = SideLeft;
+        result = SideLeft;
     }
     // first moves down && down side is at top of second, then first will hit on it's down side
     if(first.top < movedFirst.top && first.bottom() <= second.top && second.top <= movedFirst.bottom()) {
-        result.second = SideDown;
+        result |= SideDown;
     }
     // first moves up && up side is at down of second, then first will hit on it's up side
     else if(first.top > movedFirst.top && movedFirst.top <= second.bottom() && second.bottom() <= first.top) {
-        result.second = SideUp;
+        result |= SideUp;
     }
-    logstream << "predictedSides: " << nameOf(result.first) << " " << nameOf(result.second) << endl;
-    return result;
+    return result == 0 ? SideNone : result;
 }
 
 Rect ArkanoidEngine::rectAfterMoving(const Movable& movable)
 {
-    Point positionAfterMoving(movable.getPosition().x + movable.getVelocity().getProjection(AxisX), movable.getPosition().y + movable.getVelocity().getProjection(AxisY));
+    Point positionAfterMoving(movable.getPosition().x + movable.getVelocity().projection(AxisX), movable.getPosition().y +
+            movable.getVelocity().projection(AxisY));
     Rect b(positionAfterMoving, movable.getSize());
     return b;
 }
@@ -186,7 +145,7 @@ void print(const std::string &front, Line line)
     logstream << "ax: " << line.first.x << " ay: " << line.first.y << "bx: " << line.second.x << " by: " << line.second.y << endl;
 }
 
-Point* ArkanoidEngine::lineIntersection(Line l1, Line l2)
+Point ArkanoidEngine::lineIntersection(Line l1, Line l2)
 {
     float k1 = (float)(l1.first.y - l1.second.y) / (l1.first.x - l1.second.x);
     float k2 = (float)(l2.first.y - l2.second.y) / (l2.first.x - l2.second.x);
@@ -194,25 +153,11 @@ Point* ArkanoidEngine::lineIntersection(Line l1, Line l2)
     float b2 =        (l2.first.y - k2 * l2.first.x);
     float interX = (b2 - b1) / (k1 - k2);
     float interY = k1 * interX + b1;
-    return new Point(interX, interY);
-
-//    float s1_x, s1_y, s2_x, s2_y;
-//    s1_x = l1.second.x - l1.first.x;     s1_y = l1.second.y - l1.first.y;
-//    s2_x = l2.second.x - l2.first.x;     s2_y = l2.second.y - l2.first.y;
-//
-//    float s, t;
-//    s = (-s1_y * (l1.first.x - l2.first.x) + s1_x * (l1.first.y - l2.first.y)) / (-s2_x * s1_y + s1_x * s2_y);
-//    t = ( s2_x * (l1.first.y - l2.first.y) - s2_y * (l1.first.x - l2.first.x)) / (-s2_x * s1_y + s1_x * s2_y);
-//
-//    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-//    {
-//        // Collision detected
-//        return new Point(l1.first.x + (t * s1_x), l1.first.y + (t * s1_y));
-//    }
-//    return nullptr;
+    return Point(interX, interY);
 }
 
 Vector ArkanoidEngine::vector(GameObject from, Rect to) {
+    Vector velocity;
     return Vector();
 }
 
@@ -241,7 +186,8 @@ void ArkanoidEngine::processPlayer()
                 collidableObject = &m_level.getBorder(SideUp);
             }
         }
-        if(collidableObject != nullptr && predictCollision(m_level.player, *collidableObject) == ILLEGAL_RECT) {
+        Point collPos; //TODO: if position != ILLEGAL_POINT then move to postition
+        if(collidableObject != nullptr && (collPos = predictCollision(m_level.player, *collidableObject)) == ILLEGAL_POINT) {
             // if player must move(collidableObject != nullptr) and
             // does not collides with borders(predictCollision(m_level.player, *collidableObject) == ILLEGAL_RECT)
             // then we can move player...
@@ -254,31 +200,43 @@ void ArkanoidEngine::processBall()
 {
     Rect collRect;
     for(auto brick : m_level.bricks) {
-        if((collRect = predictCollision(m_level.ball, *brick)) != ILLEGAL_RECT) {
-            predictCollision(m_level.ball, *brick);
-            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-            b.setVelocity(vector(m_level.ball, collRect));
-            cout << "Ball hits brick: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-            break;
+        if(predictCollision(m_level.ball, *brick) == ILLEGAL_POINT) {
+            m_level.ball.move();
+            return;
         }
+        else {
+            cout << "Ball hits brick" << endl;
+        }
+//        if((collRect = predictCollision(m_level.ball, *brick)) != ILLEGAL_POINT) {
+//            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
+//            b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
+//            cout << "Ball hits brick: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
+//            break;
+//        }
     }
 
     for(const auto& border : m_level.borders) {
-        if((collRect = predictCollision(m_level.ball, border)) != ILLEGAL_RECT) {
-            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-            b.setVelocity(vector(m_level.ball, collRect));
-            cout << "Ball hits border: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-            break;
+        if(predictCollision(m_level.ball, border) == ILLEGAL_POINT) {
+            m_level.ball.move();
+            return;
         }
-
-        if((collRect = predictCollision(m_level.ball, ((GameObject&)m_level.player))) != ILLEGAL_RECT) {
-            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-            b.setVelocity(vector(m_level.ball, collRect));
-            cout << "Ball hits player: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-            break;
+        else {
+            cout << "Ball hits border" << endl;
         }
+//        if((collRect = predictCollision(m_level.ball, border)) != ILLEGAL_POINT) {
+//            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
+//            b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
+//            cout << "Ball hits border: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
+//            break;
+//        }
     }
 
-    m_level.ball.move();
-    m_level.ball.setVelocity(10, m_level.ball.getVelocity().m_angle);
+//    if((collRect = predictCollision(m_level.ball, ((GameObject&)m_level.player))) != ILLEGAL_POINT) {
+//        Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
+//        b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
+//        cout << "Ball hits player: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
+//    }
+
+//    m_level.ball.move();
+//    m_level.ball.setVelocity(10, m_level.ball.getVelocity().m_angle);
 }

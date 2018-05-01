@@ -12,17 +12,24 @@
 
 class Vector {
 public:
-    explicit Vector(int module = 0, int angle = 0) : m_module(module), m_angle(angle) {}
+    explicit Vector(const int& module = 0, const int& angle = 0);
+    Vector(Point from, Point to);
+    Vector(const Size& projection);
 
     void rotate(int angle);
 
-    int getProjection(const Axis& axis);
+    int projection(const Axis &axis);
+    double module();
+
     Vector getProjectionVector(const Axis &axis);
     Point end(const Point& start = Point());
     Point start(const Point& end = Point());
 
-    int m_module;
     int m_angle;
+
+private:
+    int m_x; // x projection
+    int m_y; // y projection
 };
 
 #endif //ARCANOID_VECTOR_H

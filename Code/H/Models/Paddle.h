@@ -15,8 +15,8 @@ public:
             : GameObject(ObjectTypePaddle, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
     void move() override {
-        m_position.x += m_velocity.getProjection(AxisX);
-        m_position.y += m_velocity.getProjection(AxisY);
+        m_position.x += m_velocity.projection(AxisX);
+        m_position.y += m_velocity.projection(AxisY);
         m_delegate->go_moved(m_identifier, m_position);
     }
 

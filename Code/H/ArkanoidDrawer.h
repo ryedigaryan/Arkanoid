@@ -12,9 +12,9 @@
 
 struct ObjectInfo {
     sf::RectangleShape* object;
-    sf::IntRect* previousArea;
+    sf::FloatRect* previousArea;
 
-    explicit ObjectInfo(sf::RectangleShape* obj = nullptr, sf::IntRect* prevArea = nullptr) : object(obj), previousArea(prevArea) {}
+    explicit ObjectInfo(sf::RectangleShape* obj = nullptr, sf::FloatRect* prevArea = nullptr) : object(obj), previousArea(prevArea) {}
 
     ~ObjectInfo() {
         delete object;
@@ -52,7 +52,7 @@ private:
     sf::Text m_helperText;
 
 private: // helper functions
-    void cleanArea(const sf::IntRect& area, const sf::Texture* background);
+    void cleanArea(const sf::FloatRect& area, const sf::Texture* background);
     void drawBackground(const sf::Texture *bgTexture, int corner);
     void drawBorder(Side borderSide);
     void drawGameScenePane(Side side);

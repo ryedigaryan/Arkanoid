@@ -34,6 +34,10 @@ void StaticImageState::handleInput()
     }
 }
 
+void StaticImageState::update() {
+    // nothing must be done
+}
+
 void StaticImageState::pause()
 {
     m_needsRedraw = false;

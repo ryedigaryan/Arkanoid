@@ -41,11 +41,11 @@ public:
 private:
     Level m_level;
     LevelState m_state;
-    Rect predictCollision(const Movable& first, const GameObject& second);
+    Point predictCollision(const Movable& first, const GameObject& second);
     Point predictCollision(const Movable& first, const Movable& second);
-    TwoSides predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
+    int predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect rectAfterMoving(const Movable &movable);
-    Point* lineIntersection(Line l1, Line l2);
+    Point lineIntersection(Line l1, Line l2);
     Vector vector(GameObject from, Rect to);
     void processPlayer();
     void processBall();

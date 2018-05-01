@@ -24,6 +24,8 @@ public:
 
     int right() const;
     int bottom() const;
+    Point position();
+    Size size();
 
     bool operator ==(const Rect& other);
     bool operator !=(const Rect& other);

@@ -9,7 +9,7 @@ EntireGameWonState::EntireGameWonState(GameData* gameData) : StaticImageState(ga
 
 }
 
-void EntireGameWonState::update()
+void EntireGameWonState::draw()
 {
     if(m_needsRedraw) {
         m_gameData->drawer->drawCongratulations();

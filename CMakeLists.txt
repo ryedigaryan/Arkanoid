@@ -3,7 +3,7 @@ project(Arcanoid)
 
 #C++ standard
 set(CMAKE_CXX_STANDARD 17)
-#the SFML's FIndSFML.cmake file path
+#the SFML's FindSFML.cmake file path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
 #root SFML file is not in standard path
 set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML")

@@ -17,7 +17,7 @@ void LevelEndState::init() {
     }
 }
 
-void LevelEndState::update()
+void LevelEndState::draw()
 {
     if(m_needsRedraw) {
         m_gameData->drawer->drawLevelEndPopUp(m_level, m_hasWon);

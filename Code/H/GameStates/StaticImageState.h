@@ -13,7 +13,8 @@ public:
 
     void init()        override;
     void handleInput() override;
-    virtual void update()   = 0;
+    void update()      override;
+    virtual void draw()     = 0;
     void pause()       override;
     void resume()      override;
 

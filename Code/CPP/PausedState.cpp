@@ -11,7 +11,7 @@ PausedState::PausedState(GameData* gameData, const unsigned& level, const int& p
     cout << "State: Paused" << endl;
 }
 
-void PausedState::update()
+void PausedState::draw()
 {
     if(m_needsRedraw) {
         m_gameData->drawer->drawLevelStartPopUp(m_level, m_progress);

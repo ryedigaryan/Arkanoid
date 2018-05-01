@@ -13,7 +13,7 @@ public:
     explicit MainMenuState(GameData* gameData);
 
     void handleInput() override;
-    void update()      override;
+    void draw()        override;
 };
 
 #endif //ARCANOID_MAINMENUSTATE_H
