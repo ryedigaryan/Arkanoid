@@ -39,9 +39,11 @@ void ArkanoidDrawer::clearScreen(sf::Color bgCol)
 void ArkanoidDrawer::displayChanges()
 {
     m_window->display();
+    sf::Vector2f zeroDelta(0, 0);
     for(unsigned i = 0; i < m_drawnObjects.size(); i++) {
         if(m_drawnObjects[i]->previousArea != nullptr) {
-            moveObject(i, sf::Vector2f(m_drawnObjects[i]->object->getPosition().x - m_backgroundRect.left, m_drawnObjects[i]->object->getPosition().y - m_backgroundRect.top));
+//            moveObject(i, sf::Vector2f(m_drawnObjects[i]->object->getPosition().x - m_backgroundRect.left, m_drawnObjects[i]->object->getPosition().y - m_backgroundRect.top));
+            moveObject(i, zeroDelta);
             m_drawnObjects[i]->previousArea = nullptr;
         }
     }
@@ -164,7 +166,7 @@ unsigned ArkanoidDrawer::drawObject(const sf::Vector2f& position, const sf::Vect
     return m_drawnObjects.size() - 1;
 }
 
-void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosition)
+void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& delta)
 {
     ObjectInfo* movable = m_drawnObjects[id];
     // clean up scene (only the area which necessarily)
@@ -178,7 +180,7 @@ void ArkanoidDrawer::moveObject(const unsigned& id, const sf::Vector2f& newPosit
     movable->previousArea->width = movable->object->getGlobalBounds().width;
     movable->previousArea->height = movable->object->getGlobalBounds().height;
     // move the object and draw in new position
-    movable->object->move(newPosition.x + m_backgroundRect.left - movable->object->getPosition().x, newPosition.y + m_backgroundRect.top - movable->object->getPosition().y);
+    movable->object->move(delta.x/* + m_backgroundRect.left - movable->object->getPosition().x*/, delta.y /*+ m_backgroundRect.top - movable->object->getPosition().y*/);
     m_window->draw(*movable->object);
 }
 

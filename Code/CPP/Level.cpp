@@ -146,7 +146,7 @@ void Level::loadBall(std::ifstream& specReader)
     // as the ball is not added at the bottom of level, so there is no need to enlarge level's size
     ball.setPosition(Point(player.get(AxisX) + (PlayerWidth - BallWidth) / 2, player.get(AxisY) - BallHeight));
     ball.setSize(BallSize);
-    ball.setVelocity(10, -30);
+    ball.setVelocity(2, -10);
     ball.setDelegate(go_delegate);
 }
 

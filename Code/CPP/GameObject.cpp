@@ -23,10 +23,12 @@ void GameObject::setDelegate(GameObjectDelegate* dlgate)
 
 void GameObject::setPosition(const Point& position)
 {
+    int dx = position.x - m_position.x;
+    int dy = position.y - m_position.y;
     m_position.x = position.x;
     m_position.y = position.y;
     if(m_delegate != nullptr) {
-        m_delegate->go_moved(m_identifier, m_position);
+        m_delegate->go_moved(m_identifier, dx, dy);
     }
 }
 
@@ -53,7 +55,7 @@ void GameObject::set(const Axis& axis, const int& value)
 {
     axis == AxisX ? m_position.x = value : m_position.y = value;
     if(m_delegate != nullptr) {
-        m_delegate->go_moved(m_identifier, m_position);
+//TODO:        m_delegate->go_moved(m_identifier, m_position);
     }
 }
 

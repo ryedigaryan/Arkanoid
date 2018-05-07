@@ -27,7 +27,7 @@ public:
     // GameObjectDelegate virtual functions
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override;
     void go_isAtPeaceNow(unsigned go_id)                                      override;
-    void go_moved(unsigned go_id, const Point &go_position)                   override;
+    void go_moved(unsigned go_id, const int& dx, const int& dy)               override;
     void go_sizeChanged(unsigned go_id, const Size &go_size)                  override;
 
     // ArkanoidEngineDelegate virtual functions

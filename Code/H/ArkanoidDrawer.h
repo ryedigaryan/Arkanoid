@@ -40,7 +40,7 @@ public:
     void drawCongratulations();
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);
-    void moveObject(const unsigned& id, const sf::Vector2f& newPosition);
+    void moveObject(const unsigned& id, const sf::Vector2f& delta);
     void resizeObject(const unsigned& id, const sf::Vector2f& change);
 private:
     float m_borderWidth;

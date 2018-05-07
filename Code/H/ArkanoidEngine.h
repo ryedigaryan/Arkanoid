@@ -46,7 +46,7 @@ private:
     Point predictCollision(const Movable& first, const Movable& second);
     int predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect rectAfterMoving(const Movable &movable);
-    Point lineIntersection(Line l1, Line l2);
+//    Point lineIntersection(Line l1, Line l2);
     void processPlayer();
     void processBall();
 //    bool

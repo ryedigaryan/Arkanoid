@@ -8,8 +8,7 @@
 #include <utility>
 #include "Definitions/CommonDefinitions.h"
 #include "Point.h"
-
-typedef std::pair<Point, Point> Line;
+#include "Line.h"
 
 class Rect
 {
@@ -21,21 +20,15 @@ public:
     int top;
     int width;
     int height;
-    Line side(Side side);
 
-    int right() const;
-    int bottom() const;
-    Point position();
-    Size size();
+    int   right()         const;
+    int   bottom()        const;
+    Point position()      const;
+    Size  size()          const;
+    Line  side(Side side) const;
 
     bool operator ==(const Rect& other);
     bool operator !=(const Rect& other);
-
-    void log(const std::string &front = "", const std::string &back = "\n") const {
-        logstream << front;
-        logstream << "left: " << left << " top: " << top << " w: " << width << " h: " << height;
-        logstream << back;
-    }
 
 private:
     Point m_position;

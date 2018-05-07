@@ -174,10 +174,10 @@ void GamingState::go_isAtPeaceNow(unsigned go_id)
 
 }
 
-void GamingState::go_moved(unsigned go_id, const Point& go_position)
+void GamingState::go_moved(unsigned go_id, const int& dx, const int& dy)
 {
     auto viewID = getViewOfModel(go_id);
-    m_gameData->drawer->moveObject(viewID, scale(go_position));
+    m_gameData->drawer->moveObject(viewID, sf::Vector2f(dx, dy));
 }
 
 void GamingState::go_sizeChanged(unsigned go_id, const Size &go_size)

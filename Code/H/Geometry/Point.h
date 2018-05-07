@@ -6,11 +6,14 @@
 #define ARCANOID_POINT_H
 
 #include "Size.h"
+//#include "Line.h"
 
 enum Axis {
     AxisX,
     AxisY
 };
+
+class Line;
 
 class Point
 {
@@ -20,13 +23,14 @@ public:
 
     explicit Point(const Size& size);
 
-    bool operator ==(const Point& other);
-    bool operator !=(const Point& other);
+    bool isInside(const Line& first, const Line& second) const;
+
+    bool operator ==(const Point& other) const;
+    bool operator !=(const Point& other) const;
 
     friend Point operator+(const Point& left, const Point& right);
     friend Point operator+(const Point& left, const Size& right);
     friend Point operator+(const Point& left, const int& right);
-
     friend Point operator*(const Point& left, const Size& right);
 
 public:

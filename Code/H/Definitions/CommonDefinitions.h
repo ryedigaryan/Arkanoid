@@ -51,6 +51,8 @@ using std::cin;
 
 #define NotFound nullptr
 
+#define Approximation 3
+
 enum StateType {
     StateTypeMainMenu,
     StateTypeGaming,

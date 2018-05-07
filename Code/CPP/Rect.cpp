@@ -4,7 +4,7 @@
 
 #include "Geometry/Rect.h"
 
-Line Rect::side(Side side) {
+Line Rect::side(Side side) const {
     switch(side) {
         case SideLeft:
             return Line(Point(left, top), Point(left, bottom()));
@@ -38,10 +38,10 @@ bool Rect::operator!=(const Rect& other) {
     return this->left != other.left || this->top != other.top || this->width != other.width || this->height != other.height;
 }
 
-Point Rect::position() {
+Point Rect::position() const {
     return m_position;
 }
 
-Size Rect::size() {
+Size Rect::size() const {
     return m_size;
 }
