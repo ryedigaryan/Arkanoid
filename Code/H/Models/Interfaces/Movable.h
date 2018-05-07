@@ -10,12 +10,15 @@
 
 class Movable : public virtual GameObject {
 public:
-    virtual void move()                             = 0;
-    virtual void setVelocity(int module, int angle) = 0;
+    virtual void move()                                        = 0;
 
-    virtual void setVelocity(const Vector& velocity)
+    virtual void setVelocity(int xProjection, int yProjection) {
+        m_velocity.setProjection(xProjection, yProjection);
+    }
+
+    virtual void setVelocity(Vector velocity)
     {
-        setVelocity(velocity.m_module, velocity.m_angle);
+        setVelocity(velocity.projection(AxisX), velocity.projection(AxisY));
     }
 
     virtual Vector getVelocity() const
@@ -24,7 +27,7 @@ public:
     }
 
 protected:
-    explicit Movable(Vector velocity = Vector()) : GameObject(ObjectTypeNone),  m_velocity(velocity) {}
+    explicit Movable(Vector velocity) : GameObject(ObjectTypeNone), m_velocity(velocity) {}
 
     Vector m_velocity;
 };

@@ -147,18 +147,16 @@ void print(const std::string &front, Line line)
 
 Point ArkanoidEngine::lineIntersection(Line l1, Line l2)
 {
-    float k1 = (float)(l1.first.y - l1.second.y) / (l1.first.x - l1.second.x);
-    float k2 = (float)(l2.first.y - l2.second.y) / (l2.first.x - l2.second.x);
-    float b1 =        (l1.first.y - k1 * l1.first.x);
-    float b2 =        (l2.first.y - k2 * l2.first.x);
+    float k1 = static_cast<float>(l1.first.y - l1.second.y) / (l1.first.x - l1.second.x);
+    float k2 = static_cast<float>(l2.first.y - l2.second.y) / (l2.first.x - l2.second.x);
+
+    float b1 = (l1.first.y - k1 * l1.first.x);
+    float b2 = (l2.first.y - k2 * l2.first.x);
+
     float interX = (b2 - b1) / (k1 - k2);
     float interY = k1 * interX + b1;
-    return Point(interX, interY);
-}
 
-Vector ArkanoidEngine::vector(GameObject from, Rect to) {
-    Vector velocity;
-    return Vector();
+    return Point(static_cast<int>(interX), static_cast<int>(interY));
 }
 
 /**

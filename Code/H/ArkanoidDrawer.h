@@ -22,7 +22,8 @@ struct ObjectInfo {
     }
 };
 
-class ArkanoidDrawer {
+class ArkanoidDrawer
+{
 public:
     ArkanoidDrawer();
     ~ArkanoidDrawer();

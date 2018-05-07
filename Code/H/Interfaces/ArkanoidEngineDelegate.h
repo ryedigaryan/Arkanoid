@@ -7,7 +7,8 @@
 
 #include "Models/Level.h"
 
-class ArkanoidEngineDelegate {
+class ArkanoidEngineDelegate
+{
 public:
     virtual void engine_levelSet(const Level& level) = 0;
 };

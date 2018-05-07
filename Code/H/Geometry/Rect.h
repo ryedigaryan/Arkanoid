@@ -11,7 +11,8 @@
 
 typedef std::pair<Point, Point> Line;
 
-class Rect {
+class Rect
+{
 public:
     explicit Rect(Point position = Point(), Size size = Size()) noexcept
             : m_position(position), m_size(size), left(position.x), top(position.y), width(size.width), height(size.height) {}

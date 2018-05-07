@@ -80,7 +80,6 @@ int main()
 //    print(SideDown | SideLeft | SideRight | SideLeft);
 //    return 0;
 
-
     ArkanoidGameController c;
     c.start();
     return 0;

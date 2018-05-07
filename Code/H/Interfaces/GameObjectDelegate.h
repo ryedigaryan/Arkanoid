@@ -7,7 +7,8 @@
 
 #include "Geometry/Geometry.h"
 
-class GameObjectDelegate {
+class GameObjectDelegate
+{
 public:
     // go stands for "Game Object"
     virtual void go_moved(unsigned go_id, const Point& go_position)						= 0;

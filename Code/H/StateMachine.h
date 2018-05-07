@@ -9,7 +9,8 @@
 
 class State;
 
-class StateMachine {
+class StateMachine
+{
 public:
     ~StateMachine();
     State* getActiveState();

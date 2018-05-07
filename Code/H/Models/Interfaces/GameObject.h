@@ -11,7 +11,8 @@
 #include "Interfaces/GameObjectDelegate.h"
 #include "Definitions/ModelDefinitions.h"
 
-class GameObject {
+class GameObject
+{
 public: // public interface
     explicit GameObject(ObjectType type, Point position = Point(), Size size = Size()) : m_type(type), m_position(position), m_size(size), m_identifier(generateIdentifier()) {}
 

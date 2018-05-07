@@ -20,15 +20,6 @@ public:
         m_delegate->go_moved(m_identifier, m_position);
     }
 
-    void setVelocity(int module, int angle) override {
-        m_velocity.m_module = module;
-        m_velocity.m_angle = angle;
-    }
-
-    void setAngle(int angle) {
-        m_velocity.m_angle = angle;
-    }
-
     void harm(int damage) override {
         m_health -= damage;
         m_delegate->go_healthChanged(m_identifier, m_health, damage);

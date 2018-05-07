@@ -10,7 +10,8 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-class ResourceManager {
+class ResourceManager
+{
 public: // making singleton
     static ResourceManager& getManager();
     ResourceManager(const ResourceManager&) = delete;

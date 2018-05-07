@@ -19,11 +19,6 @@ public:
         m_position.y += m_velocity.projection(AxisY);
         m_delegate->go_moved(m_identifier, m_position);
     }
-
-    void setVelocity(int module, int angle) override {
-        m_velocity.m_module = module;
-        m_velocity.m_angle = angle;
-    }
 };
 
 #endif //ARCANOID_BALL_H

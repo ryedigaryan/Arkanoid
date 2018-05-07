@@ -8,7 +8,8 @@
 #include "Definitions/CommonDefinitions.h"
 #include "GameData.h"
 
-class State {
+class State
+{
 public:
     explicit State(GameData* gameData) : m_gameData(gameData) {}
 

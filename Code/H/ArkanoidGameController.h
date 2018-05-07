@@ -9,7 +9,8 @@
 #include "Definitions/CommonDefinitions.h"
 #include "StateMachine.h"
 
-class ArkanoidGameController {
+class ArkanoidGameController
+{
 public:
     ArkanoidGameController();
 

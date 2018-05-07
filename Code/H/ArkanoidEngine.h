@@ -17,7 +17,8 @@ enum LevelState {
     LevelStateInProcess,
 };
 
-class ArkanoidEngine {
+class ArkanoidEngine
+{
 public:
     ArkanoidEngine() : m_delegate(nullptr), m_level(Level(0, BricksDistance, BricksCountOnPlayer)), m_playerMovementDirection(SideNone)
     {
@@ -46,7 +47,6 @@ private:
     int predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect rectAfterMoving(const Movable &movable);
     Point lineIntersection(Line l1, Line l2);
-    Vector vector(GameObject from, Rect to);
     void processPlayer();
     void processBall();
 //    bool

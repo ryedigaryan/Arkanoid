@@ -64,7 +64,7 @@ set(PROJECT_EXECUTABLES
         Code/CPP/EntireGameWonState.cpp
         Code/CPP/StaticImageState.cpp
         Code/CPP/Point.cpp
-        Code/CPP/Rect.cpp)
+        Code/CPP/Rect.cpp Code/H/Geometry/Line.h Code/CPP/Line.cpp)
 
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}/Code/H")

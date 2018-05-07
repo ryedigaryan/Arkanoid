@@ -14,7 +14,8 @@
 
 class ResourceManager;
 
-class Level {
+class Level
+{
 public: // ctors, dtor
     explicit Level(unsigned number, Size bricksDistance, int bricksCountOnPlayer, GameObjectDelegate* go_dlg = nullptr);
 
