@@ -38,3 +38,7 @@ std::string nameOf(ObjectType o)
             return "ObjectTypeNone";
     }
 }
+
+bool containsSide(const int& sides, const Side& side) {
+    return (sides & side) == side;
+}

@@ -6,7 +6,7 @@
 #define ARCANOID_GAMEENGINE_H
 
 #include "Interfaces/ArkanoidEngineDelegate.h"
-#include "Geometry/Rect.h"
+#include "Geometry/Geometry.h"
 #include "Models/Level.h"
 #include "Definitions/CommonDefinitions.h"
 #include "Models/Interfaces/GameObject.h"
@@ -28,7 +28,7 @@ public:
 public:
     void setLevel(Level& level);
     void process();
-    int getProgress(bool change = true);
+    int getProgress();
 
     void movePlayer(Side side);
     void stopPlayer();
@@ -42,14 +42,20 @@ public:
 private:
     Level m_level;
     LevelState m_state;
+    unsigned m_bricksMaxCount;
     Point predictCollision(const Movable& first, const GameObject& second);
     Point predictCollision(const Movable& first, const Movable& second);
-    int predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
-    Rect rectAfterMoving(const Movable &movable);
-//    Point lineIntersection(Line l1, Line l2);
-    void processPlayer();
-    void processBall();
-//    bool
+    int   predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
+    Rect  rectAfterMoving(const Movable &movable);
+    bool  willCollide(const Movable &first, const GameObject &second);
+    bool  areColliding(Rect first, Rect second);
+    Side  collisionSide(const Movable& first, const GameObject& second);
+    void  processPlayer();
+    void  processBall();
+    Rect  processBallBrickCollision();
+    Rect  processBallBorderCollision();
+    Rect  processBallPlayerCollision();
+    Rect  removeBrick(std::list<Brick*>::iterator it_brick);
 };
 
 #endif //ARCANOID_GAMEENGINE_H

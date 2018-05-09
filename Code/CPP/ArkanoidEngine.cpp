@@ -4,39 +4,33 @@
 
 #include "ArkanoidEngine.h"
 
-const Point ILLEGAL_POINT(INT32_MIN, INT32_MIN);
-const Size  ILLEGAL_SIZE(INT32_MIN, INT32_MIN);
-const Line  ILLEGAL_LINE(ILLEGAL_POINT, ILLEGAL_POINT);
-const Rect  ILLEGAL_RECT(ILLEGAL_POINT, ILLEGAL_SIZE); //TODO: mb rename ????
-
 void ArkanoidEngine::process()
 {
     processPlayer();
-//    processBall();
+    processBall();
 }
 
-int ArkanoidEngine::getProgress(bool change)
+int ArkanoidEngine::getProgress()
 {
-    static int p = 0;
-    if(p > 100) {
-        m_state = LevelStateWon;
-        p = 0;
-    }
-    return change ? p+=20 : p;
+    return static_cast<int>(100 - ((m_level.bricks.size() * 100.0) / m_bricksMaxCount));
 }
 
-void ArkanoidEngine::movePlayer(Side side) {
+void ArkanoidEngine::movePlayer(Side side)
+{
     m_playerMovementDirection = side; // TODO: remove this line, it is for debug
     if(side == SideLeft || side == SideRight) {
         m_playerMovementDirection = side;
     }
 }
 
-void ArkanoidEngine::stopPlayer() {
+void ArkanoidEngine::stopPlayer()
+{
     m_playerMovementDirection = SideNone;
+    m_level.player.setVelocity(0, 0);
 }
 
-LevelState ArkanoidEngine::getState() {
+LevelState ArkanoidEngine::getState()
+{
     return m_state;
 }
 
@@ -44,10 +38,12 @@ void ArkanoidEngine::setLevel(Level& level)
 {
     m_level = level;
     m_state = LevelStateInProcess;
+    m_bricksMaxCount = level.bricks.size();
     m_delegate->engine_levelSet(m_level);
 }
 
-Level& ArkanoidEngine::getLevel() {
+Level& ArkanoidEngine::getLevel()
+{
     return m_level;
 }
 
@@ -59,7 +55,6 @@ Point ArkanoidEngine::predictCollision(const Movable& first, const GameObject& s
     Line collisionLine = ILLEGAL_LINE; // the line with which first will be collided
     int collisionSides = predictCollisionSides(firstRect, movedFirstRect, second.rect()); // side of first
 
-    m_level.getSize(false);
     Line l1, l2;
     if((collisionSides & SideRight) == SideRight) {
         collisionLine = second.rect().side(SideLeft);
@@ -84,7 +79,7 @@ Point ArkanoidEngine::predictCollision(const Movable& first, const GameObject& s
     if(collisionLine == ILLEGAL_LINE) {
         return ILLEGAL_POINT;
     }
-    return movementTrajectory.intersection(collisionLine);
+    return movementTrajectory.intersection(collisionLine, false);
 }
 
 int ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second)
@@ -147,20 +142,7 @@ void ArkanoidEngine::processPlayer()
             m_level.player.setVelocity(PlayerSpeed, 0);
             collidableObject = &m_level.getBorder(SideRight);
         }
-        else /*TODO: remove this else, it is for debug*/ {
-            if(m_playerMovementDirection == SideUp) {
-                m_level.player.setVelocity(0, -PlayerSpeed);
-                collidableObject = &m_level.getBorder(SideUp);
-            } else {
-                m_level.player.setVelocity(0, PlayerSpeed);
-                collidableObject = &m_level.getBorder(SideUp);
-            }
-        }
-        Point collPos; //TODO: if position != ILLEGAL_POINT then move to postition
-        if(collidableObject != nullptr && (collPos = predictCollision(m_level.player, *collidableObject)) == ILLEGAL_POINT) {
-            // if player must move(collidableObject != nullptr) and
-            // does not collides with borders(predictCollision(m_level.player, *collidableObject) == ILLEGAL_RECT)
-            // then we can move player...
+        if(collidableObject != nullptr && !willCollide(m_level.player, *collidableObject)) {
             m_level.player.move();
         }
     }
@@ -168,45 +150,109 @@ void ArkanoidEngine::processPlayer()
 
 void ArkanoidEngine::processBall()
 {
-    Rect collRect;
-    for(auto brick : m_level.bricks) {
-        if(predictCollision(m_level.ball, *brick) == ILLEGAL_POINT) {
-            m_level.ball.move();
-            return;
-        }
-        else {
-            cout << "Ball hits brick" << endl;
-        }
-//        if((collRect = predictCollision(m_level.ball, *brick)) != ILLEGAL_POINT) {
-//            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-//            b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
-//            cout << "Ball hits brick: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-//            break;
-//        }
+    if(m_level.ball.getPosition().y > m_level.getSize(false).height) {
+        m_state = LevelStateLost;
+        return;
     }
+    Rect colRect = processBallBorderCollision();
+    if(colRect == ILLEGAL_RECT) {
+        colRect = processBallBrickCollision();
+        if(colRect == ILLEGAL_RECT) {
+            colRect = processBallPlayerCollision();
+        }
+    }
+    if(colRect == ILLEGAL_RECT) {
+        m_level.ball.move();
+        return;
+    }
+    else {
+        int sides = predictCollisionSides(m_level.ball.rect(), rectAfterMoving(m_level.ball), colRect);
+        if ((sides & SideRight) == SideRight || (sides & SideLeft) == SideLeft) {
+             m_level.ball.getVelocity().inverse(AxisX);
+        } else if ((sides & SideUp) == SideUp || (sides & SideDown) == SideDown) {
+            m_level.ball.getVelocity().inverse(AxisY);
+        }
+    }
+}
 
+Rect ArkanoidEngine::processBallBrickCollision() {
+    for(auto it_brick = m_level.bricks.begin(); it_brick != m_level.bricks.end(); it_brick++) {
+        Brick& brick = **it_brick;
+        if(willCollide(m_level.ball, brick)) {
+            m_level.ball.attack(brick);
+            unsigned brickID;
+            Rect result = brick.rect();
+            if(brick.getHealth() == 0) {
+                brickID = brick.getIdentifier();
+                m_level.bricks.erase(it_brick);
+                m_delegate->engine_go_isAtPieceNow(brickID);
+                if(m_level.bricks.empty()) {
+                    m_state = LevelStateWon;
+                }
+            }
+            return result;
+        }
+    }
+    return ILLEGAL_RECT;
+}
+
+Rect ArkanoidEngine::processBallBorderCollision() {
     for(const auto& border : m_level.borders) {
-        if(predictCollision(m_level.ball, border) == ILLEGAL_POINT) {
-            m_level.ball.move();
-            return;
+        if(willCollide(m_level.ball, border)) {
+            return border.rect();
         }
-        else {
-            cout << "Ball hits border" << endl;
-        }
-//        if((collRect = predictCollision(m_level.ball, border)) != ILLEGAL_POINT) {
-//            Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-//            b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
-//            cout << "Ball hits border: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-//            break;
-//        }
     }
+    return ILLEGAL_RECT;
+}
 
-//    if((collRect = predictCollision(m_level.ball, ((GameObject&)m_level.player))) != ILLEGAL_POINT) {
-//        Movable& b = m_level.ball; //TODO: cant call super's function direct from derived
-//        b.setVelocity(Vector(m_level.ball.getPosition(), collRect.position()));
-//        cout << "Ball hits player: " << collRect.left << " " << collRect.top << "  " << collRect.height << " " << collRect.width << endl;
-//    }
+Rect ArkanoidEngine::processBallPlayerCollision() {
+    if(willCollide(m_level.ball, m_level.player)) {
+//        if(m_level.player.getVelocity().projection(AxisX) > 0) {
+//            m_level.ball.getVelocity().rotate(-BallDirectionChange);
+//        }
+//        else if(m_level.player.getVelocity().projection(AxisX) < 0) {
+//            m_level.ball.getVelocity().rotate(BallDirectionChange);
+//        }
+        return m_level.player.rect();
+    }
+    return ILLEGAL_RECT;
+}
 
-//    m_level.ball.move();
-//    m_level.ball.setVelocity(10, m_level.ball.getVelocity().m_angle);
+bool ArkanoidEngine::willCollide(const Movable &first, const GameObject &second) {
+    Rect movedRect = rectAfterMoving(first);
+    return areColliding(movedRect, second.rect());
+}
+
+bool ArkanoidEngine::areColliding(Rect first, Rect second) {
+    return first.left < second.right() && first.right() > second.left &&
+            first.top < second.bottom() && first.bottom() > second.top;
+}
+
+Side ArkanoidEngine::collisionSide(const Movable& first, const GameObject& second) {
+    Rect f = first.rect();
+    Rect s = second.rect();
+    if(f.right() < s.left) {
+        return SideRight;
+    }
+    if(f.left > s.right()) {
+        return SideLeft;
+    }
+    if(f.bottom() < s.top) {
+        return SideDown;
+    }
+    if(f.top > s.bottom()) {
+        return SideUp;
+    }
+}
+
+Rect ArkanoidEngine::removeBrick(std::list<Brick*>::iterator it_brick) {
+    unsigned brickID;
+    Brick brick = **it_brick;
+    Rect result = brick.rect();
+    if(brick.getHealth() == 0) {
+        brickID = brick.getIdentifier();
+        m_level.bricks.erase(it_brick);
+        m_delegate->engine_go_isAtPieceNow(brickID);
+    }
+    return result;
 }

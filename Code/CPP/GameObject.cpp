@@ -7,7 +7,7 @@
 GameObject::~GameObject()
 {
     if (m_delegate != nullptr) {
-        m_delegate->go_isAtPeaceNow(m_identifier);
+//        m_delegate->go_isAtPeaceNow(m_identifier);
     }
 }
 

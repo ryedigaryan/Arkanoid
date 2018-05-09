@@ -12,7 +12,7 @@ class LevelEndState : public StaticImageState {
 public:
     LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon, const unsigned& maxLevel);
 
-    void init()   override;
+    void init() override;
     void draw() override;
 
     bool m_hasWon;

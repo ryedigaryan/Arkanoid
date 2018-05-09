@@ -11,50 +11,70 @@ Vector::Vector(Point from, Point to)
     m_y = to.y - from.y;
 }
 
-Vector::Vector(const int& xProjection, const int& yProjection)
+Vector::Vector(const double& xProjection, const double& yProjection)
 {
     m_x = xProjection;
     m_y = yProjection;
 }
 
-int Vector::projection(const Axis &axis)
+double Vector::projection(const Axis &axis) const
 {
     return axis == AxisX ? m_x : m_y;
 }
 
-double Vector::module()
+double Vector::module() const
 {
-    return m_x * m_x + m_y * m_y;
+    return sqrt(m_x * m_x + m_y * m_y);
 }
 
-double Vector::angle()
+double Vector::angle() const
 {
-    return atan(m_y / m_x);
+    return m_x == 0 ? (1 / 2 * M_PI) : atan(m_y / m_x);
 }
 
-void Vector::set(const int& module, const int& angle)
+void Vector::set(const double& module, const double& angle)
 {
-    m_x = static_cast<int>(module * cos(angle));
-    m_y = static_cast<int>(module * sin(angle));
+    m_x = module * cos(angle);
+    m_y = module * sin(angle);
 }
 
-void Vector::setProjection(const int& xProjection, const int& yProjection)
+void Vector::setProjection(const double& xProjection, const double& yProjection)
 {
     m_x = xProjection;
     m_y = yProjection;
 }
 
-Vector Vector::getProjectionVector(const Axis &axis)
+Vector Vector::getProjectionVector(const Axis &axis) const
 {
     return axis == AxisX ? Vector(m_x, 0) : Vector(0, m_y);
 }
 
-Point Vector::end(const Point& start)
+Point Vector::end(const Point& start) const
 {
-    return Point(start.x + m_x, start.y + m_y);
+    return Point(static_cast<int>(start.x + m_x), static_cast<int>(start.y + m_y));
 }
 
-Point Vector::start(const Point& end)
+Point Vector::start(const Point& end) const
 {
-    return Point(end.x - m_x, end.y - m_y);
+    return Point(static_cast<int>(end.x - m_x), static_cast<int>(end.y - m_y));
+}
+
+void Vector::inverse(Axis axis)
+{
+    switch(axis) {
+        case AxisX:
+            m_x = -m_x;
+            return;
+        case AxisY:
+            m_y = -m_y;
+            return;
+    }
+}
+
+void Vector::rotate(double angleDelta)
+{
+    double angle = this->angle() + angleDelta;
+    double module = this->module();
+    m_x = module * cos(angle);
+    m_y = module * sin(angle);
 }

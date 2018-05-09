@@ -21,8 +21,12 @@ public:
         setVelocity(velocity.projection(AxisX), velocity.projection(AxisY));
     }
 
-    virtual Vector getVelocity() const
+    virtual const Vector& getVelocity() const
     {
+        return m_velocity;
+    }
+
+    virtual Vector& getVelocity() {
         return m_velocity;
     }
 

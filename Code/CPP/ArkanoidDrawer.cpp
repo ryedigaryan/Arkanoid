@@ -36,15 +36,25 @@ void ArkanoidDrawer::clearScreen(sf::Color bgCol)
     m_window->clear(bgCol);
 }
 
-void ArkanoidDrawer::displayChanges()
+void ArkanoidDrawer::displayChanges(int progress)
 {
+    drawProgressBar(progress);
     m_window->display();
     sf::Vector2f zeroDelta(0, 0);
     for(unsigned i = 0; i < m_drawnObjects.size(); i++) {
         if(m_drawnObjects[i]->previousArea != nullptr) {
-//            moveObject(i, sf::Vector2f(m_drawnObjects[i]->object->getPosition().x - m_backgroundRect.left, m_drawnObjects[i]->object->getPosition().y - m_backgroundRect.top));
-            moveObject(i, zeroDelta);
-            m_drawnObjects[i]->previousArea = nullptr;
+            if(m_drawnObjects[i]->object != nullptr) {
+                moveObject(i, zeroDelta);
+            }
+            else {
+                cleanArea(*m_drawnObjects[i]->previousArea, m_resourceManager.getTexture(ObjectTypeLevel));
+                delete m_drawnObjects[i]->previousArea;
+                m_drawnObjects[i]->previousArea = nullptr;
+            }
+        }
+        if(m_drawnObjects[i]->textureChanged) {
+            m_window->draw(*m_drawnObjects[i]->object);
+            m_drawnObjects[i]->textureChanged = false;
         }
     }
 }
@@ -95,7 +105,9 @@ void ArkanoidDrawer::drawGameScene(const int& progress)
     drawGameScenePane(SideLeft);
     drawGameScenePane(SideRight);
     for (auto objInfo : m_drawnObjects) {
-        m_window->draw(*objInfo->object);
+        if(objInfo->object != nullptr) {
+            m_window->draw(*objInfo->object);
+        }
     }
     m_window->display();
 }
@@ -194,7 +206,7 @@ void ArkanoidDrawer::cleanArea(const sf::FloatRect& area, const sf::Texture* bac
     m_window->draw(helperShape);
 }
 
-void ArkanoidDrawer::drawBackground(const sf::Texture *bgTexture, int corner)
+void ArkanoidDrawer::drawBackground(const sf::Texture* bgTexture, int corner)
 {
     sf::RectangleShape helperShape;
     helperShape.setSize(sf::Vector2f(bgTexture->getSize()));
@@ -273,4 +285,21 @@ void ArkanoidDrawer::drawProgressBar(int progress)
     bar.setFillColor(sf::Color::Green);
     m_window->draw(bg);
     m_window->draw(bar);
+}
+
+void ArkanoidDrawer::removeObject(const unsigned &id)
+{
+    cleanArea(m_drawnObjects[id]->object->getGlobalBounds(), m_resourceManager.getTexture(ObjectTypeLevel));
+    m_drawnObjects[id]->previousArea = new sf::FloatRect(m_drawnObjects[id]->object->getGlobalBounds());
+    delete m_drawnObjects[id]->object;
+    m_drawnObjects[id]->object = nullptr;
+//    delete m_drawnObjects[id];
+//    m_drawnObjects.erase(m_drawnObjects.begin() + id);
+}
+
+void ArkanoidDrawer::changeTexture(const unsigned &id, const sf::Texture* texture)
+{
+    m_drawnObjects[id]->object->setTexture(texture);
+    m_window->draw(*m_drawnObjects[id]->object);
+    m_drawnObjects[id]->textureChanged = true;
 }

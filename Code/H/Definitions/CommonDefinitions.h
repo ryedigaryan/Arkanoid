@@ -39,7 +39,7 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
-#define IDontCare 666
+#define BallDirectionChange 0.17453292519
 
 #define BricksDistance Size(2, 2)
 #define BricksCountOnPlayer 5
@@ -88,6 +88,7 @@ typedef std::pair<Side, Side> TwoSides;
 
 std::string nameOf(ObjectType);
 std::string nameOf(Side);
+bool containsSide(const int& sides, const Side& side);
 extern std::ofstream logstream;
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

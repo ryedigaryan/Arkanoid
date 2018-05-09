@@ -13,6 +13,7 @@
 struct ObjectInfo {
     sf::RectangleShape* object;
     sf::FloatRect* previousArea;
+    bool textureChanged = false;
 
     explicit ObjectInfo(sf::RectangleShape* obj = nullptr, sf::FloatRect* prevArea = nullptr) : object(obj), previousArea(prevArea) {}
 
@@ -32,7 +33,7 @@ public:
     sf::Vector2f getLevelSize(bool considerBorders = false);
 
     void clearScreen(sf::Color fillColor = sf::Color::Black);
-    void displayChanges();
+    void displayChanges(int progress);
     void drawMenu();
     void drawLevelStartPopUp(const unsigned &level, const int &progress);
     void drawGameScene(const int& progress);
@@ -40,7 +41,9 @@ public:
     void drawCongratulations();
 
     unsigned drawObject(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture const * const texture, bool mustDisplay = false);
+    void removeObject(const unsigned& id);
     void moveObject(const unsigned& id, const sf::Vector2f& delta);
+    void changeTexture(const unsigned& id, const sf::Texture* texture);
     void resizeObject(const unsigned& id, const sf::Vector2f& change);
 private:
     float m_borderWidth;

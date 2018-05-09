@@ -14,21 +14,25 @@ class Vector
 {
 public:
     Vector(Point from, Point to);
-    explicit Vector(const int& xProjection = 0, const int& yProjection = 0);
+    explicit Vector(const double& xProjection = 0, const double& yProjection = 0);
 
-    int projection(const Axis &axis);
-    double module();
-    double angle();
-    void set(const int& module, const int& angle);
-    void setProjection(const int& xProjection, const int& yProjection);
+    double projection(const Axis &axis) const;
+    double module() const;
+    double angle() const;
+    void set(const double& module, const double& angle);
+    void setProjection(const double& xProjection, const double& yProjection);;
 
-    Vector getProjectionVector(const Axis &axis);
-    Point end(const Point& start = Point());
-    Point start(const Point& end = Point());
+    Vector getProjectionVector(const Axis& axis) const;
+    Point end(const Point& start = Point()) const;
+    Point start(const Point& end = Point()) const;
+
+    // action
+    void inverse(Axis axis);
+    void rotate(double angleDelta);
 
 private:
-    int m_x; // x projection
-    int m_y; // y projection
+    double m_x; // x projection
+    double m_y; // y projection
 };
 
 #endif //ARCANOID_VECTOR_H

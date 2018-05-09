@@ -18,8 +18,6 @@ void GamingState::init()
 
 void GamingState::handleInput()
 {
-    m_gameData->drawer->displayChanges();
-    m_gameData->drawer->displayChanges();
     static sf::Event e;
     while(m_gameData->drawer->getDrawingWindow()->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
@@ -70,13 +68,16 @@ void GamingState::update()
 {
     m_gameData->engine->process();
     m_currentLevelState = m_gameData->engine->getState();
-    if(m_currentLevelState != LevelStateInProcess) {
+    if(m_currentLevelState == LevelStateWon) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
+    }
+    else if(m_currentLevelState == LevelStateLost) {
+        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber), Replace);
     }
 }
 
 void GamingState::draw() {
-    m_gameData->drawer->displayChanges();
+    m_gameData->drawer->displayChanges(m_gameData->engine->getProgress());
 }
 
 void GamingState::pause()
@@ -94,8 +95,8 @@ void GamingState::resume()
         setEngineLevel(++m_currentLevelNumber);
     }
     // game scene must be updated 2 times because now screen may be modified (for example - pause info may be drawn)
-    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
-    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress());
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress());
 }
 
 void GamingState::setEngineLevel(const unsigned& levelNumber)
@@ -108,8 +109,8 @@ void GamingState::setEngineLevel(const unsigned& levelNumber)
     m_gameData->engine->setLevel(level);
     m_currentLevelState = m_gameData->engine->getState();
     // drawing game scene just because pause pop-up must be drawn on it
-    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress(false));
-    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress(false)));
+    m_gameData->drawer->drawGameScene(m_gameData->engine->getProgress());
+    m_gameData->stateMachine->pushState(new PausedState(m_gameData, m_currentLevelNumber, m_gameData->engine->getProgress()));
 }
 
 void GamingState::engine_levelSet(const Level& level)
@@ -118,7 +119,7 @@ void GamingState::engine_levelSet(const Level& level)
     ArkanoidDrawer* drawer = m_gameData->drawer;
     // draw blank game scene, without any object (brick, paddle or ball)
     // its like clearing the scene
-    drawer->drawGameScene(m_gameData->engine->getProgress(false));
+    drawer->drawGameScene(m_gameData->engine->getProgress());
     // and then draw bricks, paddle(player) and ball
     unsigned drawnObjectID;
     m_bingingsOffset = level.smallestIdentifier();
@@ -133,7 +134,7 @@ void GamingState::engine_levelSet(const Level& level)
     setViewForModel(level.player.getIdentifier(), drawnObjectID);
     drawnObjectID = drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
     setViewForModel(level.ball.getIdentifier(), drawnObjectID);
-    drawer->displayChanges();
+    drawer->displayChanges(0);
 }
 
 void GamingState::calculateScaling()
@@ -146,12 +147,16 @@ void GamingState::calculateScaling()
 
 sf::Vector2f GamingState::scale(const Point& position)
 {
-    return sf::Vector2f(position.x * m_scaleFactor.x, position.y * m_scaleFactor.y);
+    return scale(position.x, position.y);
 }
 
 sf::Vector2f GamingState::scale(const Size& size)
 {
-    return sf::Vector2f(size.width * m_scaleFactor.x, size.height * m_scaleFactor.y);
+    return scale(size.width, size.height);
+}
+
+sf::Vector2f GamingState::scale(const int &x, const int &y) {
+    return sf::Vector2f(x * m_scaleFactor.x, y * m_scaleFactor.y);
 }
 
 void GamingState::setViewForModel(unsigned modelID, unsigned viewiD)
@@ -166,21 +171,27 @@ unsigned GamingState::getViewOfModel(unsigned modelID)
 
 void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthChange)
 {
-
+    if(go_health != 0) {
+        m_gameData->drawer->changeTexture(getViewOfModel(go_id), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(go_health)));
+    }
 }
 
-void GamingState::go_isAtPeaceNow(unsigned go_id)
-{
-
-}
+//void GamingState::go_isAtPeaceNow(unsigned go_id)
+//{
+//    m_gameData->drawer->removeObject(getViewOfModel(go_id));
+//}
 
 void GamingState::go_moved(unsigned go_id, const int& dx, const int& dy)
 {
     auto viewID = getViewOfModel(go_id);
-    m_gameData->drawer->moveObject(viewID, sf::Vector2f(dx, dy));
+    m_gameData->drawer->moveObject(viewID, scale(dx, dy));
 }
 
 void GamingState::go_sizeChanged(unsigned go_id, const Size &go_size)
 {
 
+}
+
+void GamingState::engine_go_isAtPieceNow(const unsigned &go_id) {
+    m_gameData->drawer->removeObject(getViewOfModel(go_id));
 }

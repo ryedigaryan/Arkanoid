@@ -13,9 +13,9 @@ public:
     explicit Attacker(int damage = 0)
             : GameObject(ObjectTypeNone), m_damage(damage) {}
 
-    virtual void attack(Mortal* mortal)
+    virtual void attack(Mortal& mortal)
     {
-        mortal->harm(m_damage);
+        mortal.harm(m_damage);
     }
 
 protected:
