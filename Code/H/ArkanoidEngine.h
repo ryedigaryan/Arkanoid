@@ -43,8 +43,6 @@ private:
     Level m_level;
     LevelState m_state;
     unsigned m_bricksMaxCount;
-    Point predictCollision(const Movable& first, const GameObject& second);
-    Point predictCollision(const Movable& first, const Movable& second);
     int   predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect  rectAfterMoving(const Movable &movable);
     bool  willCollide(const Movable &first, const GameObject &second);

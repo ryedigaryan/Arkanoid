@@ -47,41 +47,6 @@ Level& ArkanoidEngine::getLevel()
     return m_level;
 }
 
-Point ArkanoidEngine::predictCollision(const Movable& first, const GameObject& second)
-{
-    Rect firstRect = first.rect();
-    Rect movedFirstRect = rectAfterMoving(first);
-    Line movementTrajectory(firstRect.position(), movedFirstRect.position());
-    Line collisionLine = ILLEGAL_LINE; // the line with which first will be collided
-    int collisionSides = predictCollisionSides(firstRect, movedFirstRect, second.rect()); // side of first
-
-    Line l1, l2;
-    if((collisionSides & SideRight) == SideRight) {
-        collisionLine = second.rect().side(SideLeft);
-        l1 = Line(Point(firstRect.top, firstRect.right()), Point(movedFirstRect.top, movedFirstRect.right()));
-        l2 = Line(Point(firstRect.bottom(), firstRect.right()), Point(movedFirstRect.bottom(), movedFirstRect.right()));
-        if(!collisionLine.m_start.isInside(l1, l2) && !collisionLine.m_end.isInside(l1, l2)) {
-            collisionLine = ILLEGAL_LINE;
-        }
-    }
-    if(collisionLine != ILLEGAL_LINE && (collisionSides & SideLeft) == SideLeft) {
-        //TODO: add case
-//        collisionLine = second.rect().side(SideRight);
-    }
-    if((collisionSides & SideDown) == SideDown) {
-        //TODO: add case
-//        collisionLine = second.rect().side(SideUp);
-    }
-    else if((collisionSides & SideUp) == SideUp) {
-        //TODO: add case
-//        collisionLine = second.rect().side(SideDown);
-    }
-    if(collisionLine == ILLEGAL_LINE) {
-        return ILLEGAL_POINT;
-    }
-    return movementTrajectory.intersection(collisionLine, false);
-}
-
 int ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second)
 {
     int result = 0;
@@ -111,20 +76,6 @@ Rect ArkanoidEngine::rectAfterMoving(const Movable& movable)
     Rect b(positionAfterMoving, movable.getSize());
     return b;
 }
-
-//Point ArkanoidEngine::lineIntersection(Line l1, Line l2)
-//{
-//    float k1 = static_cast<float>(l1.first.y - l1.second.y) / (l1.first.x - l1.second.x);
-//    float k2 = static_cast<float>(l2.first.y - l2.second.y) / (l2.first.x - l2.second.x);
-//
-//    float b1 = (l1.first.y - k1 * l1.first.x);
-//    float b2 = (l2.first.y - k2 * l2.first.x);
-//
-//    float interX = (b2 - b1) / (k1 - k2);
-//    float interY = k1 * interX + b1;
-//
-//    return Point(static_cast<int>(interX), static_cast<int>(interY));
-//}
 
 /**
  * Moves player to already defined direction, if no border abolishes its movement.
@@ -254,7 +205,7 @@ Side ArkanoidEngine::collisionSide(const Movable& first, const GameObject& secon
 
 Rect ArkanoidEngine::removeBrick(std::list<Brick*>::iterator it_brick) {
     unsigned brickID;
-    Brick brick = **it_brick;
+    Brick& brick = **it_brick;
     Rect result = brick.rect();
     if(brick.getHealth() == 0) {
         brickID = brick.getIdentifier();
