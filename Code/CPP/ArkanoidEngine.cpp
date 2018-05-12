@@ -150,7 +150,7 @@ void ArkanoidEngine::processPlayer()
 
 void ArkanoidEngine::processBall()
 {
-    if(m_level.ball.getPosition().y > m_level.getSize(false).height) {
+    if(m_level.ball.getPosition().y > m_level.getSize().height) {
         m_state = LevelStateLost;
         return;
     }
@@ -163,7 +163,6 @@ void ArkanoidEngine::processBall()
     }
     if(colRect == ILLEGAL_RECT) {
         m_level.ball.move();
-        return;
     }
     else {
         int sides = predictCollisionSides(m_level.ball.rect(), rectAfterMoving(m_level.ball), colRect);
@@ -207,12 +206,16 @@ Rect ArkanoidEngine::processBallBorderCollision() {
 
 Rect ArkanoidEngine::processBallPlayerCollision() {
     if(willCollide(m_level.ball, m_level.player)) {
-//        if(m_level.player.getVelocity().projection(AxisX) > 0) {
+        Vector& vel = m_level.ball.getVelocity();
+        double angle = m_level.ball.getVelocity().angle();
+        if(m_level.player.getVelocity().projection(AxisX) > 0) {
 //            m_level.ball.getVelocity().rotate(-BallDirectionChange);
-//        }
-//        else if(m_level.player.getVelocity().projection(AxisX) < 0) {
+            m_level.ball.getVelocity().set(vel.module(), angle + 5);
+        }
+        else if(m_level.player.getVelocity().projection(AxisX) < 0) {
 //            m_level.ball.getVelocity().rotate(BallDirectionChange);
-//        }
+            m_level.ball.getVelocity().set(vel.module(), angle - 5);
+        }
         return m_level.player.rect();
     }
     return ILLEGAL_RECT;
