@@ -290,7 +290,13 @@ void ArkanoidDrawer::drawProgressBar(int progress)
 void ArkanoidDrawer::removeObject(const unsigned &id)
 {
     cleanArea(m_drawnObjects[id]->object->getGlobalBounds(), m_resourceManager.getTexture(ObjectTypeLevel));
-    m_drawnObjects[id]->previousArea = new sf::FloatRect(m_drawnObjects[id]->object->getGlobalBounds());
+    if(m_drawnObjects[id]->previousArea == nullptr) {
+        m_drawnObjects[id]->previousArea = new sf::FloatRect(m_drawnObjects[id]->object->getGlobalBounds());
+    }
+    else {
+        cleanArea(*m_drawnObjects[id]->previousArea, m_resourceManager.getTexture(ObjectTypeLevel));
+        *(m_drawnObjects[id]->previousArea) = sf::FloatRect(m_drawnObjects[id]->object->getGlobalBounds());
+    }
     delete m_drawnObjects[id]->object;
     m_drawnObjects[id]->object = nullptr;
 //    delete m_drawnObjects[id];

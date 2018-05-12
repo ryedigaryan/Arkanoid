@@ -17,7 +17,7 @@ using std::cin;
 #include <list>
 #include <map>
 
-#define FPS 100
+#define FPS 60
 #define OneFrameDuration (1.0 / FPS) // as seconds
 
 #define WindowTitle "Arkanoid - by Ruben"

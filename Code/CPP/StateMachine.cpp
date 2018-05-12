@@ -13,6 +13,7 @@ State* StateMachine::getActiveState()
 void StateMachine::popActiveState()
 {
     getActiveState()->pause();
+    delete m_states.top();
     m_states.pop();
     getActiveState()->resume();
 }
