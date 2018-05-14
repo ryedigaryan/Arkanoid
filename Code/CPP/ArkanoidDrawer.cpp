@@ -9,8 +9,8 @@
 
 ArkanoidDrawer::ArkanoidDrawer()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
-//    m_window = new sf::RenderWindow(sf::VideoMode(1920, 1000), WindowTitle, sf::Style::Default);
+//    m_window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], WindowTitle, sf::Style::Fullscreen);
+    m_window = new sf::RenderWindow(sf::VideoMode(1920, 1000), WindowTitle, sf::Style::Default);
 }
 
 ArkanoidDrawer::~ArkanoidDrawer()
@@ -75,7 +75,7 @@ void ArkanoidDrawer::drawMenu()
     m_window->display();
 }
 
-void ArkanoidDrawer::drawLevelStartPopUp(const unsigned &level, const int &progress)
+void ArkanoidDrawer::drawLevelStartPopUp(const unsigned &level, const int& progress)
 {
     static sf::Sprite helperSprite;
     // draw pop-up background

@@ -23,8 +23,8 @@ void GameObject::setDelegate(GameObjectDelegate* dlgate)
 
 void GameObject::setPosition(const Point& position)
 {
-    int dx = position.x - m_position.x;
-    int dy = position.y - m_position.y;
+    float dx = position.x - m_position.x;
+    float dy = position.y - m_position.y;
     m_position.x = position.x;
     m_position.y = position.y;
     if(m_delegate != nullptr) {
@@ -51,7 +51,7 @@ Size GameObject::getSize() const
     return m_size;
 }
 
-void GameObject::set(const Axis& axis, const int& value)
+void GameObject::set(const Axis& axis, const float& value)
 {
     axis == AxisX ? m_position.x = value : m_position.y = value;
     if(m_delegate != nullptr) {
@@ -59,12 +59,12 @@ void GameObject::set(const Axis& axis, const int& value)
     }
 }
 
-int GameObject::get(const Axis& axis) const
+float GameObject::get(const Axis& axis) const
 {
     return (axis == AxisX ? m_position.x : m_position.y);
 }
 
-void GameObject::set(const Dimension& dimension, const int& value)
+void GameObject::set(const Dimension& dimension, const float& value)
 {
     dimension == Dimension::DimensionWidth ? m_size.width = value : m_size.height = value;
     if(m_delegate != nullptr) {
@@ -72,7 +72,7 @@ void GameObject::set(const Dimension& dimension, const int& value)
     }
 }
 
-int GameObject::get(const Dimension& dimension) const
+float GameObject::get(const Dimension& dimension) const
 {
     return (dimension == Dimension::DimensionWidth ? m_size.width : m_size.height);
 }

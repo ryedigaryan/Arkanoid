@@ -39,7 +39,7 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
-#define BallDirectionChange 0.17453292519
+#define BallDirectionChange 0.1
 
 #define BricksDistance Size(2, 2)
 #define BricksCountOnPlayer 5

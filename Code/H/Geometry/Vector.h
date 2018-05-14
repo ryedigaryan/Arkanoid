@@ -14,13 +14,13 @@ class Vector
 {
 public:
     Vector(Point from, Point to);
-    explicit Vector(const double& xProjection = 0, const double& yProjection = 0);
+    explicit Vector(const float& xProjection = 0, const float& yProjection = 0);
 
-    double projection(const Axis &axis) const;
-    double module() const;
-    double angle() const;
-    void set(const double& module, const double& angle);
-    void setProjection(const double& xProjection, const double& yProjection);;
+    float projection(const Axis &axis) const;
+    float module() const;
+    float angle() const;
+    void set(const float& module, const float& angle);
+    void setProjection(const float& xProjection, const float& yProjection);;
 
     Vector getProjectionVector(const Axis& axis) const;
     Point end(const Point& start = Point()) const;
@@ -28,11 +28,11 @@ public:
 
     // action
     void inverse(Axis axis);
-    void rotate(double angleDelta);
+    void rotate(float angleDelta);
 
 private:
-    double m_x; // x projection
-    double m_y; // y projection
+    float m_x; // x projection
+    float m_y; // y projection
 };
 
 #endif //ARCANOID_VECTOR_H

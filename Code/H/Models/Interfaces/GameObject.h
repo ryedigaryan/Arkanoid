@@ -31,10 +31,10 @@ public: // public interface
     Rect rect() const;
     ObjectType getType() const;
 
-    void set(const Axis& axis, const int& value);
-    void set(const Dimension& dimension, const int& value);
-    int get(const Axis& axis) const;
-    int get(const Dimension& dimension) const;
+    void set(const Axis& axis, const float& value);
+    void set(const Dimension& dimension, const float& value);
+    float get(const Axis& axis) const;
+    float get(const Dimension& dimension) const;
 
 protected: // data
     Point m_position;

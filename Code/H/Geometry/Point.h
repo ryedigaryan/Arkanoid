@@ -18,7 +18,7 @@ class Line;
 class Point
 {
 public:
-    explicit Point(int x = 0, int y = 0) noexcept
+    explicit Point(float x = 0, float y = 0) noexcept
             : x(x), y(y) {}
 
     explicit Point(const Size& size);
@@ -34,8 +34,8 @@ public:
     friend Point operator*(const Point& left, const Size& right);
 
 public:
-    int x;
-    int y;
+    float x;
+    float y;
 };
 
 #endif //ARCANOID_POINT_H

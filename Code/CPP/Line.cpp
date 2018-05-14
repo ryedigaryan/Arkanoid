@@ -50,7 +50,7 @@ Point Line::intersection(const Line& other, bool considerEdges) const
         interY = yAt(interX);
     }
 
-    auto result = Point(static_cast<int>(interX), static_cast<int>(interY));
+    auto result = Point(interX, interY);
     if(considerEdges) {
         if(!contains(result, true) || !other.contains(result, true)) {
             return ILLEGAL_POINT;

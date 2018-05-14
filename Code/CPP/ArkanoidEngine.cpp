@@ -158,19 +158,12 @@ Rect ArkanoidEngine::processBallBorderCollision() {
 Rect ArkanoidEngine::processBallPlayerCollision() {
     if(willCollide(m_level.ball, m_level.player)) {
         Vector& vel = m_level.ball.getVelocity();
-        logstream << "mod: " << vel.module() << ", ang: " << vel.angle() << endl;
-        logstream << "dx : " << vel.projection(AxisX) << ", dy : " << vel.projection(AxisY);
-        double angle = m_level.ball.getVelocity().angle();
         if(m_level.player.getVelocity().projection(AxisX) > 0) {
-//            m_level.ball.getVelocity().rotate(-BallDirectionChange);
-            m_level.ball.getVelocity().set(vel.module(), angle + 0.174532925);
+            m_level.ball.getVelocity().rotate(static_cast<float>(-BallDirectionChange));
         }
         else if(m_level.player.getVelocity().projection(AxisX) < 0) {
-//            m_level.ball.getVelocity().rotate(BallDirectionChange);
-            m_level.ball.getVelocity().set(vel.module(), angle - 0.174532925);
+            m_level.ball.getVelocity().rotate(BallDirectionChange);
         }
-        logstream << "mod: " << vel.module() << ", ang: " << vel.angle() << endl;
-        logstream << "dx : " << vel.projection(AxisX) << ", dy : " << vel.projection(AxisY);
         return m_level.player.rect();
     }
     return ILLEGAL_RECT;

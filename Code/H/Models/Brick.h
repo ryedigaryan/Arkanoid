@@ -12,7 +12,7 @@
 
 class Brick : public Mortal {
 public:
-    explicit Brick(Point position = Point(), Size size = Size(), int initialHealth = DefaultBrickInitialHealth)
+    explicit Brick(Point position = Point(), Size size = Size(), float initialHealth = DefaultBrickInitialHealth)
             : GameObject(ObjectTypeBrick, position, size), Mortal(initialHealth) {}
 
     void harm(int damage) override {

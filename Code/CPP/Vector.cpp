@@ -11,34 +11,34 @@ Vector::Vector(Point from, Point to)
     m_y = to.y - from.y;
 }
 
-Vector::Vector(const double& xProjection, const double& yProjection)
+Vector::Vector(const float& xProjection, const float& yProjection)
 {
     m_x = xProjection;
     m_y = yProjection;
 }
 
-double Vector::projection(const Axis &axis) const
+float Vector::projection(const Axis &axis) const
 {
     return axis == AxisX ? m_x : m_y;
 }
 
-double Vector::module() const
+float Vector::module() const
 {
     return sqrt(m_x * m_x + m_y * m_y);
 }
 
-double Vector::angle() const
+float Vector::angle() const
 {
     return m_x == 0 ? (1 / 2 * M_PI) : atan(m_y / m_x);
 }
 
-void Vector::set(const double& module, const double& angle)
+void Vector::set(const float& module, const float& angle)
 {
     m_x = module * cos(angle);
     m_y = module * sin(angle);
 }
 
-void Vector::setProjection(const double& xProjection, const double& yProjection)
+void Vector::setProjection(const float& xProjection, const float& yProjection)
 {
     m_x = xProjection;
     m_y = yProjection;
@@ -51,12 +51,12 @@ Vector Vector::getProjectionVector(const Axis &axis) const
 
 Point Vector::end(const Point& start) const
 {
-    return Point(static_cast<int>(start.x + m_x), static_cast<int>(start.y + m_y));
+    return Point(start.x + m_x, start.y + m_y);
 }
 
 Point Vector::start(const Point& end) const
 {
-    return Point(static_cast<int>(end.x - m_x), static_cast<int>(end.y - m_y));
+    return Point(end.x - m_x, end.y - m_y);
 }
 
 void Vector::inverse(Axis axis)
@@ -71,10 +71,10 @@ void Vector::inverse(Axis axis)
     }
 }
 
-void Vector::rotate(double angleDelta)
+void Vector::rotate(float angleDelta)
 {
-    double angle = this->angle() + angleDelta;
-    double module = this->module();
-    m_x = module * cos(angle);
-    m_y = module * sin(angle);
+    float angle = this->angle() + angleDelta;
+    float module = this->module();
+    m_x = module * sin(angle);
+    m_y = module * cos(angle);
 }

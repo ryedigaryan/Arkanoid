@@ -12,7 +12,7 @@ class Movable : public virtual GameObject {
 public:
     virtual void move()                                        = 0;
 
-    virtual void setVelocity(int xProjection, int yProjection) {
+    virtual void setVelocity(float xProjection, float yProjection) {
         m_velocity.setProjection(xProjection, yProjection);
     }
 

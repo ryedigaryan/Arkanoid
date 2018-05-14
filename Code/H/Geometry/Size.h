@@ -13,12 +13,12 @@ enum Dimension {
 class Size
 {
 public:
-    explicit Size(int width = 0, int height = 0) noexcept
+    explicit Size(float width = 0, float height = 0) noexcept
             : width(width), height(height) {}
 
 public:
-    int width;
-    int height;
+    float width;
+    float height;
 };
 
 #endif //ARCANOID_SIZE_H

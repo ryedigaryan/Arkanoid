@@ -28,7 +28,7 @@ public:
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override;
 //    void go_isAtPeaceNow(unsigned go_id)                                      override;
     void engine_go_isAtPieceNow(const unsigned& go_id) override ;
-    void go_moved(unsigned go_id, const int& dx, const int& dy)               override;
+    void go_moved(unsigned go_id, const float& dx, const float& dy)         override;
     void go_sizeChanged(unsigned go_id, const Size &go_size)                  override;
 
     // ArkanoidEngineDelegate virtual functions
@@ -50,7 +50,7 @@ private: // helper functions
     void calculateScaling();
     sf::Vector2f scale(const Point& position);
     sf::Vector2f scale(const Size& position);
-    sf::Vector2f scale(const int& x, const int& y);
+    sf::Vector2f scale(const float& x, const float& y);
     void setViewForModel(unsigned modelID, unsigned viewiD);
     unsigned getViewOfModel(unsigned modelID);
 };

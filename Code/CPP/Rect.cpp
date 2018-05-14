@@ -19,12 +19,12 @@ Line Rect::side(Side side) const {
     }
 }
 
-int Rect::right() const
+float Rect::right() const
 {
     return left + width;
 }
 
-int Rect::bottom() const
+float Rect::bottom() const
 {
     return top + height;
 }

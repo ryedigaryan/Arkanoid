@@ -155,7 +155,7 @@ sf::Vector2f GamingState::scale(const Size& size)
     return scale(size.width, size.height);
 }
 
-sf::Vector2f GamingState::scale(const int &x, const int &y) {
+sf::Vector2f GamingState::scale(const float& x, const float& y) {
     return sf::Vector2f(x * m_scaleFactor.x, y * m_scaleFactor.y);
 }
 
@@ -181,7 +181,7 @@ void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthC
 //    m_gameData->drawer->removeObject(getViewOfModel(go_id));
 //}
 
-void GamingState::go_moved(unsigned go_id, const int& dx, const int& dy)
+void GamingState::go_moved(unsigned go_id, const float& dx, const float& dy)
 {
     auto viewID = getViewOfModel(go_id);
     m_gameData->drawer->moveObject(viewID, scale(dx, dy));

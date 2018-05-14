@@ -16,13 +16,13 @@ public:
     explicit Rect(Point position = Point(), Size size = Size()) noexcept
             : m_position(position), m_size(size), left(position.x), top(position.y), width(size.width), height(size.height) {}
 
-    int left;
-    int top;
-    int width;
-    int height;
+    float left;
+    float top;
+    float width;
+    float height;
 
-    int   right()         const;
-    int   bottom()        const;
+    float   right()         const;
+    float   bottom()        const;
     Point position()      const;
     Size  size()          const;
     Line  side(Side side) const;
