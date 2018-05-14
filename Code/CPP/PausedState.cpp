@@ -8,7 +8,7 @@
 
 PausedState::PausedState(GameData* gameData, const unsigned& level, const int& progress) : StaticImageState(gameData, PauseButton), m_level(level), m_progress(progress)
 {
-    cout << "State: Paused" << endl;
+
 }
 
 void PausedState::draw()

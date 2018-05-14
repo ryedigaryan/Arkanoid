@@ -5,6 +5,7 @@
 #ifndef ARCANOID_GAMEENGINE_H
 #define ARCANOID_GAMEENGINE_H
 
+#include <ctime>
 #include "Interfaces/ArkanoidEngineDelegate.h"
 #include "Geometry/Geometry.h"
 #include "Models/Level.h"
@@ -22,27 +23,29 @@ class ArkanoidEngine
 public:
     ArkanoidEngine() : m_delegate(nullptr), m_level(Level(0, BricksDistance, BricksCountOnPlayer)), m_playerMovementDirection(SideNone)
     {
-
+        srand(static_cast<unsigned int>(time(nullptr)));
     }
 
-public:
-    void setLevel(Level& level);
+public: // actions
+    void setLevel(Level& level, bool isNewGame = true);
     void process();
-    int getProgress();
-
     void movePlayer(Side side);
     void stopPlayer();
 
-    LevelState getState();
-    Level& getLevel();
+public: // info getters
+    int getProgress() const;
+    LevelState getState() const;
+    const Level& getLevel() const;
 
     ArkanoidEngineDelegate* m_delegate;
-    Side m_playerMovementDirection;
 
-private:
+private: // data
     Level m_level;
     LevelState m_state;
+    Side m_playerMovementDirection;
     unsigned m_bricksMaxCount;
+
+private: // functions
     int   predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
     Rect  rectAfterMoving(const Movable &movable);
     bool  willCollide(const Movable &first, const GameObject &second);

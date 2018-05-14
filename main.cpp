@@ -66,8 +66,6 @@ void test();
 
 int main()
 {
-
-    srand(time(nullptr));
 //    test();
 //    return 0;
     ArkanoidGameController c;

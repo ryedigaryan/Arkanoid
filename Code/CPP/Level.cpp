@@ -61,7 +61,7 @@ void Level::loadFromSpec(const std::string& specPath)
     levelSpecReader.close();
 }
 
-Size Level::getSize(bool considerBorders /* = false */)
+Size Level::getSize(bool considerBorders /* = false */) const
 {
     if(!considerBorders) {
         return Size(m_size.width - 2 * BorderWidth, m_size.height - BorderWidth);
@@ -91,6 +91,15 @@ unsigned Level::biggestIdentifier() const
     // as the upper border is the last created object when loading level from spec,
     // so we assume that it has the biggest ID
     return getBorder(SideUp).getIdentifier();
+}
+
+unsigned Level::bricksSummaryHealth() const
+{
+    int sum = 0;
+    for(auto brick : bricks) {
+        sum += brick->getHealth();
+    }
+    return sum;
 }
 
 unsigned Level::countOfGameObjects() const
@@ -146,7 +155,6 @@ void Level::loadBall(std::ifstream& specReader)
     // as the ball is not added at the bottom of level, so there is no need to enlarge level's size
     ball.setPosition(Point(player.get(AxisX) + (PlayerWidth - BallWidth) / 2, player.get(AxisY) - BallHeight));
     ball.setSize(BallSize);
-    ball.getVelocity().set(BallSpeed, ((rand() % 100) / 100.0) * M_PI / 2);
     ball.setDelegate(go_delegate);
 }
 

@@ -10,9 +10,9 @@ void ArkanoidEngine::process()
     processBall();
 }
 
-int ArkanoidEngine::getProgress()
+int ArkanoidEngine::getProgress() const
 {
-    return static_cast<int>(100 - ((m_level.bricks.size() * 100.0) / m_bricksMaxCount));
+    return static_cast<int>(100 - ((m_level.bricksSummaryHealth() * 100.0) / m_bricksMaxCount));
 }
 
 void ArkanoidEngine::movePlayer(Side side)
@@ -29,20 +29,23 @@ void ArkanoidEngine::stopPlayer()
     m_level.player.setVelocity(0, 0);
 }
 
-LevelState ArkanoidEngine::getState()
+LevelState ArkanoidEngine::getState() const
 {
     return m_state;
 }
 
-void ArkanoidEngine::setLevel(Level& level)
+void ArkanoidEngine::setLevel(Level& level, bool isNewGame)
 {
     m_level = level;
     m_state = LevelStateInProcess;
-    m_bricksMaxCount = level.bricks.size();
+    m_bricksMaxCount = level.bricksSummaryHealth();
     m_delegate->engine_levelSet(m_level);
+    if(isNewGame) {
+        m_level.ball.getVelocity().set(BallSpeed, static_cast<const float &>(M_PI / 14 + (((rand() % 100) / 100.0) * 5.2 * M_PI / 14)));
+    }
 }
 
-Level& ArkanoidEngine::getLevel()
+const Level& ArkanoidEngine::getLevel() const
 {
     return m_level;
 }
@@ -71,10 +74,8 @@ int ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFi
 
 Rect ArkanoidEngine::rectAfterMoving(const Movable& movable)
 {
-    Point positionAfterMoving(movable.getPosition().x + movable.getVelocity().projection(AxisX), movable.getPosition().y +
-            movable.getVelocity().projection(AxisY));
-    Rect b(positionAfterMoving, movable.getSize());
-    return b;
+    Point positionAfterMoving(movable.getPosition().x + movable.getVelocity().projection(AxisX), movable.getPosition().y + movable.getVelocity().projection(AxisY));
+    return Rect(positionAfterMoving, movable.getSize());
 }
 
 /**
@@ -207,3 +208,4 @@ Rect ArkanoidEngine::removeBrick(std::list<Brick*>::iterator it_brick) {
     }
     return result;
 }
+

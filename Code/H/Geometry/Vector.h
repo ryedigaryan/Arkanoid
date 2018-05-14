@@ -5,32 +5,27 @@
 #ifndef ARCANOID_VECTOR_H
 #define ARCANOID_VECTOR_H
 
-#define FullAngle 360
-#define StraightAngle 180
-
 #include "Point.h"
+#include <cmath>
 
 class Vector
 {
-public:
+public: // constructors
     Vector(Point from, Point to);
     explicit Vector(const float& xProjection = 0, const float& yProjection = 0);
 
+public: // getters
     float projection(const Axis &axis) const;
     float module() const;
-    float angle() const;
+    float angle()  const;
+
+public: // modifiers
     void set(const float& module, const float& angle);
-    void setProjection(const float& xProjection, const float& yProjection);;
-
-    Vector getProjectionVector(const Axis& axis) const;
-    Point end(const Point& start = Point()) const;
-    Point start(const Point& end = Point()) const;
-
-    // action
+    void setProjection(const float& xProjection, const float& yProjection);
     void inverse(Axis axis);
     void rotate(float angleDelta);
 
-private:
+private: // data
     float m_x; // x projection
     float m_y; // y projection
 };

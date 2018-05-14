@@ -37,8 +37,9 @@ public: // interface functions
     void setGoDelegate(GameObjectDelegate* go_dlg, ObjectType goType);
     void removeGoDelegate(ObjectType goType);
     void loadFromSpec(const std::string& specPath);
-    Size getSize(bool considerBorders = false);
+    Size getSize(bool considerBorders = false) const;
     const Border& getBorder(Side sceneSide) const;
+    unsigned bricksSummaryHealth() const;
 
 
     unsigned smallestIdentifier() const;

@@ -6,7 +6,6 @@
 
 GamingState::GamingState(GameData* gameData, unsigned startLevelNumber, unsigned lastLevelNumber) : State(gameData), m_firstLevelNumber(startLevelNumber), m_lastLevelNumber(lastLevelNumber)
 {
-    cout << "State: Gaming" << endl;
     m_gameData->engine->m_delegate = this;
 }
 
