@@ -120,7 +120,8 @@ void ArkanoidEngine::processBall()
         int sides = predictCollisionSides(m_level.ball.rect(), rectAfterMoving(m_level.ball), colRect);
         if ((sides & SideRight) == SideRight || (sides & SideLeft) == SideLeft) {
              m_level.ball.getVelocity().inverse(AxisX);
-        } else if ((sides & SideUp) == SideUp || (sides & SideDown) == SideDown) {
+        }
+        if ((sides & SideUp) == SideUp || (sides & SideDown) == SideDown) {
             m_level.ball.getVelocity().inverse(AxisY);
         }
     }
