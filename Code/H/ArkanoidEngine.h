@@ -46,15 +46,18 @@ private: // data
     unsigned m_bricksMaxCount;
 
 private: // functions
-    int  predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
-    Rect rectAfterMoving(const Movable &movable);
-    bool willCollide(const Movable &first, const GameObject &second);
-    bool areColliding(Rect first, Rect second);
     void processPlayer();
     void processBall();
+
     Rect processBallBrickCollision();
     Rect processBallBorderCollision();
     Rect processBallPlayerCollision();
+
+    Rect rectAfterMoving(const Movable &movable);
+
+    int  predictCollisionSides(const Rect& first, const Rect& movedFirst, const Rect& second);
+    bool willCollide(const Movable &first, const GameObject &second);
+    bool areColliding(Rect first, Rect second);
 };
 
 #endif //ARCANOID_GAMEENGINE_H

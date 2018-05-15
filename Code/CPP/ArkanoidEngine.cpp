@@ -121,16 +121,15 @@ Rect ArkanoidEngine::processBallBrickCollision() {
         Brick& brick = **it_brick;
         if(willCollide(m_level.ball, brick)) {
             m_level.ball.attack(brick);
-            unsigned brickID;
-            Rect result = brick.rect();
             if(brick.getHealth() == 0) {
-                brickID = brick.getIdentifier();
                 m_level.bricks.erase(it_brick);
-                m_delegate->engine_go_isAtPieceNow(brickID);
+                m_delegate->engine_go_isAtPieceNow(brick.getIdentifier());
                 if(m_level.bricks.empty()) {
                     m_state = LevelStateWon;
                 }
             }
+            Rect result = brick.rect();
+            delete &brick;
             return result;
         }
     }
