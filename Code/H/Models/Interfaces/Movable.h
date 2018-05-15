@@ -16,9 +16,25 @@ public:
         m_velocity.setProjection(xProjection, yProjection);
     }
 
-    virtual void setVelocity(Vector velocity)
+    virtual void setVelocity(Side direction, const float& module)
     {
-        setVelocity(velocity.projection(AxisX), velocity.projection(AxisY));
+        switch(direction) {
+            case SideLeft:
+                m_velocity.setProjection(-module, 0);
+                break;
+            case SideRight:
+                m_velocity.setProjection(module, 0);
+                break;
+            case SideUp:
+                m_velocity.setProjection(0, -module);
+                break;
+            case SideDown:
+                m_velocity.setProjection(0, module);
+                break;
+            case SideNone:
+                m_velocity.setProjection(0, 0);
+                break;
+        }
     }
 
     virtual const Vector& getVelocity() const

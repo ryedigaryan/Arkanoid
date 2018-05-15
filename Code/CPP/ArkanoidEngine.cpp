@@ -17,10 +17,7 @@ int ArkanoidEngine::getProgress() const
 
 void ArkanoidEngine::movePlayer(Side side)
 {
-    m_playerMovementDirection = side; // TODO: remove this line, it is for debug
-    if(side == SideLeft || side == SideRight) {
-        m_playerMovementDirection = side;
-    }
+    m_playerMovementDirection = side;
 }
 
 void ArkanoidEngine::stopPlayer()
@@ -69,7 +66,7 @@ int ArkanoidEngine::predictCollisionSides(const Rect& first, const Rect& movedFi
     else if(first.top > movedFirst.top && movedFirst.top <= second.bottom() && second.bottom() <= first.top) {
         result |= SideUp;
     }
-    return result == 0 ? SideNone : result;
+    return result;
 }
 
 Rect ArkanoidEngine::rectAfterMoving(const Movable& movable)
@@ -85,16 +82,8 @@ Rect ArkanoidEngine::rectAfterMoving(const Movable& movable)
 void ArkanoidEngine::processPlayer()
 {
     if(m_playerMovementDirection != SideNone) {
-        const GameObject* collidableObject = nullptr;
-        if(m_playerMovementDirection == SideLeft) {
-            m_level.player.setVelocity(-PlayerSpeed, 0);
-            collidableObject = &m_level.getBorder(SideLeft);
-        }
-        else if(m_playerMovementDirection == SideRight) {
-            m_level.player.setVelocity(PlayerSpeed, 0);
-            collidableObject = &m_level.getBorder(SideRight);
-        }
-        if(collidableObject != nullptr && !willCollide(m_level.player, *collidableObject)) {
+        m_level.player.setVelocity(m_playerMovementDirection, PlayerSpeed);
+        if(!willCollide(m_level.player, m_level.getBorder(m_playerMovementDirection))) {
             m_level.player.move();
         }
     }
@@ -159,9 +148,8 @@ Rect ArkanoidEngine::processBallBorderCollision() {
 
 Rect ArkanoidEngine::processBallPlayerCollision() {
     if(willCollide(m_level.ball, m_level.player)) {
-        Vector& vel = m_level.ball.getVelocity();
         if(m_level.player.getVelocity().projection(AxisX) > 0) {
-            m_level.ball.getVelocity().rotate(static_cast<float>(-BallDirectionChange));
+            m_level.ball.getVelocity().rotate(-BallDirectionChange);
         }
         else if(m_level.player.getVelocity().projection(AxisX) < 0) {
             m_level.ball.getVelocity().rotate(BallDirectionChange);
@@ -180,33 +168,3 @@ bool ArkanoidEngine::areColliding(Rect first, Rect second) {
     return first.left < second.right() && first.right() > second.left &&
             first.top < second.bottom() && first.bottom() > second.top;
 }
-
-Side ArkanoidEngine::collisionSide(const Movable& first, const GameObject& second) {
-    Rect f = first.rect();
-    Rect s = second.rect();
-    if(f.right() < s.left) {
-        return SideRight;
-    }
-    if(f.left > s.right()) {
-        return SideLeft;
-    }
-    if(f.bottom() < s.top) {
-        return SideDown;
-    }
-    if(f.top > s.bottom()) {
-        return SideUp;
-    }
-}
-
-Rect ArkanoidEngine::removeBrick(std::list<Brick*>::iterator it_brick) {
-    unsigned brickID;
-    Brick& brick = **it_brick;
-    Rect result = brick.rect();
-    if(brick.getHealth() == 0) {
-        brickID = brick.getIdentifier();
-        m_level.bricks.erase(it_brick);
-        m_delegate->engine_go_isAtPieceNow(brickID);
-    }
-    return result;
-}
-

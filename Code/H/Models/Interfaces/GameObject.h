@@ -16,8 +16,6 @@ class GameObject
 public: // public interface
     explicit GameObject(ObjectType type, Point position = Point(), Size size = Size()) : m_type(type), m_position(position), m_size(size), m_identifier(generateIdentifier()) {}
 
-//    GameObject(GameObject& other) : m_position(other.m_position), m_size(other.m_size), m_delegate(other.m_delegate), m_identifier(other.m_identifier) {}
-
     ~GameObject();
 
     unsigned getIdentifier() const;

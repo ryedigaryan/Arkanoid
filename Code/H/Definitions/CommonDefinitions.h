@@ -26,8 +26,6 @@ using std::cin;
 #define LastLevelNumber 6
 
 #define Replace true // used when StateMachine must replace current active state with the new one
-#define HasWon true
-#define HasLost true
 
 #define PauseButton sf::Keyboard::P
 #define MoveLeftButton sf::Keyboard::Left
@@ -39,17 +37,13 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
-#define BallDirectionChange 0.1
+#define BallDirectionChange 0.1f
 
 #define BricksDistance Size(2, 2)
 #define BricksCountOnPlayer 5
 
 #define LeftBorder 1
 #define RightBorder 2
-
-#define ConsiderBorders true
-
-#define NotFound nullptr
 
 #define Approximation 3
 
@@ -77,11 +71,11 @@ enum Resolution {
 };
 
 enum Side {
+    SideNone  = 0x00000000,
     SideLeft  = 0x0000000f,
     SideRight = 0x000000f0,
     SideUp    = 0x00000f00,
     SideDown  = 0x0000f000,
-    SideNone  = 0x000f0000,
 };
 
 typedef std::pair<Side, Side> TwoSides;

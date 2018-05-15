@@ -79,6 +79,7 @@ const Border& Level::getBorder(Side sceneSide) const
         case SideUp:
             return borders[1];
     }
+    return Border();
 }
 
 unsigned Level::smallestIdentifier() const
