@@ -37,6 +37,7 @@ void ArkanoidEngine::setLevel(Level& level, bool isNewGame)
 {
     m_level = level;
     m_state = LevelStateInProcess;
+    m_playerMovementDirection = SideNone;
     m_bricksMaxCount = level.bricksSummaryHealth();
     m_level.ball.set(AxisX, m_level.ball.get(AxisX) + m_level.ball.getSize().width);
     m_level.ball.getVelocity().setModule(BallSpeed);
@@ -125,15 +126,15 @@ Rect ArkanoidEngine::processBallBrickCollision() {
         Brick& brick = **it_brick;
         if(willCollide(m_level.ball, brick)) {
             m_level.ball.attack(brick);
+            Rect result = brick.rect();
             if(brick.getHealth() == 0) {
                 m_level.bricks.erase(it_brick);
                 m_delegate->engine_go_isAtPieceNow(brick.getIdentifier());
                 if(m_level.bricks.empty()) {
                     m_state = LevelStateWon;
                 }
+                delete &brick;
             }
-            Rect result = brick.rect();
-            delete &brick;
             return result;
         }
     }

@@ -10,7 +10,8 @@ LevelEndState::LevelEndState(GameData* gameData, const unsigned& level, const bo
 
 }
 
-void LevelEndState::init() {
+void LevelEndState::init()
+{
     StaticImageState::init();
     if(m_level == m_lastLevel && m_hasWon) {
         m_gameData->stateMachine->pushState(new EntireGameWonState(m_gameData), Replace);
