@@ -54,9 +54,6 @@ Size GameObject::getSize() const
 void GameObject::set(const Axis& axis, const float& value)
 {
     axis == AxisX ? m_position.x = value : m_position.y = value;
-    if(m_delegate != nullptr) {
-//TODO:        m_delegate->go_moved(m_identifier, m_position);
-    }
 }
 
 float GameObject::get(const Axis& axis) const

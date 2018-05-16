@@ -52,6 +52,7 @@ private: // functions
     Rect processBallBrickCollision();
     Rect processBallBorderCollision();
     Rect processBallPlayerCollision();
+    float ballAngleAfterHittingPlayer();
 
     Rect rectAfterMoving(const Movable &movable);
 

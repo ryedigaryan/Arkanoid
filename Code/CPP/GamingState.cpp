@@ -175,11 +175,6 @@ void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthC
     }
 }
 
-//void GamingState::go_isAtPeaceNow(unsigned go_id)
-//{
-//    m_gameData->drawer->removeObject(getViewOfModel(go_id));
-//}
-
 void GamingState::go_moved(unsigned go_id, const float& dx, const float& dy)
 {
     auto viewID = getViewOfModel(go_id);

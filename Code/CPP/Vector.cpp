@@ -28,13 +28,30 @@ float Vector::module() const
 
 float Vector::angle() const
 {
-    return (m_x == 0 ? static_cast<float>(M_PI_2) : std::atan(m_y / m_x));
+    if(m_x == 0) {
+        return static_cast<float>(M_PI_2);
+    }
+    float angle = std::atan(m_y / m_x);
+    if(m_x < 0) {
+        return static_cast<float>(angle < 0 ? angle - M_PI_2 : angle + M_PI_2);
+    }
+    return angle;
+}
+
+void Vector::setAngle(const float &angle)
+{
+    set(module(), angle);
+}
+
+void Vector::setModule(const float &module)
+{
+    set(module, angle());
 }
 
 void Vector::set(const float& module, const float& angle)
 {
-    m_x = module * std::sin(angle);
-    m_y = module * std::cos(angle);
+    m_x = module * std::cos(angle);
+    m_y = module * std::sin(angle);
 }
 
 void Vector::setProjection(const float& xProjection, const float& yProjection)

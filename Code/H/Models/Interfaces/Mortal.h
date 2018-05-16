@@ -10,7 +10,6 @@
 class Mortal : public virtual GameObject {
 public:
     virtual void harm(int damage) = 0;
-    //virtual void heal(int diff) = 0;
     virtual int getHealth()
     {
         return m_health;

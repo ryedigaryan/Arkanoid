@@ -17,13 +17,15 @@ int ArkanoidEngine::getProgress() const
 
 void ArkanoidEngine::movePlayer(Side side)
 {
-    m_playerMovementDirection = side;
+    if(side == SideRight || side == SideLeft) {
+        m_playerMovementDirection = side;
+    }
 }
 
 void ArkanoidEngine::stopPlayer()
 {
     m_playerMovementDirection = SideNone;
-    m_level.player.setVelocity(0, 0);
+    m_level.player.getVelocity().setProjection(0, 0);
 }
 
 LevelState ArkanoidEngine::getState() const
@@ -36,9 +38,11 @@ void ArkanoidEngine::setLevel(Level& level, bool isNewGame)
     m_level = level;
     m_state = LevelStateInProcess;
     m_bricksMaxCount = level.bricksSummaryHealth();
+    m_level.ball.set(AxisX, m_level.ball.get(AxisX) + m_level.ball.getSize().width);
+    m_level.ball.getVelocity().setModule(BallSpeed);
     m_delegate->engine_levelSet(m_level);
     if(isNewGame) {
-        m_level.ball.getVelocity().set(BallSpeed, static_cast<const float &>(M_PI / 14 + (((rand() % 100) / 100.0) * 5.2 * M_PI / 14)));
+//        m_level.ball.getVelocity().set(BallSpeed, static_cast<const float &>(myutils::randomInRange(M_PI / 6, M_PI / 3)));
     }
 }
 
@@ -147,12 +151,7 @@ Rect ArkanoidEngine::processBallBorderCollision() {
 
 Rect ArkanoidEngine::processBallPlayerCollision() {
     if(willCollide(m_level.ball, m_level.player)) {
-        if(m_level.player.getVelocity().projection(AxisX) > 0) {
-            m_level.ball.getVelocity().rotate(-BallDirectionChange);
-        }
-        else if(m_level.player.getVelocity().projection(AxisX) < 0) {
-            m_level.ball.getVelocity().rotate(BallDirectionChange);
-        }
+        m_level.ball.getVelocity().setAngle(ballAngleAfterHittingPlayer());
         return m_level.player.rect();
     }
     return ILLEGAL_RECT;
@@ -166,4 +165,18 @@ bool ArkanoidEngine::willCollide(const Movable &first, const GameObject &second)
 bool ArkanoidEngine::areColliding(Rect first, Rect second) {
     return first.left < second.right() && first.right() > second.left &&
             first.top < second.bottom() && first.bottom() > second.top;
+}
+
+float ArkanoidEngine::ballAngleAfterHittingPlayer() {
+//    float angle = m_level.ball.getVelocity().angle();
+//    float angleHalf1 = static_cast<float>(M_PI_2 - std::abs(angle) / 2);
+    float percent = std::abs(m_level.player.getPosition().x + m_level.player.getSize().width - m_level.ball.getPosition().x) / m_level.player.getSize().width;
+//    if(m_level.ball.isMovingTo(SideRight)) {
+//        percent = std::abs(m_level.ball.getPosition().x - m_level.player.getPosition().x) / m_level.player.getSize().width;
+//    }
+//    else if(m_level.ball.isMovingTo(SideLeft)) {
+//        percent = std::abs(m_level.player.getPosition().x + m_level.player.getSize().width - m_level.ball.getPosition().x) / m_level.player.getSize().width ;
+//    }
+//    float angleHalf2 = angleHalf1 * percent;
+    return static_cast<float>(-M_PI_2 / 6 - (percent * (M_PI_2 + M_PI_2 / 3)));
 }

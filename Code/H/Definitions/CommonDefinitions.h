@@ -78,11 +78,20 @@ enum Side {
     SideDown  = 0x0000f000,
 };
 
-typedef std::pair<Side, Side> TwoSides;
+namespace logutils {
+    std::string nameOf(ObjectType);
+    std::string nameOf(Side);
 
-std::string nameOf(ObjectType);
-std::string nameOf(Side);
-bool containsSide(const int& sides, const Side& side);
-extern std::ofstream logstream;
+    extern std::ofstream logstream;
+}
+
+namespace myutils {
+    template<typename T>
+    T randomInRange(T lowerBound, T upperBound) {
+        T diff = upperBound - lowerBound;
+        double percent = (rand() % 101) / 100.0;
+        return lowerBound + static_cast<T>(diff * percent);
+    }
+}
 
 #endif //ARCANOID_COMMONDEFINITIONS_H

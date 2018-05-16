@@ -3,9 +3,9 @@
 //
 #include "Definitions/CommonDefinitions.h"
 
-std::ofstream logstream("arkanoid.log.txt");
+std::ofstream logutils::logstream("arkanoid.log.txt");
 
-std::string nameOf(Side side)
+std::string logutils::nameOf(Side side)
 {
     switch(side) {
         case SideLeft:
@@ -21,7 +21,7 @@ std::string nameOf(Side side)
     }
 }
 
-std::string nameOf(ObjectType o)
+std::string logutils::nameOf(ObjectType o)
 {
     switch(o) {
         case ObjectTypePaddle:
@@ -37,8 +37,4 @@ std::string nameOf(ObjectType o)
         default:
             return "ObjectTypeNone";
     }
-}
-
-bool containsSide(const int& sides, const Side& side) {
-    return (sides & side) == side;
 }

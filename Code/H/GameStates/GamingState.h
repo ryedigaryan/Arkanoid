@@ -26,13 +26,12 @@ public:
 
     // GameObjectDelegate virtual functions
     void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override;
-//    void go_isAtPeaceNow(unsigned go_id)                                      override;
-    void engine_go_isAtPieceNow(const unsigned& go_id) override ;
-    void go_moved(unsigned go_id, const float& dx, const float& dy)         override;
+    void engine_go_isAtPieceNow(const unsigned& go_id)                        override;
+    void go_moved(unsigned go_id, const float& dx, const float& dy)           override;
     void go_sizeChanged(unsigned go_id, const Size &go_size)                  override;
 
     // ArkanoidEngineDelegate virtual functions
-    void engine_levelSet(const Level& level) override;
+    void engine_levelSet(const Level& level)                                  override;
 
 private: // private data
     sf::Vector2f m_scaleFactor;

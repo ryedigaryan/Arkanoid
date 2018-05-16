@@ -96,7 +96,7 @@ unsigned Level::biggestIdentifier() const
 
 unsigned Level::bricksSummaryHealth() const
 {
-    int sum = 0;
+    unsigned sum = 0;
     for(auto brick : bricks) {
         sum += brick->getHealth();
     }

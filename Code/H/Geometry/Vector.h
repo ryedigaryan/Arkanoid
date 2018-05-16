@@ -20,6 +20,8 @@ public: // getters
     float angle()  const;
 
 public: // modifiers
+    void setAngle(const float& angle);
+    void setModule(const float& module);
     void set(const float& module, const float& angle);
     void setProjection(const float& xProjection, const float& yProjection);
     void inverse(Axis axis);
