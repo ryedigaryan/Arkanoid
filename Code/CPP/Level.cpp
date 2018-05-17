@@ -5,6 +5,8 @@
 #include "Models/Level.h"
 #include "ResourceManager.h"
 
+//Level::Level() : m_resourceManager(ResourceManager::getManager()) {};
+
 Level::Level(unsigned num, Size bricksDistance, int bricksCountOnPlayer, GameObjectDelegate* go_dlg)
         : number(num), go_delegate(go_dlg), m_brickDistance(bricksDistance), m_bricksCountOnPlayer(bricksCountOnPlayer), m_resourceManager(ResourceManager::getManager())
 {

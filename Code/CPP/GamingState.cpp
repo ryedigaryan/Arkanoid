@@ -75,7 +75,8 @@ void GamingState::update()
     }
 }
 
-void GamingState::draw() {
+void GamingState::draw()
+{
     m_gameData->drawer->displayChanges(m_gameData->engine->getProgress());
 }
 

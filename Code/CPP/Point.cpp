@@ -3,7 +3,6 @@
 //
 
 #include "Geometry/Point.h"
-#include "Geometry/Line.h"
 
 Point operator+(const Point& left, const Point& right)
 {
@@ -39,25 +38,4 @@ bool Point::operator==(const Point& other) const
 bool Point::operator!=(const Point& other) const
 {
     return x != other.x || y != other.y;
-}
-
-bool Point::isInside(const Line& first, const Line& second) const
-{
-    float top, bottom;
-    float left, right;
-
-    float tmp;
-    if((top = first.yAt(x)) < (bottom = second.yAt(x))) {
-        tmp = top;
-        top = bottom;
-        bottom = tmp;
-    }
-
-    if((left = first.xAt(y)) < (right = second.xAt(y))) {
-        tmp = left;
-        left = right;
-        right = tmp;
-    }
-
-    return left < x && x < right && bottom < y && y < top;
 }

@@ -24,7 +24,8 @@ sf::RenderWindow* ArkanoidDrawer::getDrawingWindow()
     return m_window;
 }
 
-sf::Vector2f ArkanoidDrawer::getLevelSize(bool considerBorders /* = false */) {
+sf::Vector2f ArkanoidDrawer::getLevelSize(bool considerBorders /* = false */)
+{
     if(considerBorders) {
         return sf::Vector2f(m_backgroundRect.width + 2 * m_borderWidth, m_backgroundRect.height);
     }
@@ -230,7 +231,8 @@ void ArkanoidDrawer::drawBackground(const sf::Texture* bgTexture, int corner)
     m_window->draw(helperShape);
 }
 
-void ArkanoidDrawer::drawBorder(Side borderSide) {
+void ArkanoidDrawer::drawBorder(Side borderSide)
+{
     sf::RectangleShape border;
     const sf::Texture* texture;
     switch(borderSide) {

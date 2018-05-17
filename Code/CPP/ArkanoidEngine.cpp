@@ -39,12 +39,11 @@ void ArkanoidEngine::setLevel(Level& level, bool isNewGame)
     m_state = LevelStateInProcess;
     m_playerMovementDirection = SideNone;
     m_bricksMaxCount = level.bricksSummaryHealth();
-    m_level.ball.set(AxisX, m_level.ball.get(AxisX) + m_level.ball.getSize().width);
-    m_level.ball.getVelocity().setModule(BallSpeed);
-    m_delegate->engine_levelSet(m_level);
     if(isNewGame) {
-//        m_level.ball.getVelocity().set(BallSpeed, static_cast<const float &>(myutils::randomInRange(M_PI / 6, M_PI / 3)));
+        m_level.ball.set(AxisX, m_level.ball.get(AxisX) + m_level.ball.getSize().width);
+        m_level.ball.getVelocity().setModule(BallSpeed);
     }
+    m_delegate->engine_levelSet(m_level);
 }
 
 const Level& ArkanoidEngine::getLevel() const
@@ -121,7 +120,8 @@ void ArkanoidEngine::processBall()
     }
 }
 
-Rect ArkanoidEngine::processBallBrickCollision() {
+Rect ArkanoidEngine::processBallBrickCollision()
+{
     for(auto it_brick = m_level.bricks.begin(); it_brick != m_level.bricks.end(); it_brick++) {
         Brick& brick = **it_brick;
         if(willCollide(m_level.ball, brick)) {
@@ -141,7 +141,8 @@ Rect ArkanoidEngine::processBallBrickCollision() {
     return ILLEGAL_RECT;
 }
 
-Rect ArkanoidEngine::processBallBorderCollision() {
+Rect ArkanoidEngine::processBallBorderCollision()
+{
     for(const auto& border : m_level.borders) {
         if(willCollide(m_level.ball, border)) {
             return border.rect();
@@ -150,7 +151,8 @@ Rect ArkanoidEngine::processBallBorderCollision() {
     return ILLEGAL_RECT;
 }
 
-Rect ArkanoidEngine::processBallPlayerCollision() {
+Rect ArkanoidEngine::processBallPlayerCollision()
+{
     if(willCollide(m_level.ball, m_level.player)) {
         m_level.ball.getVelocity().setAngle(ballAngleAfterHittingPlayer());
         return m_level.player.rect();
@@ -158,17 +160,20 @@ Rect ArkanoidEngine::processBallPlayerCollision() {
     return ILLEGAL_RECT;
 }
 
-bool ArkanoidEngine::willCollide(const Movable &first, const GameObject &second) {
+bool ArkanoidEngine::willCollide(const Movable &first, const GameObject &second)
+{
     Rect movedRect = rectAfterMoving(first);
     return areColliding(movedRect, second.rect());
 }
 
-bool ArkanoidEngine::areColliding(Rect first, Rect second) {
+bool ArkanoidEngine::areColliding(Rect first, Rect second)
+{
     return first.left < second.right() && first.right() > second.left &&
             first.top < second.bottom() && first.bottom() > second.top;
 }
 
-float ArkanoidEngine::ballAngleAfterHittingPlayer() {
+float ArkanoidEngine::ballAngleAfterHittingPlayer()
+{
 //    float angle = m_level.ball.getVelocity().angle();
 //    float angleHalf1 = static_cast<float>(M_PI_2 - std::abs(angle) / 2);
     float percent = std::abs(m_level.player.getPosition().x + m_level.player.getSize().width - m_level.ball.getPosition().x) / m_level.player.getSize().width;

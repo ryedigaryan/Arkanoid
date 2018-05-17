@@ -8,7 +8,6 @@
 #include <utility>
 #include "Definitions/CommonDefinitions.h"
 #include "Point.h"
-#include "Line.h"
 
 class Rect
 {
@@ -25,7 +24,6 @@ public:
     float   bottom()        const;
     Point position()      const;
     Size  size()          const;
-    Line  side(Side side) const;
 
     bool operator ==(const Rect& other);
     bool operator !=(const Rect& other);
