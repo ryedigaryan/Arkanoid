@@ -47,8 +47,6 @@ using std::cin;
 #define LeftBorder 1
 #define RightBorder 2
 
-#define Approximation 3
-
 enum StateType {
     StateTypeMainMenu,
     StateTypeGaming,

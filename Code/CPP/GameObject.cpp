@@ -41,48 +41,30 @@ void GameObject::setSize(const Size& size)
     }
 }
 
-Point GameObject::getPosition() const
+Point& GameObject::getPosition()
 {
     return m_position;
 }
 
-Size GameObject::getSize() const
+const Point& GameObject::getPosition() const
+{
+    return m_position;
+}
+
+Size& GameObject::getSize()
 {
     return m_size;
 }
 
-void GameObject::set(const Axis& axis, const float& value)
+const Size& GameObject::getSize() const
 {
-    axis == AxisX ? m_position.x = value : m_position.y = value;
-}
-
-float GameObject::get(const Axis& axis) const
-{
-    return (axis == AxisX ? m_position.x : m_position.y);
-}
-
-void GameObject::set(const Dimension& dimension, const float& value)
-{
-    dimension == Dimension::DimensionWidth ? m_size.width = value : m_size.height = value;
-    if(m_delegate != nullptr) {
-        m_delegate->go_sizeChanged(m_identifier, m_size);
-    }
-}
-
-float GameObject::get(const Dimension& dimension) const
-{
-    return (dimension == Dimension::DimensionWidth ? m_size.width : m_size.height);
+    return m_size;
 }
 
 unsigned GameObject::generateIdentifier()
 {
     static unsigned lastIdentifier;
     return lastIdentifier++;
-}
-
-ObjectType GameObject::getType() const
-{
-    return m_type;
 }
 
 Rect GameObject::rect() const {

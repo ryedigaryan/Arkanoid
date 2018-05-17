@@ -12,7 +12,7 @@
 class Paddle : public Movable, public Mortal {
 public:
     explicit Paddle(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int initialHealth = DefaultPaddleInitialHealth)
-            : GameObject(ObjectTypePaddle, position, size), Movable(initialVelocity), Mortal(initialHealth) {}
+            : GameObject(position, size), Movable(initialVelocity), Mortal(initialHealth) {}
 
     void move() override {
         m_position.x += m_velocity.projection(AxisX);

@@ -59,7 +59,7 @@ public:
     }
 
 protected:
-    explicit Movable(Vector velocity) : GameObject(ObjectTypeNone), m_velocity(velocity) {}
+    explicit Movable(Vector velocity) : GameObject(), m_velocity(velocity) {}
 
     Vector m_velocity;
 };

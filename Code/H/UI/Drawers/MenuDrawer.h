@@ -19,11 +19,10 @@ public:
     void draw();
     void display() override;
 
-    MenuDrawer& addButton(std::string buttonText, sf::Font font);
+    MenuDrawer& addButton(const std::string& buttonText, const sf::Font& font);
 
     void markNextButton();
     void markPrevButton();
-
 private: // data
     unsigned m_currentMarkedButton;
     std::vector<sf::Text> m_buttons;

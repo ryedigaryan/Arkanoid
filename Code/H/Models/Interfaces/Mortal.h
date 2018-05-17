@@ -16,7 +16,7 @@ public:
     }
 
 protected:
-    explicit Mortal(int health = 1) : GameObject(ObjectTypeNone), m_health(health) {}
+    explicit Mortal(int health = 1) : GameObject(), m_health(health) {}
 
     int m_health;
 };

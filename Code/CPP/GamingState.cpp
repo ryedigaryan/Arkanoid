@@ -128,7 +128,6 @@ void GamingState::engine_levelSet(const Level& level)
     for(auto brick : level.bricks) {
         drawnObjectID = drawer->drawObject(scale(brick->getPosition()), scale(brick->getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(brick->getHealth())));
         setViewForModel(brick->getIdentifier(), drawnObjectID);
-
     }
     drawnObjectID = drawer->drawObject(scale(level.player.getPosition()), scale(level.player.getSize()), m_gameData->resourceManager->getTexture(ObjectTypePaddle));
     setViewForModel(level.player.getIdentifier(), drawnObjectID);

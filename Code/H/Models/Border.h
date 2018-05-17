@@ -11,7 +11,7 @@
 class Border : public Mortal {
 public:
     explicit Border(Point position = Point(), Size size = Size())
-            : GameObject(ObjectTypeBorder, position, size) {}
+            : GameObject(position, size) {}
 
     void harm(int damage) override {
         // nothing must be done ... as the border is immortal

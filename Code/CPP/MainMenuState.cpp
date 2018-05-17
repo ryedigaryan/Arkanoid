@@ -7,7 +7,7 @@
 MainMenuState::MainMenuState(GameData* gameData)
         : StaticImageState(gameData, sf::Keyboard::Return), m_drawer(gameData->drawer->getDrawingWindow(), gameData->resourceManager->getTexture(StateTypeMainMenu), MainMenuButtonsCount, UnMarkedButtonColor, MarkedButtonColor)
 {
-    auto mmFont = m_gameData->resourceManager->getFont(StateTypeMainMenu);
+    auto& mmFont = m_gameData->resourceManager->getFont(StateTypeMainMenu);
     m_drawer.addButton("New Game", mmFont)
             .addButton("Continue", mmFont)
             .addButton("Credits", mmFont);

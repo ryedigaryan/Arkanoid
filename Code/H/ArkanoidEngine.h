@@ -27,7 +27,7 @@ public:
     }
 
 public: // actions
-    void setLevel(Level& level, bool isNewGame = true);
+    void setLevel(Level& level);
     void process();
     void movePlayer(Side side);
     void stopPlayer();

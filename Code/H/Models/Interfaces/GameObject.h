@@ -14,35 +14,29 @@
 class GameObject
 {
 public: // public interface
-    explicit GameObject(ObjectType type, Point position = Point(), Size size = Size()) : m_type(type), m_position(position), m_size(size), m_identifier(generateIdentifier()) {}
+    explicit GameObject(Point position = Point(), Size size = Size()) : m_position(position), m_size(size), m_identifier(generateIdentifier()) {}
 
     ~GameObject();
 
-    unsigned getIdentifier() const;
-
     void setDelegate(GameObjectDelegate* dlgate);
-
     void setPosition(const Point& position);
     void setSize(const Size& size);
-    Point getPosition() const;
-    Size getSize() const;
-    Rect rect() const;
-    ObjectType getType() const;
 
-    void set(const Axis& axis, const float& value);
-    void set(const Dimension& dimension, const float& value);
-    float get(const Axis& axis) const;
-    float get(const Dimension& dimension) const;
+    Point& getPosition();
+    Size&  getSize();
+    const Point& getPosition()  const;
+    const Size&  getSize()      const;
+    unsigned getIdentifier()    const;
+    Rect rect()                 const;
 
 protected: // data
+    unsigned m_identifier;
     Point m_position;
     Size m_size;
-    ObjectType m_type;
 
     GameObjectDelegate* m_delegate = nullptr;
 
 protected:
-    unsigned m_identifier;
     static unsigned generateIdentifier();
 };
 

@@ -33,16 +33,12 @@ LevelState ArkanoidEngine::getState() const
     return m_state;
 }
 
-void ArkanoidEngine::setLevel(Level& level, bool isNewGame)
+void ArkanoidEngine::setLevel(Level& level)
 {
     m_level = level;
     m_state = LevelStateInProcess;
     m_playerMovementDirection = SideNone;
     m_bricksMaxCount = level.bricksSummaryHealth();
-    if(isNewGame) {
-        m_level.ball.set(AxisX, m_level.ball.get(AxisX) + m_level.ball.getSize().width);
-        m_level.ball.getVelocity().setModule(BallSpeed);
-    }
     m_delegate->engine_levelSet(m_level);
 }
 
@@ -122,13 +118,13 @@ void ArkanoidEngine::processBall()
 
 Rect ArkanoidEngine::processBallBrickCollision()
 {
-    for(auto it_brick = m_level.bricks.begin(); it_brick != m_level.bricks.end(); it_brick++) {
+    for(auto it_brick = m_level.bricks.rbegin(); it_brick != m_level.bricks.rend(); it_brick++) {
         Brick& brick = **it_brick;
         if(willCollide(m_level.ball, brick)) {
             m_level.ball.attack(brick);
             Rect result = brick.rect();
             if(brick.getHealth() == 0) {
-                m_level.bricks.erase(it_brick);
+                m_level.bricks.erase(--(it_brick.base()));
                 m_delegate->engine_goIsAtPieceNow(brick.getIdentifier());
                 if(m_level.bricks.empty()) {
                     m_state = LevelStateWon;
@@ -174,15 +170,6 @@ bool ArkanoidEngine::areColliding(Rect first, Rect second)
 
 float ArkanoidEngine::ballAngleAfterHittingPlayer()
 {
-//    float angle = m_level.ball.getVelocity().angle();
-//    float angleHalf1 = static_cast<float>(M_PI_2 - std::abs(angle) / 2);
     float percent = std::abs(m_level.player.getPosition().x + m_level.player.getSize().width - m_level.ball.getPosition().x) / m_level.player.getSize().width;
-//    if(m_level.ball.isMovingTo(SideRight)) {
-//        percent = std::abs(m_level.ball.getPosition().x - m_level.player.getPosition().x) / m_level.player.getSize().width;
-//    }
-//    else if(m_level.ball.isMovingTo(SideLeft)) {
-//        percent = std::abs(m_level.player.getPosition().x + m_level.player.getSize().width - m_level.ball.getPosition().x) / m_level.player.getSize().width ;
-//    }
-//    float angleHalf2 = angleHalf1 * percent;
     return static_cast<float>(-M_PI_2 / 6 - (percent * (M_PI_2 + M_PI_2 / 3)));
 }

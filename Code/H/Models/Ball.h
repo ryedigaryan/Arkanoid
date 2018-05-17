@@ -12,7 +12,7 @@
 class Ball : public Movable, public Attacker {
 public:
     explicit Ball(Point position = Point(), Size size = Size(), Vector initialVelocity = Vector(), int damage = 1)
-            : GameObject(ObjectTypeBall, position, size), Movable(initialVelocity), Attacker(damage) {}
+            : GameObject(position, size), Movable(initialVelocity), Attacker(damage) {}
 
     void move() override {
         m_position.x += m_velocity.projection(AxisX);

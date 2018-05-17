@@ -12,10 +12,19 @@ ArkanoidGameController::ArkanoidGameController()
     m_gameData.stateMachine = new StateMachine();
     m_gameData.resourceManager = &ResourceManager::getManager();
     //TODO: resolution must be dependent from screen
-    m_gameData.resourceManager->m_resolution = ResolutionMedium;
+    sf::Vector2u wndSize = m_gameData.drawer->getDrawingWindow()->getSize();
+    if(480 <= wndSize.x && wndSize.x < 1080) {
+        m_gameData.resourceManager->m_resolution = ResolutionLow;
+    }
+    else if(1080 <= wndSize.x && wndSize.x < 2048) {
+        m_gameData.resourceManager->m_resolution = ResolutionMedium;
+    }
+    else if(2048 <= wndSize.x && wndSize.x < 4096) {
+        m_gameData.resourceManager->m_resolution = ResolutionHigh;
+    }
 }
 
-void ArkanoidGameController::__lEt_Ze__FuNN__begiNNZZZZZZ___()
+void ArkanoidGameController::__LeTT_Ze__FuNN__begInNzZZzZZ___()
 {
     StateMachine* stateMachine = m_gameData.stateMachine;
     sf::RenderWindow* mainWindow = m_gameData.drawer->getDrawingWindow();

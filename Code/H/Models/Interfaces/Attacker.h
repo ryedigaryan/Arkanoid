@@ -11,7 +11,7 @@
 class Attacker : public virtual GameObject {
 public:
     explicit Attacker(int damage = 0)
-            : GameObject(ObjectTypeNone), m_damage(damage) {}
+            : GameObject(), m_damage(damage) {}
 
     virtual void attack(Mortal& mortal)
     {
