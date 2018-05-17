@@ -21,14 +21,16 @@ public: // public interface
     Resolution m_resolution;
 
     // resource getters
-    const sf::Font&     getFont(StateType state);
-    const sf::Texture*  getTexture(StateType stateType);
-    const sf::Texture*  getTexture(ObjectType objectType, unsigned number = 1);
-    Level               getLevel(const unsigned& levelNumber);
+    const sf::Font&    getFont(StateType state);
+    const sf::Texture* getTexture(StateType stateType);
+    const sf::Texture* getTexture(ObjectType objectType, unsigned number = 1);
+    const sf::Texture* getTexture(const unsigned& number);
+    Level              getLevel(const unsigned& levelNumber);
     // path creators
     std::string pathToFont(StateType state);
     std::string pathToTexture(StateType stateType);
     std::string pathToTexture(ObjectType objectType, unsigned number);
+    std::string pathToTexture(const unsigned& number);
     std::string pathToLevel(unsigned levelNumber);
     // helpers(converters to string)
     std::string toString(StateType objectType);
@@ -42,6 +44,7 @@ private: // private data
 
     std::vector<sf::Font*> m_loadedFonts;
     std::vector<sf::Texture*> m_loadedStateTextures;
+    std::vector<sf::Texture*> m_loadedOtherTextures;
     std::vector<std::vector<sf::Texture*>> m_loadedObjectTextures;
     std::vector<Level*> m_loadedLevels;
 

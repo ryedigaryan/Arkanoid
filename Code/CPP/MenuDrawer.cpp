@@ -18,9 +18,6 @@ void MenuDrawer::draw()
     for(const auto& m_button : m_buttons) {
         m_window.draw(m_button);
     }
-//    for(unsigned i = 0; i < m_buttons.size(); i++) {
-//        m_window.draw(m_buttons.at(0));
-//    }
 }
 
 void MenuDrawer::display()
@@ -30,19 +27,19 @@ void MenuDrawer::display()
 
 MenuDrawer& MenuDrawer::addButton(const std::string& buttonText, const sf::Font& font)
 {
+    bool mustResize = m_buttons.size() == m_buttons.capacity();
     unsigned charSize = characterSize();
-    cout << "add: " << charSize << endl;
     m_buttons.emplace_back(buttonText, font, charSize);
     sf::Text& button = m_buttons.back();
     button.setFillColor(m_unmarkedButtonColor);
-    if(m_buttons.size() == m_buttons.capacity()) {
+    if(mustResize) {
+        cout << m_buttons.size() << endl;
         resizeButtons();
     }
     else {
         sf::FloatRect bounds = button.getGlobalBounds();
         float posx = myutils::middle(m_window.getSize().x, bounds.width);
-        float posy = (m_buttons.size() - 0) * charSize + charSize / 2;
-        cout << buttonText << " " << posx << " " << posy << endl;
+        float posy = (m_buttons.size() - 1) * charSize + charSize / 2;
         button.setPosition(posx, posy);
     }
     return *this;
@@ -65,18 +62,14 @@ sf::Text& MenuDrawer::nextButton()
 
 void MenuDrawer::markPrevButton()
 {
-    logutils::logstream << "unmark " << m_currentMarkedButton << endl;
     currButton().setFillColor(m_unmarkedButtonColor);
     prevButton().setFillColor(m_markedButtonColor);
-    logutils::logstream << "mark   " << m_currentMarkedButton << endl;
 }
 
 void MenuDrawer::markNextButton()
 {
-    logutils::logstream << "unmark " << m_currentMarkedButton << endl;
     currButton().setFillColor(m_unmarkedButtonColor);
     nextButton().setFillColor(m_markedButtonColor);
-    logutils::logstream << "mark   " << m_currentMarkedButton << endl;
 }
 
 void MenuDrawer::resizeButtons()
@@ -84,12 +77,11 @@ void MenuDrawer::resizeButtons()
     unsigned charSize = characterSize();
     cout << "resize: " << charSize << endl;
     for(unsigned i = 0; i < m_buttons.size(); i++) {
-        auto button = m_buttons[i];
-        button.setCharacterSize(characterSize());
+        auto& button = m_buttons[i];
+        button.setCharacterSize(charSize);
         sf::Vector2f newPos;
         newPos.x = myutils::middle(m_window.getSize().x, button.getLocalBounds().width);
         newPos.y = i * charSize + charSize / 2;
-        cout << button.getString().toAnsiString() << " " << newPos.x << " " << newPos.y << endl;
         button.setPosition(newPos);
     }
 }
@@ -97,4 +89,8 @@ void MenuDrawer::resizeButtons()
 unsigned MenuDrawer::characterSize() const
 {
     return m_window.getSize().y / (m_buttons.capacity() + 1);
+}
+
+unsigned MenuDrawer::currMarkedButton() {
+    return m_currentMarkedButton;
 }

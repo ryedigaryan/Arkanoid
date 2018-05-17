@@ -43,7 +43,7 @@ private: // data
     Level m_level;
     LevelState m_state;
     Side m_playerMovementDirection;
-    unsigned m_bricksMaxCount;
+    unsigned m_bricksMaxSumHealth;
 
 private: // functions
     void processPlayer();

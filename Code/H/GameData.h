@@ -14,6 +14,7 @@ struct GameData {
     ArkanoidDrawer* drawer;
     StateMachine* stateMachine;
     ResourceManager* resourceManager;
+    unsigned lostLevel = FirstLevelNumber;
 };
 
 #endif //ARCANOID_GAMEDATA_H

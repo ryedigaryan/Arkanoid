@@ -32,9 +32,7 @@ public:
     sf::RenderWindow* getDrawingWindow();
     sf::Vector2f getLevelSize(bool considerBorders = false);
 
-    void clearScreen(sf::Color fillColor = sf::Color::Black);
     void displayChanges(int progress);
-    void drawMenu();
     void drawLevelStartPopUp(const unsigned &level, const int &progress);
     void drawGameScene(const int& progress);
     void drawLevelEndPopUp(const unsigned &level, const bool &hasWon);
@@ -44,7 +42,6 @@ public:
     void removeObject(const unsigned& id);
     void moveObject(const unsigned& id, const sf::Vector2f& delta);
     void changeTexture(const unsigned& id, const sf::Texture* texture);
-    void resizeObject(const unsigned& id, const sf::Vector2f& change);
 private:
     float m_borderWidth;
     sf::FloatRect m_backgroundRect;

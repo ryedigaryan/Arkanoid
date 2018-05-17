@@ -10,7 +10,7 @@ MainMenuState::MainMenuState(GameData* gameData)
     auto& mmFont = m_gameData->resourceManager->getFont(StateTypeMainMenu);
     m_drawer.addButton("New Game", mmFont)
             .addButton("Continue", mmFont)
-            .addButton("Credits", mmFont);
+            .addButton("About", mmFont);
 }
 
 void MainMenuState::handleInput()
@@ -21,7 +21,17 @@ void MainMenuState::handleInput()
         if(e.type == sf::Event::KeyPressed) {
             switch(e.key.code) {
                 case sf::Keyboard::Return:
-                    m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
+                    switch(m_drawer.currMarkedButton()) {
+                        case MainMenuButtonNewGame:
+                            m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
+                            return;
+                        case MainMenuButtonContinue:
+                            m_gameData->stateMachine->pushState(new GamingState(m_gameData, m_gameData->lostLevel, LastLevelNumber));
+                            return;
+                        case MainMenuButtonAbout:
+                            //TODO: show about...
+                            return;
+                    }
                     return;
                 case sf::Keyboard::Escape:
                     mainWindow->close();

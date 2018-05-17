@@ -30,12 +30,8 @@ void GamingState::handleInput()
                 case MoveRightButton:
                     m_gameData->engine->movePlayer(SideRight);
                     break;
-                //ToDo: These cases are for debugging
-                case sf::Keyboard::Up:
-                    m_gameData->engine->movePlayer(SideUp);
-                    break;
-                case sf::Keyboard::Down:
-                    m_gameData->engine->movePlayer(SideDown);
+                case sf::Keyboard::Escape:
+                    m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, LevelLost, m_lastLevelNumber), Replace);
                     break;
             }
         }
@@ -53,11 +49,6 @@ void GamingState::handleInput()
                         m_gameData->engine->stopPlayer();
                     }
                     break;
-                //TODO: These cases are for debugging
-                case sf::Keyboard::Up:
-                case sf::Keyboard::Down:
-                    m_gameData->engine->stopPlayer();
-                    break;
             }
         }
     }
@@ -67,11 +58,8 @@ void GamingState::update()
 {
     m_gameData->engine->process();
     m_currentLevelState = m_gameData->engine->getState();
-    if(m_currentLevelState == LevelStateWon) {
-        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber));
-    }
-    else if(m_currentLevelState == LevelStateLost) {
-        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber), Replace);
+    if(m_currentLevelState != LevelStateInProcess) {
+        m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber), !m_currentLevelState);
     }
 }
 

@@ -23,6 +23,8 @@ public:
 
     void markNextButton();
     void markPrevButton();
+    unsigned currMarkedButton();
+
 private: // data
     unsigned m_currentMarkedButton;
     std::vector<sf::Text> m_buttons;

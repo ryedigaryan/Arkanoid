@@ -26,6 +26,8 @@ using std::cin;
 #define LastLevelNumber 6
 
 #define Replace true // used when StateMachine must replace current active state with the new one
+#define LevelWon true
+#define LevelLost false
 
 #define PauseButton sf::Keyboard::P
 #define MoveLeftButton sf::Keyboard::Left
@@ -37,9 +39,14 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
+#define OutsideBGNumber 1
+
 #define MainMenuButtonsCount 3
-#define UnMarkedButtonColor sf::Color::White
-#define MarkedButtonColor sf::Color::Black
+#define MainMenuButtonNewGame 0
+#define MainMenuButtonContinue 1
+#define MainMenuButtonAbout 2
+#define UnMarkedButtonColor sf::Color(19, 73, 83)
+#define MarkedButtonColor sf::Color::White
 
 #define BricksDistance Size(0, 0)
 #define BricksCountOnPlayer 5

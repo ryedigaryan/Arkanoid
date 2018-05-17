@@ -7,7 +7,9 @@
 LevelEndState::LevelEndState(GameData* gameData, const unsigned& level, const bool& hasWon, const unsigned& lastLevel)
         : StaticImageState(gameData, sf::Keyboard::Return), m_level(level), m_hasWon(hasWon), m_lastLevel(lastLevel)
 {
-
+    if(!hasWon) {
+        m_gameData->lostLevel = m_level;
+    }
 }
 
 void LevelEndState::init()

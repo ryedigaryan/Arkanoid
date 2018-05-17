@@ -32,11 +32,6 @@ sf::Vector2f ArkanoidDrawer::getLevelSize(bool considerBorders /* = false */)
     return sf::Vector2f(m_backgroundRect.width, m_backgroundRect.height);
 }
 
-void ArkanoidDrawer::clearScreen(sf::Color bgCol)
-{
-    m_window->clear(bgCol);
-}
-
 void ArkanoidDrawer::displayChanges(int progress)
 {
     drawProgressBar(progress);
@@ -58,22 +53,6 @@ void ArkanoidDrawer::displayChanges(int progress)
             m_drawnObjects[i]->textureChanged = false;
         }
     }
-}
-
-void ArkanoidDrawer::drawMenu()
-{
-    static sf::RectangleShape helperShape(sf::Vector2f(m_window->getSize()));
-    helperShape.setTexture(m_resourceManager.getTexture(StateTypeMainMenu));
-    helperShape.setPosition(0, 0);
-    // configure text
-    m_helperText.setString("Press Enter");
-    m_helperText.setFont(m_resourceManager.getFont(StateTypeMainMenu));
-    m_helperText.setPosition((m_window->getSize().x - m_helperText.getLocalBounds().width) / 2, (m_window->getSize().y - m_helperText.getLocalBounds().height) / 2);
-    // draw main menu stuff
-    m_window->draw(helperShape);
-    m_window->draw(m_helperText);
-    // and display all drawn stuff
-    m_window->display();
 }
 
 void ArkanoidDrawer::drawLevelStartPopUp(const unsigned &level, const int& progress)
@@ -263,13 +242,13 @@ void ArkanoidDrawer::drawGameScenePane(Side side)
         case SideLeft:
             shape.setPosition(0, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(alreadyDrawnRect.left, alreadyDrawnRect.height));
-            shape.setFillColor(sf::Color(190, 190, 190));
+            shape.setTexture(m_resourceManager.getTexture(OutsideBGNumber));
             m_window->draw(shape);
             break;
         case SideRight:
             shape.setPosition(alreadyDrawnRect.left + alreadyDrawnRect.width, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(m_window->getSize().x - alreadyDrawnRect.left - alreadyDrawnRect.width, alreadyDrawnRect.height));
-            shape.setFillColor(sf::Color(190, 190, 190));
+            shape.setTexture(m_resourceManager.getTexture(OutsideBGNumber));
             m_window->draw(shape);
             break;
     }

@@ -84,6 +84,24 @@ const sf::Texture* ResourceManager::getTexture(ObjectType objectType, unsigned n
     return m_loadedObjectTextures[objectType][number - 1];
 }
 
+const sf::Texture *ResourceManager::getTexture(const unsigned& number)
+{
+    if(m_loadedStateTextures.size() < number + 1) {
+        m_loadedStateTextures.resize(number + 1, nullptr);
+    }
+    if(m_loadedStateTextures[number] == nullptr) {
+        // if there is no texture for query State in cache then load it from file
+        auto newTexture = new sf::Texture();
+        if(!newTexture->loadFromFile(pathToTexture(number))) {
+            cout << "FATAL ERROR: Cannot Read Texture for State: " << number << " at path: " << pathToTexture(number) << endl;
+            return m_defaultTexture;
+        }
+        m_loadedStateTextures[number] = newTexture;
+
+    }
+    return m_loadedStateTextures[number];
+}
+
 Level ResourceManager::getLevel(const unsigned& levelNumber)
 {
     if(m_loadedLevels.size() < levelNumber) {
@@ -118,6 +136,14 @@ std::string ResourceManager::pathToTexture(ObjectType objectType, unsigned numbe
     std::string path = TexturesDir;
     path.append(toString(m_resolution) + PathSeparator)
         .append(toString(objectType) + PathSeparator)
+        .append(toString(number));
+    return path;
+}
+
+std::string ResourceManager::pathToTexture(const unsigned& number)
+{
+    std::string path = TexturesDir;
+    path.append(toString(m_resolution) + PathSeparator)
         .append(toString(number));
     return path;
 }

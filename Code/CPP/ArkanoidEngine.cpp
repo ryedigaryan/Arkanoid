@@ -12,7 +12,7 @@ void ArkanoidEngine::process()
 
 int ArkanoidEngine::getProgress() const
 {
-    return static_cast<int>(100 - ((m_level.bricksSummaryHealth() * 100.0) / m_bricksMaxCount));
+    return static_cast<int>(100 - ((m_level.bricksSummaryHealth() * 100.0) / m_bricksMaxSumHealth));
 }
 
 void ArkanoidEngine::movePlayer(Side side)
@@ -38,7 +38,7 @@ void ArkanoidEngine::setLevel(Level& level)
     m_level = level;
     m_state = LevelStateInProcess;
     m_playerMovementDirection = SideNone;
-    m_bricksMaxCount = level.bricksSummaryHealth();
+    m_bricksMaxSumHealth = level.bricksSummaryHealth();
     m_delegate->engine_levelSet(m_level);
 }
 
