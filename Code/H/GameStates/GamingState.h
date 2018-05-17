@@ -25,13 +25,13 @@ public:
     void resume()      override;
 
     // GameObjectDelegate virtual functions
-    void go_healthChanged(unsigned go_id, int go_health, int go_healthChange) override;
-    void engine_go_isAtPieceNow(const unsigned& go_id)                        override;
-    void go_moved(unsigned go_id, const float& dx, const float& dy)           override;
-    void go_sizeChanged(unsigned go_id, const Size &go_size)                  override;
+    void go_healthChanged(unsigned goId, int goHealth, int goHealthChange)  override;
+    void engine_goIsAtPieceNow(const unsigned& goId)                        override;
+    void go_moved(unsigned goId, const float& dx, const float& dy)          override;
+    void go_sizeChanged(unsigned goId, const Size& goSize)                  override;
 
     // ArkanoidEngineDelegate virtual functions
-    void engine_levelSet(const Level& level)                                  override;
+    void engine_levelSet(const Level& level)                                override;
 
 private: // private data
     sf::Vector2f m_scaleFactor;
@@ -42,7 +42,7 @@ private: // private data
     // model ID is the index
     // view ID is the value
     std::vector<unsigned> m_model2ViewBindings;
-    unsigned m_bingingsOffset;
+    unsigned m_bindingsOffset;
 
 private: // helper functions
     void setEngineLevel(const unsigned& levelNumber);
@@ -50,7 +50,7 @@ private: // helper functions
     sf::Vector2f scale(const Point& position);
     sf::Vector2f scale(const Size& position);
     sf::Vector2f scale(const float& x, const float& y);
-    void setViewForModel(unsigned modelID, unsigned viewiD);
+    void setViewForModel(unsigned modelID, unsigned viewID);
     unsigned getViewOfModel(unsigned modelID);
 };
 

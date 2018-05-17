@@ -121,7 +121,7 @@ void GamingState::engine_levelSet(const Level& level)
     drawer->drawGameScene(m_gameData->engine->getProgress());
     // and then draw bricks, paddle(player) and ball
     unsigned drawnObjectID;
-    m_bingingsOffset = level.smallestIdentifier();
+    m_bindingsOffset = level.smallestIdentifier();
     m_model2ViewBindings.clear();
     m_model2ViewBindings.resize(level.countOfGameObjects());
     for(auto brick : level.bricks) {
@@ -158,34 +158,34 @@ sf::Vector2f GamingState::scale(const float& x, const float& y) {
     return sf::Vector2f(x * m_scaleFactor.x, y * m_scaleFactor.y);
 }
 
-void GamingState::setViewForModel(unsigned modelID, unsigned viewiD)
+void GamingState::setViewForModel(unsigned modelID, unsigned viewID)
 {
-    m_model2ViewBindings[modelID - m_bingingsOffset] = viewiD;
+    m_model2ViewBindings[modelID - m_bindingsOffset] = viewID;
 }
 
 unsigned GamingState::getViewOfModel(unsigned modelID)
 {
-    return m_model2ViewBindings[modelID - m_bingingsOffset];
+    return m_model2ViewBindings[modelID - m_bindingsOffset];
 }
 
-void GamingState::go_healthChanged(unsigned go_id, int go_health, int go_healthChange)
+void GamingState::go_healthChanged(unsigned goId, int goHealth, int goHealthChange)
 {
-    if(go_health != 0) {
-        m_gameData->drawer->changeTexture(getViewOfModel(go_id), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(go_health)));
+    if(goHealth != 0) {
+        m_gameData->drawer->changeTexture(getViewOfModel(goId), m_gameData->resourceManager->getTexture(ObjectTypeBrick, static_cast<unsigned int>(goHealth)));
     }
 }
 
-void GamingState::go_moved(unsigned go_id, const float& dx, const float& dy)
+void GamingState::go_moved(unsigned goId, const float& dx, const float& dy)
 {
-    auto viewID = getViewOfModel(go_id);
+    auto viewID = getViewOfModel(goId);
     m_gameData->drawer->moveObject(viewID, scale(dx, dy));
 }
 
-void GamingState::go_sizeChanged(unsigned go_id, const Size &go_size)
+void GamingState::go_sizeChanged(unsigned goId, const Size& goSize)
 {
 
 }
 
-void GamingState::engine_go_isAtPieceNow(const unsigned &go_id) {
-    m_gameData->drawer->removeObject(getViewOfModel(go_id));
+void GamingState::engine_goIsAtPieceNow(const unsigned& goId) {
+    m_gameData->drawer->removeObject(getViewOfModel(goId));
 }

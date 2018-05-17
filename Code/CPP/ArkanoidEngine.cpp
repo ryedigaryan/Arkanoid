@@ -129,7 +129,7 @@ Rect ArkanoidEngine::processBallBrickCollision() {
             Rect result = brick.rect();
             if(brick.getHealth() == 0) {
                 m_level.bricks.erase(it_brick);
-                m_delegate->engine_go_isAtPieceNow(brick.getIdentifier());
+                m_delegate->engine_goIsAtPieceNow(brick.getIdentifier());
                 if(m_level.bricks.empty()) {
                     m_state = LevelStateWon;
                 }
