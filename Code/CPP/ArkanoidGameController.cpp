@@ -15,7 +15,7 @@ ArkanoidGameController::ArkanoidGameController()
     m_gameData.resourceManager->m_resolution = ResolutionMedium;
 }
 
-void ArkanoidGameController::start()
+void ArkanoidGameController::__lEt_Ze__FuNN__begiNNZZZZZZ___()
 {
     StateMachine* stateMachine = m_gameData.stateMachine;
     sf::RenderWindow* mainWindow = m_gameData.drawer->getDrawingWindow();

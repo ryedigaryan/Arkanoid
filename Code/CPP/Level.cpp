@@ -168,7 +168,7 @@ void Level::loadBorders(std::ifstream& specReader)
      *      |---|
      *      |   |
      *      |   |
-     * the top border is inside left and right borders
+     * Note: the top border is inside left and right borders
      */
 
     // level's size has already been enlarged for Left and Upper borders

@@ -14,7 +14,7 @@ class ArkanoidGameController
 public:
     ArkanoidGameController();
 
-    void start();
+    void __lEt_Ze__FuNN__begiNNZZZZZZ___();
 private:
     GameData m_gameData;
 };

@@ -39,7 +39,7 @@ using std::cin;
 
 #define BallDirectionChange 0.1f
 
-#define BricksDistance Size(2, 2)
+#define BricksDistance Size(0, 0)
 #define BricksCountOnPlayer 5
 
 #define LeftBorder 1
