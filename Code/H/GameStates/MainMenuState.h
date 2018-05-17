@@ -5,6 +5,7 @@
 #ifndef ARCANOID_MAINMENUSTATE_H
 #define ARCANOID_MAINMENUSTATE_H
 
+#include <UI/Drawers/MenuDrawer.h>
 #include "State.h"
 #include "GameStates/GamingState.h"
 
@@ -14,6 +15,9 @@ public:
 
     void handleInput() override;
     void draw()        override;
+
+private:
+    MenuDrawer m_drawer;
 };
 
 #endif //ARCANOID_MAINMENUSTATE_H

@@ -65,7 +65,16 @@ set(PROJECT_EXECUTABLES
         Code/CPP/StaticImageState.cpp
         Code/CPP/Point.cpp
         Code/CPP/Rect.cpp
-        Code/CPP/GeometryConstants.cpp)
+        Code/CPP/GeometryConstants.cpp
+        #UI
+        Code/H/UI/Drawers/MenuDrawer.h
+        Code/H/UI/Drawers/PopUpDrawer.h
+        Code/H/UI/Drawers/GameSceneDrawer.h
+        Code/H/Interfaces/Drawer.h
+        Code/H/UI/UIElements/Button.h
+        Code/CPP/Button.cpp
+        Code/CPP/MenuDrawer.cpp
+        Code/CPP/Drawer.cpp)
 
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}/Code/H")

@@ -38,3 +38,7 @@ std::string logutils::nameOf(ObjectType o)
             return "ObjectTypeNone";
     }
 }
+
+float myutils::middle(float s1, float s2) {
+    return (s1 - s2) / 2;
+}

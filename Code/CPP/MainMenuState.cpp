@@ -4,9 +4,13 @@
 
 #include "GameStates/MainMenuState.h"
 
-MainMenuState::MainMenuState(GameData* gameData) : StaticImageState(gameData, sf::Keyboard::Return)
+MainMenuState::MainMenuState(GameData* gameData)
+        : StaticImageState(gameData, sf::Keyboard::Return), m_drawer(gameData->drawer->getDrawingWindow(), gameData->resourceManager->getTexture(StateTypeMainMenu), MainMenuButtonsCount, UnMarkedButtonColor, MarkedButtonColor)
 {
-
+    auto mmFont = m_gameData->resourceManager->getFont(StateTypeMainMenu);
+    m_drawer.addButton("New Game", mmFont)
+            .addButton("Continue", mmFont)
+            .addButton("Credits", mmFont);
 }
 
 void MainMenuState::handleInput()
@@ -15,13 +19,27 @@ void MainMenuState::handleInput()
     sf::Event e;
     while(mainWindow->pollEvent(e)) {
         if(e.type == sf::Event::KeyPressed) {
-            if(e.key.code == m_popKey) {
-                m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
-                return;
-            } else if(e.key.code == sf::Keyboard::Escape) {
-                mainWindow->close();
-                return;
+            switch(e.key.code) {
+                case sf::Keyboard::Return:
+                    m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
+                    return;
+                case sf::Keyboard::Escape:
+                    mainWindow->close();
+                    return;
+                case sf::Keyboard::Down:
+                    m_drawer.markNextButton();
+                    return;
+                case sf::Keyboard::Up:
+                    m_drawer.markPrevButton();
+                    return;
             }
+//            if(e.key.code == m_popKey) {
+//                m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
+//                return;
+//            } else if(e.key.code == sf::Keyboard::Escape) {
+//                mainWindow->close();
+//                return;
+//            }
         }
         else if(e.type == sf::Event::Closed) {
             delete m_gameData->drawer;
@@ -32,9 +50,11 @@ void MainMenuState::handleInput()
 
 void MainMenuState::draw()
 {
-    if(m_needsRedraw) {
-        m_gameData->drawer->clearScreen();
-        m_gameData->drawer->drawMenu();
-        m_needsRedraw = false;
-    }
+    m_drawer.draw();
+    m_drawer.display();
+//    if(m_needsRedraw) {
+//        m_gameData->drawer->clearScreen();
+//        m_gameData->drawer->drawMenu();
+//        m_needsRedraw = false;
+//    }
 }

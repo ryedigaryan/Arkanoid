@@ -1,0 +1,10 @@
+//
+// Created by ryedigaryan on 5/17/2018.
+//
+
+#ifndef ARCANOID_GAMESCENEDRAWER_H
+#define ARCANOID_GAMESCENEDRAWER_H
+
+
+
+#endif //ARCANOID_GAMESCENEDRAWER_H

@@ -37,7 +37,9 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
-#define BallDirectionChange 0.1f
+#define MainMenuButtonsCount 3
+#define UnMarkedButtonColor sf::Color::White
+#define MarkedButtonColor sf::Color::Black
 
 #define BricksDistance Size(0, 0)
 #define BricksCountOnPlayer 5
@@ -92,6 +94,8 @@ namespace myutils {
         double percent = (rand() % 101) / 100.0;
         return lowerBound + static_cast<T>(diff * percent);
     }
+
+    float middle(float s1, float s2);
 }
 
 #endif //ARCANOID_COMMONDEFINITIONS_H
