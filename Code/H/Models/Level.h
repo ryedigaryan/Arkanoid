@@ -25,6 +25,7 @@ public: // ctors, dtor
     ~Level();
 
 public: // public data
+    float timeLimit;
     unsigned number;
     unsigned brickRowCount;
     unsigned brickColCount;
@@ -34,9 +35,7 @@ public: // public data
     std::vector<Border> borders;
 
 public: // interface functions
-    void setGoDelegate(GameObjectDelegate* go_dlg);
     void setGoDelegate(GameObjectDelegate* go_dlg, ObjectType goType);
-    void removeGoDelegate(ObjectType goType);
     void loadFromSpec(const std::string& specPath);
     Size getSize(bool considerBorders = false) const;
     const Border& getBorder(Side sceneSide) const;

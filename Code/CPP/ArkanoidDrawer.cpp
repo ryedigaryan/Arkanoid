@@ -32,9 +32,10 @@ sf::Vector2f ArkanoidDrawer::getLevelSize(bool considerBorders /* = false */)
     return sf::Vector2f(m_backgroundRect.width, m_backgroundRect.height);
 }
 
-void ArkanoidDrawer::displayChanges(int progress)
+void ArkanoidDrawer::displayChanges(int progress, float timerValue)
 {
     drawProgressBar(progress);
+    drawTimer(timerValue);
     m_window->display();
     sf::Vector2f zeroDelta(0, 0);
     for(unsigned i = 0; i < m_drawnObjects.size(); i++) {
@@ -242,13 +243,13 @@ void ArkanoidDrawer::drawGameScenePane(Side side)
         case SideLeft:
             shape.setPosition(0, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(alreadyDrawnRect.left, alreadyDrawnRect.height));
-            shape.setTexture(m_resourceManager.getTexture(OutsideBGNumber));
+            shape.setTexture(m_resourceManager.getTexture(GameScenePaneBGNumber));
             m_window->draw(shape);
             break;
         case SideRight:
             shape.setPosition(alreadyDrawnRect.left + alreadyDrawnRect.width, alreadyDrawnRect.top);
             shape.setSize(sf::Vector2f(m_window->getSize().x - alreadyDrawnRect.left - alreadyDrawnRect.width, alreadyDrawnRect.height));
-            shape.setTexture(m_resourceManager.getTexture(OutsideBGNumber));
+            shape.setTexture(m_resourceManager.getTexture(GameScenePaneBGNumber));
             m_window->draw(shape);
             break;
     }
@@ -280,8 +281,6 @@ void ArkanoidDrawer::removeObject(const unsigned &id)
     }
     delete m_drawnObjects[id]->object;
     m_drawnObjects[id]->object = nullptr;
-//    delete m_drawnObjects[id];
-//    m_drawnObjects.erase(m_drawnObjects.begin() + id);
 }
 
 void ArkanoidDrawer::changeTexture(const unsigned &id, const sf::Texture* texture)
@@ -289,4 +288,16 @@ void ArkanoidDrawer::changeTexture(const unsigned &id, const sf::Texture* textur
     m_drawnObjects[id]->object->setTexture(texture);
     m_window->draw(*m_drawnObjects[id]->object);
     m_drawnObjects[id]->textureChanged = true;
+}
+
+void ArkanoidDrawer::drawTimer(float timerValue)
+{
+    static sf::RectangleShape timerBG(sf::Vector2f(65, 60));
+    timerBG.setPosition(15, m_window->getSize().y - 50);
+    timerBG.setFillColor(sf::Color::Black);
+    static sf::Text timer("-1", m_resourceManager.getFont(StateTypeGaming));
+    timer.setString(std::to_string(static_cast<int>(timerValue)));
+    timer.setPosition(20, m_window->getSize().y - 50);
+    m_window->draw(timerBG);
+    m_window->draw(timer);
 }

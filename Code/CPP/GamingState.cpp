@@ -13,6 +13,7 @@ void GamingState::init()
 {
     m_gameData->drawer->drawGameScene(0);
     setEngineLevel(m_currentLevelNumber = m_firstLevelNumber);
+    m_timer.start();
 }
 
 void GamingState::handleInput()
@@ -60,21 +61,27 @@ void GamingState::update()
     m_currentLevelState = m_gameData->engine->getState();
     if(m_currentLevelState != LevelStateInProcess) {
         m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, m_currentLevelState, m_lastLevelNumber), !m_currentLevelState);
+        return;
+    }
+    if(static_cast<int>(m_timer.getElapsedSeconds() - m_gameData->engine->getLevel().timeLimit) == 0) {
+        m_gameData->engine->forceLoose();
+        return;
     }
 }
 
 void GamingState::draw()
 {
-    m_gameData->drawer->displayChanges(m_gameData->engine->getProgress());
+    m_gameData->drawer->displayChanges(m_gameData->engine->getProgress(), m_gameData->engine->getLevel().timeLimit - m_timer.getElapsedSeconds());
 }
 
 void GamingState::pause()
 {
-    // nothing must be done
+    m_timer.pause();
 }
 
 void GamingState::resume()
 {
+    m_timer.start();
     if(m_currentLevelState != LevelStateInProcess) {
         if(m_currentLevelNumber == m_lastLevelNumber) {
             m_gameData->stateMachine->popActiveState();
@@ -121,7 +128,7 @@ void GamingState::engine_levelSet(const Level& level)
     setViewForModel(level.player.getIdentifier(), drawnObjectID);
     drawnObjectID = drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
     setViewForModel(level.ball.getIdentifier(), drawnObjectID);
-    drawer->displayChanges(0);
+    drawer->displayChanges(0, m_gameData->engine->getLevel().timeLimit);
 }
 
 void GamingState::calculateScaling()

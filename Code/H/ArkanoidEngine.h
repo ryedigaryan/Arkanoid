@@ -28,9 +28,10 @@ public:
 
 public: // actions
     void setLevel(Level& level);
-    void process();
     void movePlayer(Side side);
     void stopPlayer();
+    void forceLoose();
+    void process();
 
 public: // info getters
     int getProgress() const;

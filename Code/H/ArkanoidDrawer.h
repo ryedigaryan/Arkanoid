@@ -32,7 +32,7 @@ public:
     sf::RenderWindow* getDrawingWindow();
     sf::Vector2f getLevelSize(bool considerBorders = false);
 
-    void displayChanges(int progress);
+    void displayChanges(int progress, float timerValue);
     void drawLevelStartPopUp(const unsigned &level, const int &progress);
     void drawGameScene(const int& progress);
     void drawLevelEndPopUp(const unsigned &level, const bool &hasWon);
@@ -58,6 +58,7 @@ private: // helper functions
     void drawBorder(Side borderSide);
     void drawGameScenePane(Side side);
     void drawProgressBar(int progress);
+    void drawTimer(float timerValue);
 };
 
 #endif //ARCANOID_ARKANOIDDRAWER_H

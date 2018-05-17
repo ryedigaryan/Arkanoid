@@ -5,6 +5,7 @@
 #ifndef ARCANOID_GAMINGSTATE_H
 #define ARCANOID_GAMINGSTATE_H
 
+#include <Timer.h>
 #include "State.h"
 #include "Interfaces/ArkanoidEngineDelegate.h"
 #include "PausedState.h"
@@ -34,6 +35,7 @@ public:
     void engine_levelSet(const Level& level)                               override;
 
 private: // private data
+    Timer m_timer;
     sf::Vector2f m_scaleFactor;
     unsigned m_currentLevelNumber;
     const unsigned m_firstLevelNumber;

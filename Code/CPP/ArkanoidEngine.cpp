@@ -28,6 +28,11 @@ void ArkanoidEngine::stopPlayer()
     m_level.player.getVelocity().setProjection(0, 0);
 }
 
+void ArkanoidEngine::forceLoose()
+{
+    m_state = LevelStateLost;
+}
+
 LevelState ArkanoidEngine::getState() const
 {
     return m_state;

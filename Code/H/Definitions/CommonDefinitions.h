@@ -29,6 +29,8 @@ using std::cin;
 #define LevelWon true
 #define LevelLost false
 
+#define LevelMinTime 40
+
 #define PauseButton sf::Keyboard::P
 #define MoveLeftButton sf::Keyboard::Left
 #define MoveRightButton sf::Keyboard::Right
@@ -39,7 +41,7 @@ using std::cin;
 #define TexturesDir "Resources/Textures/"
 #define PathSeparator "/"
 
-#define OutsideBGNumber 1
+#define GameScenePaneBGNumber 1
 
 #define MainMenuButtonsCount 3
 #define MainMenuButtonNewGame 0
