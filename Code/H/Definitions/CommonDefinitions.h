@@ -29,7 +29,7 @@ using std::cin;
 #define LevelWon true
 #define LevelLost false
 
-#define LevelMinTime 40
+#define LevelMinTime 60
 
 #define PauseButton sf::Keyboard::P
 #define MoveLeftButton sf::Keyboard::Left

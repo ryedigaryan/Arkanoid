@@ -129,6 +129,7 @@ void GamingState::engine_levelSet(const Level& level)
     drawnObjectID = drawer->drawObject(scale(level.ball.getPosition()), scale(level.ball.getSize()), m_gameData->resourceManager->getTexture(ObjectTypeBall));
     setViewForModel(level.ball.getIdentifier(), drawnObjectID);
     drawer->displayChanges(0, m_gameData->engine->getLevel().timeLimit);
+    m_timer.reset();
 }
 
 void GamingState::calculateScaling()

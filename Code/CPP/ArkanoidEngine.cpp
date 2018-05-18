@@ -96,8 +96,17 @@ void ArkanoidEngine::processPlayer()
 
 void ArkanoidEngine::processBall()
 {
+    // loose if ball is under level
     if(m_level.ball.getPosition().y > m_level.getSize().height) {
         m_state = LevelStateLost;
+        return;
+    }
+    // continue moving ball if it is in the same height as paddle
+    if(m_level.ball.getPosition().y + m_level.ball.getSize().height > m_level.player.getPosition().y) {
+        // rotate ball if it is colliding with paddle
+        if(willCollide(m_level.ball, m_level.player))
+            m_level.ball.getVelocity().inverse(AxisX);
+        m_level.ball.move();
         return;
     }
     Rect colRect = processBallBorderCollision();
