@@ -35,7 +35,6 @@ set(PROJECT_EXECUTABLES
         Code/H/Models/Paddle.h
         Code/H/Models/Level.h
         Code/H/GameStates/State.h
-        Code/H/GameStates/AllStates.h
         Code/H/GameStates/MainMenuState.h
         Code/H/GameStates/GamingState.h
         Code/H/GameStates/PausedState.h
@@ -56,7 +55,7 @@ set(PROJECT_EXECUTABLES
         Code/CPP/MainMenuState.cpp
         Code/CPP/PausedState.cpp
         Code/CPP/GamingState.cpp
-        Code/CPP/LevelEndSatate.cpp
+        Code/CPP/LevelEndState.cpp
         Code/CPP/ArkanoidDrawer.cpp
         Code/CPP/ArkanoidEngine.cpp
         Code/CPP/ResourceManager.cpp

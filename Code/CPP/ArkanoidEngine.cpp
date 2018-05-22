@@ -104,7 +104,7 @@ void ArkanoidEngine::processBall()
     // continue moving ball if it is in the same height as paddle
     if(m_level.ball.getPosition().y + m_level.ball.getSize().height > m_level.player.getPosition().y) {
         // rotate ball if it is colliding with paddle
-        if(willCollide(m_level.ball, m_level.player))
+        if(willCollide(m_level.ball, m_level.player) || willCollide(m_level.ball, m_level.getBorder(SideRight)) || willCollide(m_level.ball, m_level.getBorder(SideLeft)))
             m_level.ball.getVelocity().inverse(AxisX);
         m_level.ball.move();
         return;

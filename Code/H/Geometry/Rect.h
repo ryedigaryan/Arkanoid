@@ -20,8 +20,8 @@ public:
     float width;
     float height;
 
-    float   right()         const;
-    float   bottom()        const;
+    float right()         const;
+    float bottom()        const;
     Point position()      const;
     Size  size()          const;
 

@@ -18,6 +18,7 @@ void MenuDrawer::draw()
     for(const auto& m_button : m_buttons) {
         m_window.draw(m_button);
     }
+    m_buttons[m_currentMarkedButton].setFillColor(m_markedButtonColor);
 }
 
 void MenuDrawer::display()

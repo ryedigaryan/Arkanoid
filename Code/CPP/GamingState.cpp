@@ -33,7 +33,7 @@ void GamingState::handleInput()
                     break;
                 case sf::Keyboard::Escape:
                     m_gameData->stateMachine->pushState(new LevelEndState(m_gameData, m_currentLevelNumber, LevelLost, m_lastLevelNumber), Replace);
-                    break;
+                    return;
             }
         }
         else if(e.type == sf::Event::KeyReleased){

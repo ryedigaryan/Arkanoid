@@ -2,7 +2,6 @@
 // Created by ruben on 3/25/2018.
 //
 
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "ArkanoidGameController.h"
 
 ArkanoidGameController::ArkanoidGameController()
@@ -22,6 +21,8 @@ ArkanoidGameController::ArkanoidGameController()
     else if(2048 <= wndSize.x && wndSize.x < 4096) {
         m_gameData.resourceManager->m_resolution = ResolutionHigh;
     }
+
+    m_gameData.stateMachine->pushState(new MainMenuState(&m_gameData));
 }
 
 void ArkanoidGameController::__LeTT_Ze__FuNN__begInNzZZzZZ___()
@@ -30,7 +31,6 @@ void ArkanoidGameController::__LeTT_Ze__FuNN__begInNzZZzZZ___()
     sf::RenderWindow* mainWindow = m_gameData.drawer->getDrawingWindow();
     sf::Clock c;
 
-    stateMachine->pushState(new MainMenuState(&m_gameData));
     while(mainWindow->isOpen()) {
         if(c.getElapsedTime().asSeconds() > OneFrameDuration) {
             c.restart();

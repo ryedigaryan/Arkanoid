@@ -5,17 +5,12 @@
 #ifndef ARCANOID_BORDER_H
 #define ARCANOID_BORDER_H
 
-#include "Models/Interfaces/Mortal.h"
 #include "Models/Interfaces/GameObject.h"
 
-class Border : public Mortal {
+class Border : public GameObject {
 public:
     explicit Border(Point position = Point(), Size size = Size())
             : GameObject(position, size) {}
-
-    void harm(int damage) override {
-        // nothing must be done ... as the border is immortal
-    }
 };
 
 #endif //ARCANOID_BORDER_H

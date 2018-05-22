@@ -43,13 +43,6 @@ void MainMenuState::handleInput()
                     m_drawer.markPrevButton();
                     return;
             }
-//            if(e.key.code == m_popKey) {
-//                m_gameData->stateMachine->pushState(new GamingState(m_gameData, FirstLevelNumber, LastLevelNumber));
-//                return;
-//            } else if(e.key.code == sf::Keyboard::Escape) {
-//                mainWindow->close();
-//                return;
-//            }
         }
         else if(e.type == sf::Event::Closed) {
             delete m_gameData->drawer;
@@ -62,9 +55,4 @@ void MainMenuState::draw()
 {
     m_drawer.draw();
     m_drawer.display();
-//    if(m_needsRedraw) {
-//        m_gameData->drawer->clearScreen();
-//        m_gameData->drawer->drawMenu();
-//        m_needsRedraw = false;
-//    }
 }

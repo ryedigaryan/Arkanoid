@@ -5,7 +5,7 @@
 #ifndef ARCANOID_GAMECONTROLLER_H
 #define ARCANOID_GAMECONTROLLER_H
 
-#include "GameStates/AllStates.h"
+#include "GameStates/MainMenuState.h"
 #include "Definitions/CommonDefinitions.h"
 #include "StateMachine.h"
 

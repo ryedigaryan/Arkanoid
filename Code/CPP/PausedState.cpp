@@ -3,8 +3,6 @@
 //
 
 #include "GameStates/PausedState.h"
-#include "GameStates/GamingState.h"
-#include "StateMachine.h"
 
 PausedState::PausedState(GameData* gameData, const unsigned& level, const int& progress) : StaticImageState(gameData, PauseButton), m_level(level), m_progress(progress)
 {

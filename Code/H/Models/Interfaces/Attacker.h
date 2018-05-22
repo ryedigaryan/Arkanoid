@@ -6,7 +6,6 @@
 #define ARCANOID_ATTACKER_H
 
 #include "Mortal.h"
-#include "GameObject.h"
 
 class Attacker : public virtual GameObject {
 public:
